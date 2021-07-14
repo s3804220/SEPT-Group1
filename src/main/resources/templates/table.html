@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>A table</title>
+</head>
+<body>
+<h2>English words</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Index</th>
+        <th>Word</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="word : ${words}">
+        <td th:text="${wordStat.index + 1}">Index</td>
+        <td th:text="${word}">A word</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
