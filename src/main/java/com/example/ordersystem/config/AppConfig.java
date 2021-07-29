@@ -3,7 +3,6 @@ package com.example.ordersystem.config;
 import com.example.ordersystem.model.Student;
 import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +26,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 //@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
+@ComponentScan(basePackages = {"com.example.ordersystem"})
 public class AppConfig implements WebMvcConfigurer {
-
     @Bean
     public Student student(){
         return new Student();
