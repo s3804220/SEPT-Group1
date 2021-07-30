@@ -1,5 +1,6 @@
 package com.example.ordersystem.config;
 
+import com.example.ordersystem.model.Item;
 import com.example.ordersystem.model.Student;
 import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
@@ -37,6 +38,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public Teacher teacher(){
         return new Teacher();
+    }
+
+    @Bean
+    public Item item() {
+        return new Item();
     }
 
     /*@Override
