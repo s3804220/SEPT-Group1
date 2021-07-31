@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="css/custom.css" type="text/css">
 </head>
 
-<body>
+<body onload="getItemList()">
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -180,21 +180,7 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td class="product__cart__item">
-                                <div class="product__cart__item__pic">
-                                    <img src="img/shop/cart/cart-1.jpg" alt="">
-                                </div>
-                                <div class="product__cart__item__text">
-                                    <h6>Vanilla Salted Caramel</h6>
-                                </div>
-                            </td>
-                            <td class="cart__price">$ 15.00</td>
-                            <td class="cart__stock">In stock</td>
-                            <td class="cart__btn"><a href="#" class="primary-btn">Add to cart</a></td>
-                            <td class="cart__close"><span class="icon_close"></span></td>
-                        </tr>
+                        <tbody id="item-list-rows">
                         </tbody>
                     </table>
                 </div>

@@ -44,3 +44,33 @@ function uploadImg(id){
     })
 }
 
+function getItemList(){
+    let itemList = document.getElementById('item-list-rows')
+    itemList.innerHTML = ''
+
+    fetch('http://localhost:8080/items')
+        .then(res => res.json())
+        .then(json => {
+            console.log(json)
+            for (let i = 0; i < json.length; i++) {
+
+                let images = json[i].itemImage.split("|")
+
+                //let deleteLink = `<button onclick='deleteStudent(${id})'>Delete</button>`
+
+                itemList.innerHTML += `<tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img src="img/upload/item${json[i].id}/${images[0]}" alt="" style="width: 100px;height: 100px">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6>${json[i].itemName}</h6>
+                                </div>
+                                </td>
+                            <td class="cart__price">$ ${json[i].itemPrice}</td>
+                            <td class="cart__stock">Available</td>
+                            <td class="cart__btn"><a href="#" class="primary-btn">Edit</a></td>
+                            <td class="cart__close"><span class="icon_close"></span></td></tr>`
+            }
+        })
+}
