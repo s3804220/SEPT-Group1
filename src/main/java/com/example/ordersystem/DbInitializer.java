@@ -2,7 +2,6 @@ package com.example.ordersystem;
 
 import com.example.ordersystem.controller.*;
 import com.example.ordersystem.model.*;
-import com.example.ordersystem.registration.*;
 import com.example.ordersystem.repository.*;
 import com.example.ordersystem.security.*;
 import com.example.ordersystem.service.*;
@@ -34,8 +33,8 @@ public class DbInitializer implements CommandLineRunner {
 
         //Initialize admin account
         Account admin = new Account("John", "Doe", "123 Tech Street", "0204648395", "admin@gmail.com", "admin", AccountRole.ADMIN);
-        admin.setAccountRole(AccountRole.ADMIN);
         accountService.signUpAccount(admin);
+        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
 
         //Initialize user account
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);

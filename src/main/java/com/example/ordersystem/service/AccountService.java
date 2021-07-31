@@ -1,6 +1,7 @@
 package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Account;
+import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,6 +68,11 @@ public class AccountService implements UserDetailsService {
         accountToUpdate.setPhone(account.getPhone());
         accountToUpdate.setPassword(account.getPassword());
         accountToUpdate.setEmail(account.getEmail());
+        return accountToUpdate;
+    }
+    public Account setAccountRole(Long id, AccountRole accountRole){
+        Account accountToUpdate = getAccountById(id);
+        accountToUpdate.setAccountRole(accountRole);
         return accountToUpdate;
     }
 
