@@ -53,6 +53,7 @@ public class RegistrationController {
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
         account.setId(userId);
+        accountService.updateAccount(userId, account);
         return "redirect:/logout" ;
     }
 
