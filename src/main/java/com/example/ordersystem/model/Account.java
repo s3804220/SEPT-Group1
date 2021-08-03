@@ -164,4 +164,20 @@ public class Account implements UserDetails {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", accAddress='" + accAddress + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", accountRole=" + accountRole +
+                ", locked=" + locked +
+                ", enabled=" + enabled +
+                '}';
+    }
 }

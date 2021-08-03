@@ -62,12 +62,16 @@ public class AccountService implements UserDetailsService {
     }
     public Account updateAccount(Long id, Account account){
         Account accountToUpdate = getAccountById(id);
+
         accountToUpdate.setFirstName(account.getFirstName());
         accountToUpdate.setLastName(account.getLastName());
         accountToUpdate.setAccAddress(account.getAccAddress());
         accountToUpdate.setPhone(account.getPhone());
         accountToUpdate.setPassword(account.getPassword());
         accountToUpdate.setEmail(account.getEmail());
+
+        accountRepository.save(accountToUpdate);
+        
         return accountToUpdate;
     }
     public Account setAccountRole(Long id, AccountRole accountRole){

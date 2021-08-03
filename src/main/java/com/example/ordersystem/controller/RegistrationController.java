@@ -2,27 +2,24 @@ package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
-import com.example.ordersystem.model.Student;
-import com.example.ordersystem.repository.AccountRepository;
 import com.example.ordersystem.service.AccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @Controller
-//@RequestMapping(path="registration")
 @AllArgsConstructor
 public class RegistrationController {
 
     private AccountService accountService;
 
-    @RequestMapping(value="registration")
+    @RequestMapping(value="registration", method=RequestMethod.GET)
     public String getForm(ModelMap model){
         model.addAttribute("account", new Account());
         return "registration";
@@ -35,4 +32,37 @@ public class RegistrationController {
         accountService.signUpAccount(account);
         return "redirect:/login";
     }
+
+    @RequestMapping(value="user", method=RequestMethod.GET)
+    public String getWelcomePage(ModelMap model){
+        model.addAttribute("account", new Account());
+        return "loggedin_index";
+    }
+
+    @RequestMapping(value="user/update", method=RequestMethod.GET)
+    public String getUpdateAccountForm(ModelMap model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        model.addAttribute("account", loggedInAcc);
+        return "update_account";
+    }
+
+    @RequestMapping(value="user/update", method=RequestMethod.POST)
+    public String update(@Valid Account account, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        account.setId(userId);
+        return "redirect:/logout" ;
+    }
+
+    @RequestMapping(value="user/delete", method=RequestMethod.POST)
+    public String deleteAccount(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        accountService.deleteAccount(userId);
+        return "redirect:/logout";
+    }
+
 }
