@@ -18,3 +18,10 @@
     border: 1px ridge #e26b0c;
     border-radius: 10px;
 }
+.item-link:link{
+    font-weight: 550;
+}
+.item-link:hover{
+    color: #0b0b0b;
+    text-decoration: underline;
+}

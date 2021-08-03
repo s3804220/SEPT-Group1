@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ItemController {
@@ -27,12 +28,19 @@ public class ItemController {
     }
 
     @PutMapping(path = "/items")
-    public void updateItem(@RequestBody Item item){
-        itemService.saveItem(item);
+    public ResponseEntity<String> updateItem(@RequestBody Item item){
+        Long newID= itemService.saveItem(item);
+        String IDstring = newID.toString();
+        return ResponseEntity.status(HttpStatus.OK).body(IDstring);
     }
 
     @DeleteMapping(path = "/items/{id}")
     public void deleteItem(@PathVariable Long id){
         itemService.deleteItem(id);
+    }
+
+    @GetMapping(path = "/items/{id}")
+    public Optional<Item> getItemById(@PathVariable Long id){
+        return itemService.getItem(id);
     }
 }
