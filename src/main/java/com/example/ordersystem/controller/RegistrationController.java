@@ -21,6 +21,8 @@ import java.util.List;
 public class RegistrationController {
     private AccountService accountService;
 
+    // ModelMap is used to parse objects from controller to html through thymeleaf
+
     @RequestMapping(value="registration", method=RequestMethod.GET)
     public String getForm(ModelMap model){
         model.addAttribute("account", new Account());
@@ -43,6 +45,7 @@ public class RegistrationController {
 
     @RequestMapping(value="user/update", method=RequestMethod.GET)
     public String getUpdateAccountForm(ModelMap model){
+        // Get current account authorization and get that account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         model.addAttribute("account", loggedInAcc);
@@ -50,7 +53,7 @@ public class RegistrationController {
     }
 
     @RequestMapping(value="user/update", method=RequestMethod.POST)
-    public String update(@Valid Account account, Model model){
+    public String update(@Valid Account account){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();

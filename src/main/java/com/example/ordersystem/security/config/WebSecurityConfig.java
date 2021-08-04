@@ -20,12 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AccountService accountService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // Configure path permission and redirect user to index page after login
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                    .antMatchers("/", "index", "/css/*", "/js/*", "/fonts/*", "/sass/*", "/Source/*", "/img/*").permitAll()
                     .antMatchers("/registration/**").permitAll()
                 .anyRequest()
                 .authenticated().and()
@@ -34,13 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
+    // configure authentication provider
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
-
-
+    // Set password encoder to BCryptPasswordEncoder and set AccountService for UserDetailService
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

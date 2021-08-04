@@ -35,6 +35,7 @@ public class AccountService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
+    // Register an account and encrypt the password when email criteria are met
     public Account signUpAccount(Account account){
         boolean accountExists = accountRepository.findByEmail(account.getEmail()).isPresent();
         if (accountExists){
@@ -50,18 +51,23 @@ public class AccountService implements UserDetailsService {
         accountRepository.enableAccount(account.getEmail());
         return account;
     }
+
     public List<Account> getAllAccounts(){
         return accountRepository.findAll();
     }
+
     public Account getAccountById(Long id){
         return accountRepository.findById(id).orElseThrow(() ->
                 new AccountNotFoundException(id));
     }
+
     public Account deleteAccount(Long id){
         Account accountToDelete = getAccountById(id);
         accountRepository.delete(accountToDelete);
         return accountToDelete;
     }
+
+    // Update account info and save to repository
     public Account updateAccount(Long id, Account account){
         Account accountToUpdate = getAccountById(id);
 
@@ -76,6 +82,8 @@ public class AccountService implements UserDetailsService {
         
         return accountToUpdate;
     }
+
+    // Promote or revoke account role
     public Account setAccountRole(Long id, AccountRole accountRole){
         Account accountToUpdate = getAccountById(id);
         accountToUpdate.setAccountRole(accountRole);
