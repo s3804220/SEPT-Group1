@@ -79,6 +79,7 @@ public class AccountService implements UserDetailsService {
     public Account setAccountRole(Long id, AccountRole accountRole){
         Account accountToUpdate = getAccountById(id);
         accountToUpdate.setAccountRole(accountRole);
+        accountRepository.save(accountToUpdate);
         return accountToUpdate;
     }
 
