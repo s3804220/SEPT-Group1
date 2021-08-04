@@ -17,7 +17,8 @@ import java.util.stream.Stream;
 public class FilesStorageServiceImpl implements FilesStorageService{
     private final Path root = Paths.get("src\\main\\resources\\static\\img\\upload");
 
-    public Path createDir(String id){
+    @Override
+    public Path init(String id) {
         Path itemRoot = Paths.get("src\\main\\resources\\static\\img\\upload\\item"+id);
         try {
             Files.createDirectories(itemRoot);
@@ -28,18 +29,9 @@ public class FilesStorageServiceImpl implements FilesStorageService{
     }
 
     @Override
-    public void init() {
-        try {
-            Files.createDirectory(root);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload!");
-        }
-    }
-
-    @Override
     public void save(MultipartFile file, String id) {
         try {
-            Files.copy(file.getInputStream(), createDir(id).resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), init(id).resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
@@ -62,8 +54,8 @@ public class FilesStorageServiceImpl implements FilesStorageService{
     }
 
     @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(root.toFile());
+    public void deleteAll(String id) {
+        FileSystemUtils.deleteRecursively(init(id).toFile());
     }
 
     @Override
