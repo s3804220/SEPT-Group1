@@ -1,5 +1,6 @@
 package com.example.ordersystem.security.config;
 
+import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
