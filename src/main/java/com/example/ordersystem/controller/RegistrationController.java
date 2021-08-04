@@ -4,6 +4,7 @@ import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.service.AccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,6 @@ import javax.validation.Valid;
 @Controller
 @AllArgsConstructor
 public class RegistrationController {
-
     private AccountService accountService;
 
     @RequestMapping(value="registration", method=RequestMethod.GET)
