@@ -30,6 +30,11 @@ function checkInput(){
         priceMessage.style.color = "red"
         priceMessage.innerHTML = 'Please enter a valid price!'
         validated = false
+    }else if (price<0){
+        priceMessage.style.display = "block"
+        priceMessage.style.color = "red"
+        priceMessage.innerHTML = 'Please do not enter negative prices!'
+        validated = false
     }else {
         priceMessage.style.display = "none"
     }
@@ -147,8 +152,8 @@ function loadInfo(){
         let name = document.getElementById('item-name')
         let description = document.getElementById('item-description')
         let price = document.getElementById('item-price')
-        let fileinput = document.getElementById('item-images')
-        let filenames = ''
+
+
         fetch('http://localhost:8080/items/'+itemid)
             .then(res => res.json())
             .then(json => {

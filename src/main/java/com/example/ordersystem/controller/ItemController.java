@@ -20,6 +20,7 @@ public class ItemController {
         return itemService.getAllItems();
     }
 
+    //Add a new item to the database and return its ID as a response for checking and later usage
     @PostMapping(path = "/items")
     public ResponseEntity<String> addItem(@RequestBody Item item){
         Long newID= itemService.saveItem(item);
@@ -27,6 +28,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(IDstring);
     }
 
+    //Update an item in the database and return its ID as a response for checking and later usage
     @PutMapping(path = "/items")
     public ResponseEntity<String> updateItem(@RequestBody Item item){
         Long newID= itemService.saveItem(item);
