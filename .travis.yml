@@ -1,6 +1,14 @@
 language: java
 jdk:
   -openjdk16
+
+# block list
+branches:
+  except:
+    - master
+    - CRUD_items
+
+# white list
 branches:
   only:
     - development
