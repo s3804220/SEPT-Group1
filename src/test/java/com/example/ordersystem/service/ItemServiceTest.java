@@ -1,8 +1,7 @@
-package com.example.ordersystem;
+package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.ItemRepository;
-import com.example.ordersystem.service.ItemService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="ALTER TABLE items ALTER COLUMN id RESTART WITH 1")
 })
 @SpringBootTest
-public class ItemTests {
+public class ItemServiceTest {
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
