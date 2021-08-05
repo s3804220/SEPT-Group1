@@ -22,8 +22,8 @@ public class FilesStorageServiceTest {
 
     @AfterEach
     public void clearFolder(){
-        FileSystemUtils.deleteRecursively(Paths.get("src\\main\\resources\\static\\img\\upload\\item10").toFile());
-        FileSystemUtils.deleteRecursively(Paths.get("src\\main\\resources\\static\\img\\upload\\item999").toFile());
+        FileSystemUtils.deleteRecursively(Paths.get("src\\main\\resources\\static\\img\\upload\\item10".replace("\\",File.separator)).toFile());
+        FileSystemUtils.deleteRecursively(Paths.get("src\\main\\resources\\static\\img\\upload\\item999".replace("\\",File.separator)).toFile());
     }
 
     @Test
@@ -41,39 +41,39 @@ public class FilesStorageServiceTest {
 
     @Test
     public void MultipartFileSaveTests() throws IOException {
-        byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg"));
+        byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\",File.separator)));
         //Mock new multipart file with valid file name
         MockMultipartFile file = new MockMultipartFile("file", "Honeycomb-cake.jpg", "multipart/form-data", byteArray);
         filesStorageService.save(file, "10");
         //Test that file can be saved successfully into a valid directory
-        assertTrue(new File("src\\main\\resources\\static\\img\\upload\\item10\\Honeycomb-cake.jpg").isFile());
+        assertTrue(new File("src\\main\\resources\\static\\img\\upload\\item10\\Honeycomb-cake.jpg".replace("\\",File.separator)).isFile());
 
         //Test that file cannot be saved into an invalid directory
         assertThrows(RuntimeException.class, () -> filesStorageService.save(file, "???"));
-        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item???\\Honeycomb-cake.jpg").isFile());
+        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item???\\Honeycomb-cake.jpg".replace("\\",File.separator)).isFile());
 
         //Mock new multipart file with invalid file name
         MockMultipartFile file2 = new MockMultipartFile("file", "???.jpg", "multipart/form-data", byteArray);
         //Test that invalid file cannot be saved into a directory
         assertThrows(RuntimeException.class, () -> filesStorageService.save(file2, "10"));
-        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item10\\???.jpg").isFile());
+        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item10\\???.jpg".replace("\\",File.separator)).isFile());
     }
 
     @Test
     public void deleteAll() throws IOException {
         //Mock new multipart file for testing
-        byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg"));
+        byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\",File.separator)));
         MockMultipartFile file = new MockMultipartFile("file", "Honeycomb-cake.jpg", "multipart/form-data", byteArray);
         filesStorageService.save(file, "10");
 
         //Delete the directory containing the file above
         filesStorageService.deleteAll("10");
         //Test that the directory and its file have been deleted
-        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item10\\Honeycomb-cake.jpg").isFile());
-        assertFalse(Files.isDirectory(Paths.get("src\\main\\resources\\static\\img\\upload\\item10")));
+        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item10\\Honeycomb-cake.jpg".replace("\\",File.separator)).isFile());
+        assertFalse(Files.isDirectory(Paths.get("src\\main\\resources\\static\\img\\upload\\item10".replace("\\",File.separator))));
 
         //Mock another multipart file for testing
-        byte[] byteArray2 = Files.readAllBytes(Paths.get("src\\test\\resources\\Vanilla Cake.jpg"));
+        byte[] byteArray2 = Files.readAllBytes(Paths.get("src\\test\\resources\\Vanilla Cake.jpg".replace("\\",File.separator)));
         MockMultipartFile file2 = new MockMultipartFile("file", "Vanilla-cake.jpg", "multipart/form-data", byteArray2);
         //Save 2 files into a directory
         filesStorageService.save(file, "999");
@@ -82,8 +82,8 @@ public class FilesStorageServiceTest {
         //Delete the directory containing multiple files
         filesStorageService.deleteAll("999");
         //Test that the directory and all its files have been deleted
-        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item999\\Honeycomb-cake.jpg").isFile());
-        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item999\\Vanilla-cake.jpg").isFile());
-        assertFalse(Files.isDirectory(Paths.get("src\\main\\resources\\static\\img\\upload\\item999")));
+        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item999\\Honeycomb-cake.jpg".replace("\\",File.separator)).isFile());
+        assertFalse(new File("src\\main\\resources\\static\\img\\upload\\item999\\Vanilla-cake.jpg".replace("\\",File.separator)).isFile());
+        assertFalse(Files.isDirectory(Paths.get("src\\main\\resources\\static\\img\\upload\\item999".replace("\\",File.separator))));
     }
 }
