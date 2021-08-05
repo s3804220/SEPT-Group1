@@ -2,6 +2,8 @@ package com.example.ordersystem.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -31,7 +33,12 @@ public class FilesStorageServiceTest {
         //Test directory creation with a normal ID and a really large ID
         assertTrue(Files.isDirectory(filesStorageService.init("10")));
         assertTrue(Files.isDirectory(filesStorageService.init("999")));
+    }
 
+    @EnabledOnOs(OS.WINDOWS)
+    @Test
+    //Test naming restrictions for Windows only
+    public void createDirectoryWindowsTests(){
         //Test directory creation with invalid characters
         assertThrows(InvalidPathException.class, () -> Files.isDirectory(filesStorageService.init("???;")));
 
@@ -47,6 +54,15 @@ public class FilesStorageServiceTest {
         filesStorageService.save(file, "10");
         //Test that file can be saved successfully into a valid directory
         assertTrue(new File("src\\main\\resources\\static\\img\\upload\\item10\\Honeycomb-cake.jpg".replace("\\",File.separator)).isFile());
+    }
+
+    @EnabledOnOs(OS.WINDOWS)
+    @Test
+    //Test naming restrictions for Windows only
+    public void MultipartFileSaveWindowsTests() throws IOException {
+        byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\",File.separator)));
+        //Mock new multipart file with valid file name
+        MockMultipartFile file = new MockMultipartFile("file", "Honeycomb-cake.jpg", "multipart/form-data", byteArray);
 
         //Test that file cannot be saved into an invalid directory
         assertThrows(RuntimeException.class, () -> filesStorageService.save(file, "???"));
