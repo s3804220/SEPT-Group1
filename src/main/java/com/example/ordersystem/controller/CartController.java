@@ -9,6 +9,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,24 +35,38 @@ public class CartController {
     }
 
 
-
-    @GetMapping("/shoping-cart/list")
-    public String readDetail(Model model) throws Exception {
-        System.out.println("HelloTHerererere@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-//        System.out.println("@@@@@@@@@@@@ shop2 has these: ");
-
+// List items in shoping cart
+//    @GetMapping("/shoping-cart/list")
+//    public String readDetail(Model model) throws Exception {
 //
-        cartService.addCart(new Cart(1L, "uId1", "user1", 1L, "cupcake1st",
-                new BigDecimal("31.00"),"product-1.jpg", 1));
+//
+//        cartService.addCart(new Cart(1L, "uId1", "user1", 1L, "cupcake1st",
+//                new BigDecimal("31.00"),"product-1.jpg", 1));
+//
+//        cartService.addCart(new Cart(2L, "uId2", "user2", 2L, "cupcake2",
+//                new BigDecimal("32.00"), "product-2.jpg", 2));
+//
+//        List<Cart> cartList = cartService.getAllCarts();
+//
+//        model.addAttribute("shopingCart", cartList);
+////        model.addAttribute("shopDetail", shopService.getShop(id));
+//
+//        return "shoping-cart";
+//    }
+    @GetMapping("/shoping-cart/list")
+    public String readDetail(ModelMap model) throws Exception {
 
-        cartService.addCart(new Cart(2L, "uId2", "user2", 2L, "cupcake2",
-                new BigDecimal("32.00"), "product-2.jpg", 2));
+
+//        cartService.addCart(new Cart("uId1", "user1", 141L, "cupcake1st",
+//                new BigDecimal("31.00"),"product-1.jpg", 1));
+//
+//        cartService.addCart(new Cart("uId2", "user2", 142L, "cupcake2",
+//                new BigDecimal("32.00"), "product-2.jpg", 2));
 
         List<Cart> cartList = cartService.getAllCarts();
 
         model.addAttribute("shopingCart", cartList);
-//        model.addAttribute("shopDetail", shopService.getShop(id));
+    //        model.addAttribute("shopDetail", shopService.getShop(id));
 
         return "shoping-cart";
     }
@@ -76,7 +91,7 @@ public class CartController {
             @ModelAttribute("cart") Cart cart,
                                 HttpSession session,
                                 @RequestParam(value = "id", required = false) Long id,
-                                @RequestParam int amount, //(value = "amount", required = false)
+                                @RequestParam(value = "amount") int amount, //(value = "amount", required = false)
                                 Model model) throws NotFoundException {
 //        String userId = (String) session.getAttribute("userId");
         String userId = "uId1";
@@ -85,14 +100,24 @@ public class CartController {
         }
         System.out.println("@@@@@@@@@@@이건 카운트: " + amount + " 그리고 ID: " + id);
 //        cart.setUserId(userId);
-//
-//
+
+
+        System.out.println("@@@@@@@@ insert!");
+
+//        Cart cart = new Cart();
+//        cart.setShopId(id);
+//        cart.setAmount(amount);
+//        cart.setUserId(userId);
+
         // Check if cart is not empty
         int count = cartService.countCart(cart.getShopId(), userId);
-        System.out.println("@@@@@@@@@@@이건 카운트: " + count);
         if (count == 0) {
+            System.out.println("This is addCart");
             cartService.addCart(cart);
+//            cartService.addCart(cart.getShopId(), cart.getAmount(), cart.getUserId());
         } else {
+            System.out.println("This is updateCart");
+            System.out.println("Cart's shopId is : " + cart.getShopId());
             cartService.updateCart(cart);
         }
 
@@ -105,18 +130,20 @@ public class CartController {
         return "shoping-cart";
     }
 
-    @PutMapping("/shoping-cart/update/{sid}/{amount}")
+
+// Update amount of an item in cart
+    @PutMapping("/shoping-cart/update") ///{sid}/{amount}
     public String update(@RequestParam(name = "shopId") Long[] shopId,
                          @RequestParam(name = "amount") int[] amount, HttpSession session) {
 //        String userId = (String) session.getAttribute("userId");
         System.out.println("@@@@@@@@ update clicked!");
         String userId = "uId1";
         for (int i=0; i<shopId.length; i++) {
-            Cart cart = new Cart();
-            cart.setUserId(userId);
-            cart.setAmount(amount[i]);
-            cart.setShopId(shopId[i]);
-            cartService.modifyCart(cart);
+//            Cart cart = new Cart();
+//            cart.setUserId(userId);
+//            cart.setAmount(amount[i]);
+//            cart.setShopId(shopId[i]);
+//            cartService.modifyCart(cart);
         }
         return "shoping-cart/list";
     }

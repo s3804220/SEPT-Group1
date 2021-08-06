@@ -162,15 +162,17 @@
     </div>
     <!-- Breadcrumb End -->
 
-    <!-- Shop Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <form class="row" th:action="@{/shoping-cart/insert}" method="post" >
-                <div class="col-lg-6">
-                    <div class="product__details__img">
-                        <div class="product__details__big__img">
-                            <img class="big_img" th:src="@{${'img/shop/'+shopDetail.image}}" alt="">
-                        </div>
+
+<!-- Shop Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <form class="row" th:object="${shopDetail}" th:action="@{/shoping-cart/insert}" method="post"> <!-- Connect to shoping-cart/insert -->
+            <!--'shopDetail' took from ShopController-->
+            <div class="col-lg-6">
+                <div class="product__details__img">
+                    <div class="product__details__big__img">
+                        <img class="big_img" th:src="@{${'/img/shop/'+shopDetail.image}}" alt="">
+
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -183,15 +185,15 @@
                         <div class="product__details__option">
 
 
-                            <div class="quantity">
-                                <div class="pro-qty">
-<!--                                    <input type="hidden" th:name="id" th:value="${shopDetail.id}">-->
-                                    <input type="hidden" name="id" th:value="${shopDetail.id}">
-                                    <input type="number" name="amount" value="2" min="1">
-                                </div>
+
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <input type="hidden" id="id" name="id" th:value="${shopDetail.id}">
+                                <input type="number" id="amount" name="amount" value="2" min="1">
                             </div>
-                            <a  type="submit" class="primary-btn" onclick="alert('Add to cart')">Add to cart</a>
-                        </form>
+                        </div>
+                        <button type="submit" class="primary-btn" onclick="alert('Add to cart')">Add to cart</button>
+
                     </div>
                 </div>
             </form>

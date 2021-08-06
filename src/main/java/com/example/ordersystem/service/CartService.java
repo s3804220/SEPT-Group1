@@ -34,11 +34,17 @@ public class CartService implements CustomCartRepository {
     }
 
 
-    public void addCart(Cart cart
+
+    public void addCart(
+            Cart cart
 //            Long shopId, int amount, String userId
     ){
-        Cart newCart = cartRepository.save(cart);
-//        int addedAmount = amount;
+//        cart = new Cart();
+//            cart.setAmount(amount);
+//            cart.setUserId(userId);
+//            cart.setShopId(shopId);
+//        Cart newCart = cartRepository.save(cart);
+//        int addedAmount = cart.getAmount();
 //
 //        Cart cart = cartRepository.findByUserIdAndShopId(userId, shopId);
 //
@@ -55,16 +61,15 @@ public class CartService implements CustomCartRepository {
 //        cartRepository.save(cart);
 //        return addedAmount;
 
-//        em.createNativeQuery("INSERT INTO Cart(id, userId, userName, shopId, shopName, shopPrice, image, amount) " +
-//                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-//                .setParameter(1, cart.getId())
-//                .setParameter(2, cart.getUserId())
-//                .setParameter(3, cart.getUserName())
-//                .setParameter(4, cart.getShopId())
-//                .setParameter(5, cart.getShopName())
-//                .setParameter(6, cart.getShopPrice())
-//                .setParameter(7, cart.getImage())
-//                .setParameter(8, cart.getAmount())
+//        em.createNativeQuery("INSERT INTO Cart(userId, userName, shopId, shopName, shopPrice, image, amount) " +
+//                                "VALUES(?, ?, ?, ?, ?, ?, ?)")
+//                .setParameter(1, cart.getUserId())
+//                .setParameter(2, cart.getUserName())
+//                .setParameter(3, cart.getShopId())
+//                .setParameter(4, cart.getShopName())
+//                .setParameter(5, cart.getShopPrice())
+//                .setParameter(6, cart.getImage())
+//                .setParameter(7, cart.getAmount())
 //                .executeUpdate();
     }
 

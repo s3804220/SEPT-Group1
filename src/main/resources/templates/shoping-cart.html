@@ -178,8 +178,10 @@
                                 </tr>
                             </thead>
                             <tbody th:if="${not #lists.isEmpty(shopingCart)}">
-                                <form method="post" th:action="@{shoping-cart/update}" >
-<!--                                      th:action="/shoping-cart/update">-->
+
+                                <form method="post" th:action="@{/shoping-cart/update}" >
+<!--Iteration Begin-->
+
                                     <tr th:each="item : ${shopingCart}">
                                         <div th:with="var=${item.shopPrice * item.amount}">
                                             <td class="product__cart__item">
@@ -203,8 +205,11 @@
                                             <td class="cart__price" th:text="${var}"></td>
                                             <td class="cart__close"><span class="icon_close"></span></td>
                                             <td class="cart__close">
-                                                <span class="icon_archive" href="#" th:href="@{shoping-cart/update}"
+
+                                                <span class="icon_archive"  th:href="@{/shoping-cart/update}"
+
                                                       ></span>
+<!--                                                /${item.shopId}/${item.amount}-->
                                             </td>
                                         </div>
                                     </tr>

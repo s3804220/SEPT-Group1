@@ -28,8 +28,7 @@ public class Shop {
     public Shop() {
     }
 
-    public Shop(Long id, String name, BigDecimal price, String description, String image) {
-        this.id = id;
+    public Shop(String name, BigDecimal price, String description, String image) {
         this.name = name;
         this.price = price;
         this.description = description;
