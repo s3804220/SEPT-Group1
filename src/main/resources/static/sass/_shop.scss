@@ -163,6 +163,34 @@
   }
 }
 
+.shop__pagination {
+
+  a {
+    display: inline-block;
+    color: $black-color;
+    font-size: 18px;
+    font-weight: 600;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    text-align: center;
+    @include transition(all, .5s);
+
+    span {
+      font-size: 18px;
+      font-weight: 600;
+      position: relative;
+      top: 2px;
+    }
+
+    &:hover {
+      background: $black-color;
+      color: $white-color;
+    }
+  }
+}
+
 .shop__last__text {
   margin-bottom: 0;
   color: $black-color;

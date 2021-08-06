@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -16,16 +16,16 @@
     rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
-    <link rel="stylesheet" href="css/barfiller.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/flaticon.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/barfiller.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
 
 <body>
@@ -121,11 +121,10 @@
                         <ul>
                             <li><a href="../static/index.html">Home</a></li>
                             <li><a href="../static/about.html">About</a></li>
-                            <li class="active"><a href="shop.html">Shop</a></li>
+                            <li class="active"><a href="/shop">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    <li><a href="../static/shop-details.html">Shop Details</a></li>
-                                    <li><a href="shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="shoping-cart/list">Shoping Cart</a></li>
                                     <li><a href="../static/checkout.html">Check Out</a></li>
                                     <li><a href="../static/wisslist.html">Wisslist</a></li>
                                     <li><a href="./Class.html">Class</a></li>
@@ -167,121 +166,76 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+<!--                    product list begin-->
                     <div class="shopping__cart__table">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Total ($)</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="../static/img/shop/cart/cart-1.jpg" alt="">
+                            <tbody th:if="${not #lists.isEmpty(shopingCart)}">
+                                <form method="post" th:action="@{shoping-cart/update}" >
+<!--                                      th:action="/shoping-cart/update">-->
+                                    <tr th:each="item : ${shopingCart}">
+                                        <div th:with="var=${item.shopPrice * item.amount}">
+                                            <td class="product__cart__item">
+                                                <div class="product__cart__item__pic">
+                                                    <img th:src="@{${'img/shop/'+item.image}}" alt="" width="80" height="80">
+                                                </div>
+        <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
+                                                <div class="product__cart__item__text" style="padding-top: 30px">
+                                                    <h6 th:text="${item.shopName}"></h6>
+                                                    <span>price: </span><span th:text="${item.price}"></span>
+                                                </div>
+                                            </td>
+                                            <td class="quantity__item">
+                                                <div class="quantity">
+                                                    <div class="pro-qty">
+                                                        <input type="number" name="amount" th:value="${item.amount}" min="1">
+                                                        <input type="hidden" name="shopId" th:value="${item.shopId}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price" th:text="${var}"></td>
+                                            <td class="cart__close"><span class="icon_close"></span></td>
+                                            <td class="cart__close">
+                                                <span class="icon_archive" href="#" th:href="@{shoping-cart/update}"
+                                                      ></span>
+                                            </td>
                                         </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>T-shirt Contrast Pocket</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="../static/img/shop/cart/cart-2.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Diagonal Textured Cap</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 32.50</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="../static/img/shop/cart/cart-3.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 47.00</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="../static/img/shop/cart/cart-4.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
+                                    </tr>
+                                </form>
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
-                            </div>
-                        </div>
-                    </div>
+<!--                    product list end-->
+
+
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-6 col-md-6 col-sm-6">-->
+<!--                            <div class="continue__btn">-->
+<!--                                <a href="#">Continue Shopping</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-6 col-md-6 col-sm-6">-->
+<!--                            <div class="continue__btn update__btn">-->
+<!--                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
-                        </form>
-                    </div>
+<!--                    <div class="cart__discount">-->
+<!--                        <h6>Discount codes</h6>-->
+<!--                        <form action="#">-->
+<!--                            <input type="text" placeholder="Coupon code">-->
+<!--                            <button type="submit">Apply</button>-->
+<!--                        </form>-->
+<!--                    </div>-->
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
@@ -373,15 +327,15 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.nice-select.min.js"></script>
-<script src="/js/jquery.barfiller.js"></script>
-<script src="/js/jquery.magnific-popup.min.js"></script>
-<script src="/js/jquery.slicknav.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/jquery.nicescroll.min.js"></script>
-<script src="/js/main.js"></script>
+<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/js/jquery.barfiller.js}"></script>
+<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/js/jquery.slicknav.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/jquery.nicescroll.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>
