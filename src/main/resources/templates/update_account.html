@@ -32,19 +32,40 @@
                                 <div class="form-group">
                                         <input class="form-control" type="text" th:field="*{email}" id="email">
                                 </div>
-                                <div class="form-group">
-                                        <input class="form-control" type="text" th:field="*{password}" id="password"> <span>Don't worry, your current password is just encrypted. That's all!</span>
-                                </div>
-                                <button type="submit" class="btn btn-lg btn-primary btn-block">Update Account</button><br/><br/><br/>
+                            <button type="submit" class="btn btn-lg btn-primary btn-block">Update Info</button><br/><br/><br/>
+
                         </form>
                 </div>
-                <div class="row h-100 justify-content-center align-items-center">
-                        <form method="POST" th:action="@{/user/delete}">
+                <hr>
+    <div class="row h-100 justify-content-center align-items-center">
+        <span style="color:red">BEWARE: DO NOT click Update Password without deleting current input value and replacing with new password</span>
+    </div>
+
+    <div class="row h-100 justify-content-center align-items-center">
+                    <form method="POST" th:object="${account}" th:action="@{/user/update/password}">
+                        <h2 class="form-signin-heading">Change Password</h2>
+                        <span>NOTE: You will need to log in again after updating.</span>
+
+                        <div class="form-group">
+                            <!--                                        <input class="form-control" type="text" th:field="*{password}" id="password"> <span>Don't worry, your current password is just encrypted. That's all!</span>-->
+                            <input class="form-control" type="text" th:name="password" th:value="*{password}" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">Update Password</button><br/><br/><br/>
+                    </form>
+                </div>
+                <hr>
+    <div class="row h-100 justify-content-center align-items-center">
+        <h2 class="form-signin-heading">Terminate account</h2><br>
+    </div>
+
+    <div class="row h-100 justify-content-center align-items-center">
+                    <form method="POST" th:action="@{/user/delete}">
                                 <button type="submit" class="btn btn-lg btn-primary btn-block" style="background-color: red">Delete Account</button>
                         </form>
                 </div>
                 <div class="row h-100 justify-content-center align-items-center">
                         <span style="color:red">BEWARE: Your account will be deleted from our database!</span>
                 </div>
+    </div>
 </body>
 </html>

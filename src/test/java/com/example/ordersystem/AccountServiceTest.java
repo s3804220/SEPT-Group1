@@ -91,14 +91,20 @@ public class AccountServiceTest {
     }
 
     @Test
+    // updateAccount only deal with account informations NOT including password
     public void updateAccount() {
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Account updatedTestUser1 = new Account("Updated First Name", "Updated Last Name", "999 Updated Street", "0506285361", "updated@gmail.com", "updated", AccountRole.USER);
+        Account updatedTestUser1 = new Account("Updated First Name", "Updated Last Name", "999 Updated Street", "0506285361", "updated@gmail.com", "password", AccountRole.USER);
 
         accountService.signUpAccount(testUser1);
-        updatedTestUser1.setId(testUser1.getId());
+        updatedTestUser1.setId(testUser1.getId()); //id will be automatically fetched and set in RegistrationController
 
-        assertEquals(updatedTestUser1, accountService.updateAccount(testUser1.getId(), updatedTestUser1));
+        assertEquals(updatedTestUser1.getFirstName(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getFirstName());
+        assertEquals(updatedTestUser1.getLastName(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getLastName());
+        assertEquals(updatedTestUser1.getAccAddress(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getAccAddress());
+        assertEquals(updatedTestUser1.getPhone(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getPhone());
+        assertEquals(updatedTestUser1.getEmail(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getEmail());
+
     }
 
     @Test
@@ -109,5 +115,20 @@ public class AccountServiceTest {
 
         assertEquals(accountService.setAccountRole(testUser1.getId(), AccountRole.ADMIN).getAccountRole(), testUser1.getAccountRole());
         assertEquals(accountService.setAccountRole(testUser1.getId(), AccountRole.ADMIN).getAccountRole(), AccountRole.ADMIN);
+    }
+
+    @Test
+    public void changePassword(){
+        Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
+        Account updatedTestUser1 = new Account("Updated First Name", "Updated Last Name", "999 Updated Street", "0506285361", "updated@gmail.com", "newPassword", AccountRole.USER);
+
+        accountService.signUpAccount(testUser1);
+        String oldPasswordHash = testUser1.getPassword();
+        updatedTestUser1.setId(testUser1.getId()); //id will be automatically fetched and set in RegistrationController
+
+        accountService.changePassword(testUser1.getId(), updatedTestUser1.getPassword());
+        assertNotEquals(oldPasswordHash, testUser1.getPassword());
+
+
     }
 }

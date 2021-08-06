@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,15 +72,39 @@ public class AccountService implements UserDetailsService {
     public Account updateAccount(Long id, Account account){
         Account accountToUpdate = getAccountById(id);
 
+        boolean accountExists = accountRepository.findByEmail(account.getEmail()).isPresent();
+        if (accountExists && !accountRepository.findByEmail(account.getEmail()).equals(Optional.of(accountToUpdate))){
+            throw new EmailAlreadyTakenException(account.getEmail());
+        }
+
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(account.getEmail());
+        if (!matcher.find()){
+            throw new InvalidEmailFormatException(account.getEmail());
+        }
+
+//        String encodedPassword = bCryptPasswordEncoder.encode(account.getPassword());
+//        account.setPassword(encodedPassword);
+//        account.setAccountRole(AccountRole.USER);
+
         accountToUpdate.setFirstName(account.getFirstName());
         accountToUpdate.setLastName(account.getLastName());
         accountToUpdate.setAccAddress(account.getAccAddress());
         accountToUpdate.setPhone(account.getPhone());
-        accountToUpdate.setPassword(account.getPassword());
         accountToUpdate.setEmail(account.getEmail());
+//        accountToUpdate.setPassword(encodedPassword);
+
 
         accountRepository.save(accountToUpdate);
-        
+//        accountRepository.enableAccount(account.getEmail());
+//        System.out.println(account.getPassword());
+        return accountToUpdate;
+    }
+
+    public Account changePassword(Long id, String password){
+        Account accountToUpdate = getAccountById(id);
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        accountToUpdate.setPassword(encodedPassword);
+        accountRepository.save(accountToUpdate);
         return accountToUpdate;
     }
 

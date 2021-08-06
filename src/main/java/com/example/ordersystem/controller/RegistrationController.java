@@ -62,6 +62,17 @@ public class RegistrationController {
         return "redirect:/logout" ;
     }
 
+    @RequestMapping(value="user/update/password", method=RequestMethod.POST)
+    public String updatePassword(@Valid Account account){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        account.setId(userId);
+
+        accountService.changePassword(userId, account.getPassword());
+        return "redirect:/logout";
+    }
+
     @RequestMapping(value="user/delete", method=RequestMethod.POST)
     public String deleteAccount(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
