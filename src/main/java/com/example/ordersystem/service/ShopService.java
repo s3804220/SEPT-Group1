@@ -4,7 +4,9 @@ import com.example.ordersystem.model.Shop;
 import com.example.ordersystem.model.Student;
 import com.example.ordersystem.repository.CustomShopRepository;
 import com.example.ordersystem.repository.ShopRepository;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.ordersystem.repository.StudentRepository;
@@ -33,8 +35,9 @@ public class ShopService implements CustomShopRepository {
     }
 
 
-    public void saveShop(Shop shop){
+    public Shop saveShop(Shop shop){
         shopRepository.save(shop);
+        return shop;
     }
 
 
@@ -70,7 +73,10 @@ public class ShopService implements CustomShopRepository {
         return shopRepository.getById(id);
     }
 
-    public void deleteShop(Long id){
-        shopRepository.delete(getShop(id));
+    public Shop deleteShop(Long id){
+        Shop shop = findShopById(id);
+        shopRepository.delete(findShopById(id));
+        return shop;
     }
+
 }
