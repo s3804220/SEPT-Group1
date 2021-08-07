@@ -5,6 +5,10 @@ before_install:
 services:
   - postgresql
 before_script:
-  - psql -c 'create database testsysyem;' -U postgres
+  - psql -c 'create database testsystem;' -U postgres
 os:
   - linux
+env:
+  global:
+    - PGUSER=postgres
+    - PGPORT=5432
