@@ -1,14 +1,14 @@
 package com.example.ordersystem.service;
 
+import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
+import com.example.ordersystem.model.Shop;
 import com.example.ordersystem.model.Student;
+import com.example.ordersystem.repository.*;
 import com.example.ordersystem.repository.CartRepository;
-import com.example.ordersystem.repository.CartRepository;
-import com.example.ordersystem.repository.CustomCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.ordersystem.repository.StudentRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,40 +26,39 @@ public class CartService implements CustomCartRepository {
     private EntityManager em;
 
     private CartRepository cartRepository;
+    private ShopRepository shopRepository;
 
 
     @Autowired
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, ShopRepository shopRepository) {
         this.cartRepository = cartRepository;
+        this.shopRepository = shopRepository;
     }
 
 
 
-    public void addCart(
-            Cart cart
-//            Long shopId, int amount, String userId
+    public int addShop(
+//            Cart cart
+            Long shopId, int amount, Account user
     ){
-//        cart = new Cart();
-//            cart.setAmount(amount);
-//            cart.setUserId(userId);
-//            cart.setShopId(shopId);
 //        Cart newCart = cartRepository.save(cart);
-//        int addedAmount = cart.getAmount();
-//
-//        Cart cart = cartRepository.findByUserIdAndShopId(userId, shopId);
-//
-//        if(cart != null) {
-//            addedAmount = cart.getAmount() + addedAmount;
-//            cart.setAmount(addedAmount);
-//        } else {
-//            cart = new Cart();
-//            cart.setAmount(amount);
-//            cart.setUserId(userId);
-//            cart.setShopId(shopId);
-//        }
-//
-//        cartRepository.save(cart);
-//        return addedAmount;
+
+        int addedAmount = amount;
+        Shop shop = shopRepository.findById(shopId).get();
+        Cart cart = cartRepository.findByAccountAndShop(user, shop);
+
+        if(cart != null) {
+            addedAmount = cart.getAmount() + addedAmount;
+            cart.setAmount(addedAmount);
+        } else {
+            cart = new Cart();
+            cart.setAmount(amount);
+            cart.setAccount(user);
+            cart.setShop(shop);
+        }
+
+        cartRepository.save(cart);
+        return addedAmount;
 
 //        em.createNativeQuery("INSERT INTO Cart(userId, userName, shopId, shopName, shopPrice, image, amount) " +
 //                                "VALUES(?, ?, ?, ?, ?, ?, ?)")
@@ -79,8 +78,11 @@ public class CartService implements CustomCartRepository {
     }
 
 
-    public List<Cart> getAllCarts(){
-        return cartRepository.findAll();
+//    public List<Cart> getAllCarts(){
+//        return cartRepository.findAll();
+//    }
+    public List<Cart> getAllCarts(Account account){
+        return cartRepository.findByAccount(account);
     }
 
     public void deleteCart(Long id){
@@ -89,13 +91,13 @@ public class CartService implements CustomCartRepository {
 
 
     public void modifyCart(Cart cart) {
-        em.createQuery("update Cart c set c.amount = :amount where" +
-//                " c.userId = :userId and" +
-                " c.shopId = :shopId")
-                .setParameter("amount", cart.getAmount())
-//                .setParameter("userId", cart.getUserId())
-                .setParameter("shopId", cart.getShopId())
-                .executeUpdate();
+//        em.createQuery("update Cart c set c.amount = :amount where" +
+////                " c.userId = :userId and" +
+//                " c.shopId = :shopId")
+//                .setParameter("amount", cart.getAmount())
+////                .setParameter("userId", cart.getUserId())
+//                .setParameter("shopId", cart.getShopId())
+//                .executeUpdate();
     }
 
 //    @Override
@@ -123,17 +125,18 @@ public class CartService implements CustomCartRepository {
                 .getSingleResult()).intValue();
     }
 
-    // Update the amount of a cart item
-//    @Override
-    public float updateCart(Cart cart) {
-        em.createQuery("update Cart c set c.amount = :amount where" +
-//                " c.userId = :userId and" +
-                " c.shopId = :shopId")
-                .setParameter("amount", cart.getAmount())
-//                .setParameter("userId", cart.getUserId())
-                .setParameter("shopId", cart.getShopId())
-                .executeUpdate();
 
-        return (float) (cart.getShopPrice().intValue() * cart.getAmount());
+    // Update the amount of a cart item
+    public int updateAmount(int amount, Long shopId, Account user) {
+//        em.createQuery("update Cart c set c.amount = :amount where c.account.id = :userId and c.shop.id = :shopId")
+//                .setParameter("amount", amount)
+//                .setParameter("userId", accountId)
+//                .setParameter("shopId", shopId)
+//                .executeUpdate();
+//        System.out.println("Amount: "+amount +" - sName: "+shopRepository.findShopById(shopId).getName()+" user - "+user);
+        cartRepository.updateAmount(amount, shopId, user.getId());
+        Shop shop = shopRepository.findShopById(shopId);
+
+        return (shop.getPrice().intValue() * amount); // Pass new amount * 'the number of items'
     }
 }

@@ -12,7 +12,7 @@ public class OrderSystemApplication {
         SpringApplication.run(OrderSystemApplication.class, args);
 
 
-        //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+//                AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 //        context.register(AppConfig.class);
 //
 //        context.refresh();

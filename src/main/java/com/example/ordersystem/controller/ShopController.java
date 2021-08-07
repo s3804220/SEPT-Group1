@@ -55,15 +55,15 @@ public class ShopController {
 
 
 
-        shopService.saveShop(new Shop("cupcake1st", new BigDecimal("32.00"), "Good day", "product-1.jpg"));
-        shopService.saveShop(new Shop("cupcake2", new BigDecimal("31.00"),"Good night", "product-2.jpg"));
-        shopService.saveShop(new Shop("cupcake3", new BigDecimal("31.00"), "", "product-3.jpg"));
-        shopService.saveShop(new Shop("cupcake1", new BigDecimal("33.00"), "", "product-4.jpg"));
-        shopService.saveShop(new Shop("cupcake2", new BigDecimal("33.00"), "", "product-5.jpg"));
-        shopService.saveShop(new Shop("cupcake3", new BigDecimal("324.00"), "", "product-6.jpg"));
-        shopService.saveShop(new Shop("cupcake1", new BigDecimal("352.00"), "", "product-7.jpg"));
-        shopService.saveShop(new Shop("cupcake1", new BigDecimal("326.00"), "", "product-8.jpg"));
-        shopService.saveShop(new Shop("cupcake1", new BigDecimal("327.00"), "", "product-9.jpg"));
+//        shopService.saveShop(new Shop("cupcake1st", new BigDecimal("32.00"), "Good day", "product-1.jpg"));
+//        shopService.saveShop(new Shop("cupcake2", new BigDecimal("31.00"),"Good night", "product-2.jpg"));
+//        shopService.saveShop(new Shop("cupcake3", new BigDecimal("31.00"), "", "product-3.jpg"));
+//        shopService.saveShop(new Shop("cupcake1", new BigDecimal("33.00"), "", "product-4.jpg"));
+//        shopService.saveShop(new Shop("cupcake2", new BigDecimal("33.00"), "", "product-5.jpg"));
+//        shopService.saveShop(new Shop("cupcake3", new BigDecimal("324.00"), "", "product-6.jpg"));
+//        shopService.saveShop(new Shop("cupcake1", new BigDecimal("352.00"), "", "product-7.jpg"));
+//        shopService.saveShop(new Shop("cupcake1", new BigDecimal("326.00"), "", "product-8.jpg"));
+//        shopService.saveShop(new Shop("cupcake1", new BigDecimal("327.00"), "", "product-9.jpg"));
 
 
 
@@ -86,7 +86,7 @@ public class ShopController {
     @GetMapping("/shop-details")
     public String readDetail(Model model, @RequestParam("id") Long id) throws Exception {
 
-        System.out.println("@@@@@@@@ ID: "+id);
+        System.out.println("@@@@@@@@ Shop Details");
         model.addAttribute("shopDetail", shopService.findShopById(id));
 //        model.addAttribute("shopDetail", shopService.getShop(id));
 

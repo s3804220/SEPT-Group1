@@ -1,12 +1,18 @@
 package com.example.ordersystem.controller;
 
+import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Pagination;
 import com.example.ordersystem.model.Shop;
+import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
 import com.example.ordersystem.service.ShopService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,6 +28,7 @@ public class CartController {
 
     private CartService cartService;
     private ShopService shopService;
+    private AccountService accountService;
 
 
     @Autowired
@@ -34,117 +41,75 @@ public class CartController {
         this.shopService = shopService;
     }
 
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+
 
 // List items in shoping cart
-//    @GetMapping("/shoping-cart/list")
-//    public String readDetail(Model model) throws Exception {
-//
-//
-//        cartService.addCart(new Cart(1L, "uId1", "user1", 1L, "cupcake1st",
-//                new BigDecimal("31.00"),"product-1.jpg", 1));
-//
-//        cartService.addCart(new Cart(2L, "uId2", "user2", 2L, "cupcake2",
-//                new BigDecimal("32.00"), "product-2.jpg", 2));
-//
-//        List<Cart> cartList = cartService.getAllCarts();
-//
-//        model.addAttribute("shopingCart", cartList);
-////        model.addAttribute("shopDetail", shopService.getShop(id));
-//
-//        return "shoping-cart";
-//    }
-    @GetMapping("/shoping-cart/list")
+    @GetMapping("/shoping-cart")
     public String readDetail(ModelMap model) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
 
-
-//        cartService.addCart(new Cart("uId1", "user1", 141L, "cupcake1st",
-//                new BigDecimal("31.00"),"product-1.jpg", 1));
-//
-//        cartService.addCart(new Cart("uId2", "user2", 142L, "cupcake2",
-//                new BigDecimal("32.00"), "product-2.jpg", 2));
-
-        List<Cart> cartList = cartService.getAllCarts();
-
-        model.addAttribute("shopingCart", cartList);
+        Account user = accountService.getAccountById(userId);
+        List<Cart> cartList = cartService.getAllCarts(user);
+        System.out.println("shoping-cart list @@@");
+//        model.addAttribute("shopingCart", cartList);
+        model.addAttribute("cartItems", cartList);
     //        model.addAttribute("shopDetail", shopService.getShop(id));
 
         return "shoping-cart";
     }
 
 
-//    @PostMapping("/shoping-cart/add/{sid}/{samount}")
-//    public String addShopToCart(@PathVariable("sid") Long shopId,
-//                                @PathVariable("samount") int amount) throws NotFoundException{
-//        String userId = "uId1";
-//        if(userId == null) {
-//            throw new NotFoundException("Not found any user with ID: " + userId);
-//        }
-//
-//        int addedAmount = cartService.addCart(shopId, amount, userId);
-//
-//        return addedAmount + " item(s) are added to cart!!!";
-//    }
+    @PostMapping("/shoping-cart/add")
+    public String addShopToCart(@RequestParam("sid") Long shopId,
+                                @RequestParam("amount") int amount) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        Account user = accountService.getAccountById(userId);
 
 
-    @PostMapping("/shoping-cart/insert")
-    public String addShopToCart(
-            @ModelAttribute("cart") Cart cart,
-                                HttpSession session,
-                                @RequestParam(value = "id", required = false) Long id,
-                                @RequestParam(value = "amount") int amount, //(value = "amount", required = false)
-                                Model model) throws NotFoundException {
-//        String userId = (String) session.getAttribute("userId");
-        String userId = "uId1";
-        if(userId == null) {
-            throw new NotFoundException("Not found any user with ID: " + userId);
-        }
-        System.out.println("@@@@@@@@@@@이건 카운트: " + amount + " 그리고 ID: " + id);
-//        cart.setUserId(userId);
+        int addedAmount = cartService.addShop(shopId, amount, user);
 
-
-        System.out.println("@@@@@@@@ insert!");
-
-//        Cart cart = new Cart();
-//        cart.setShopId(id);
-//        cart.setAmount(amount);
-//        cart.setUserId(userId);
-
-        // Check if cart is not empty
-        int count = cartService.countCart(cart.getShopId(), userId);
-        if (count == 0) {
-            System.out.println("This is addCart");
-            cartService.addCart(cart);
-//            cartService.addCart(cart.getShopId(), cart.getAmount(), cart.getUserId());
-        } else {
-            System.out.println("This is updateCart");
-            System.out.println("Cart's shopId is : " + cart.getShopId());
-            cartService.updateCart(cart);
-        }
-
-        return "shoping-cart/list";
+        System.out.println(amount+" items added!");
+        return "redirect:/shoping-cart";
     }
 
-    @DeleteMapping("/shoping-cart/{id}")
-    public String delete(@RequestParam Long id) {
+
+    @GetMapping("/shoping-cart/delete/{deleteId}")
+    public String delete(@PathVariable(name = "deleteId") Long id) {
         cartService.deleteCart(id);
-        return "shoping-cart";
+        System.out.println("An Cart Deleted @@@@@@");
+        return "redirect:/shoping-cart";
     }
 
 
 // Update amount of an item in cart
-    @PutMapping("/shoping-cart/update") ///{sid}/{amount}
-    public String update(@RequestParam(name = "shopId") Long[] shopId,
-                         @RequestParam(name = "amount") int[] amount, HttpSession session) {
+    @PostMapping("/shoping-cart/update") ///{sid}/{amount}
+    public String update(@RequestParam(name = "shopId") Long shopId,
+                         @RequestParam(name = "amount") int amount, HttpSession session) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        Account user = accountService.getAccountById(userId);
+
 //        String userId = (String) session.getAttribute("userId");
         System.out.println("@@@@@@@@ update clicked!");
-        String userId = "uId1";
-        for (int i=0; i<shopId.length; i++) {
-//            Cart cart = new Cart();
-//            cart.setUserId(userId);
-//            cart.setAmount(amount[i]);
-//            cart.setShopId(shopId[i]);
-//            cartService.modifyCart(cart);
-        }
-        return "shoping-cart/list";
+        System.out.println("shopName: "+ shopService.findShopById(shopId).getName());
+        System.out.println("shopId: "+ shopId);
+        System.out.println("amount: " + amount);
+        System.out.println();
+
+        int smallSum = cartService.updateAmount(amount, shopId, user);
+
+        return "redirect:/shoping-cart";
     }
 }

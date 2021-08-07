@@ -23,15 +23,17 @@ public class Cart {
     private Shop shop;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Shop customer;
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    private int amount;
 
 
+    @Transient
+    public float getSmallSum() {
+        return  this.shop.getPrice().floatValue() * amount;
+    }
 
-//    @Transient
-//    public float getShoptotal() {
-//        return this.getShopPrice().intValue() * amount;
-//    }
 
     public Long getId() {
         return id;
@@ -41,4 +43,27 @@ public class Cart {
         this.id = id;
     }
 
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }
