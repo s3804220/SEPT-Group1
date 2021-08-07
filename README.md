@@ -45,7 +45,7 @@
 * http://localhost:8080/user/update : for updating account info and delete account
 * http://localhost:8080/admin/account-management : for promoting and revoking admin rights (needs to be admin)
 * To become root admin: 
-1. Go to application.properties and set "app.init-db" to true, this is done to create root admin and create 1 "dummy" user account.
+1. Go to application.properties and set "app.init-db" to true, this is done to create root admin, create 1 "dummy" user account and create 2 "dummy" products.
 Note: please remember to set "app.init-db" to false when you want to run Spring Boot again, if not, there will be an error because the system tries to generate the same dummy accounts
 2. Run Spring Boot application
 3. Login with:
@@ -66,9 +66,16 @@ Note: please remember to set "app.init-db" to false when you want to run Spring 
 * http://localhost:8080/shoping-cart : for viewing the cart
 * NOTE: to update and save product quantity in cart, please click the update button on the right of the "x" button.
 ### Checkout, admin confirm/cancel order
-* NEEDS SOMETHING HERE
+* To get to checkout page, you'll need to select an item from http://localhost:8080/shop which will direct you to the cart. By pressing "Proceed to Checkout" you will be directed to the checkout form, and when you click "Place Order", the order will be saved into the system.
+* To view, confirm/cancel an order, you'll need to login with the admin account, and access http://localhost:8080/checkout/orderlist.
 
 ## Known issues and bugs
 * The anchor links for updating account and logout below account name (appears after logged in) can not be open directly. However opening those links on a new tab and pressing enter to access them works.
 * Currently, in the code, Item and Shop are 2 separate entities. Item is for Admins to do CRUD on items in the database using a form, and Shop is the entity that displays items to the shopping page and cart.
 Due to that, the delete item function only removes such item from item table in the database, and not the shop table. Because of this, those deleted items will still show up in localhost:8080/shop. In the next sprint, we will merge these 2 entities which will coherently resolve this issue.
+
+## Travis-CI Build
+* We had issues setting up Travis-CI to create and connect the application to the PostgreSQL database, which result in a failed CI build.
+
+![Screen Shot 2021-08-07 at 10 20 33 PM](https://user-images.githubusercontent.com/61973799/128605194-127c1b93-3053-4220-bebe-5b9f97ff1d7c.png)
+
