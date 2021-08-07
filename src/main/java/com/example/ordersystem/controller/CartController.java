@@ -62,19 +62,6 @@ public class CartController {
         return "shoping-cart";
     }
 
-    @GetMapping("/checkout")
-    public String checkout(ModelMap model) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account loggedInAcc = (Account)auth.getPrincipal();
-        Long userId = loggedInAcc.getId();
-
-        Account user = accountService.getAccountById(userId);
-        List<Cart> cartList = cartService.getAllCarts(user);
-        model.addAttribute("cartItems", cartList);
-
-        return "checkout";
-    }
-
     @PostMapping("/shoping-cart/add")
     public String addShopToCart(@RequestParam("sid") Long shopId,
                                 @RequestParam("amount") int amount) {
