@@ -48,7 +48,16 @@
 1. Go to application.properties and set "app.init-db" to true, this is done to create root admin and create 1 "dummy" user account.
 Note: please remember to set "app.init-db" to false when you want to run Spring Boot again, if not, there will be an error because the system tries to generate the same dummy accounts
 2. Run Spring Boot application
-3. Login account with "admin@gmail.com", password: admin
+3. Login with:
+
+`Default ADMIN account:`
+> * Email: admin@gmail.com
+> * Password: admin
+
+`Default USER account:`
+> * Email: user@gmail.com
+> * Password: password
+
 ### Item Functions (for Admin only - please login with an Admin account)
 * http://localhost:8080/item-form.html : for adding new product to system
 * http://localhost:8080/item-list.html : for viewing all items in system, and selecting an item to edit or delete
