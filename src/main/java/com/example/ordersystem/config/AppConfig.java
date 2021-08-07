@@ -1,9 +1,9 @@
 package com.example.ordersystem.config;
 
+import com.example.ordersystem.model.Item;
 import com.example.ordersystem.model.Student;
 import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +27,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 //@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
+@ComponentScan(basePackages = {"com.example.ordersystem"})
 public class AppConfig implements WebMvcConfigurer {
-
     @Bean
     public Student student(){
         return new Student();
@@ -37,6 +37,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public Teacher teacher(){
         return new Teacher();
+    }
+
+    @Bean
+    public Item item() {
+        return new Item();
     }
 
     /*@Override
@@ -62,9 +67,11 @@ public class AppConfig implements WebMvcConfigurer {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/testsystem");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("super123");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+        dataSource.setUsername("pg");
+        dataSource.setPassword("1234");
+//        dataSource.setPassword("postgres");
+
 
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(properties);

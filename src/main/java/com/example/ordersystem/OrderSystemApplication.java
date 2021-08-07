@@ -1,5 +1,7 @@
 package com.example.ordersystem;
 
+import com.example.ordersystem.model.Cart;
+import com.example.ordersystem.model.Shop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +11,8 @@ public class OrderSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderSystemApplication.class, args);
 
-        //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+//                AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 //        context.register(AppConfig.class);
 //
 //        context.refresh();
