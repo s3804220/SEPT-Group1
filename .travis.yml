@@ -1,5 +1,4 @@
 language: java
-script: mvn clean verify
 before_install:
   - chmod +x mvnw
 services:
@@ -15,10 +14,7 @@ addons:
 env:
   global:
     - PGPORT=5432
-    - DB_NAME=testsystem
-    - DB_USER=postgres
-    - DB_PASSWORD=super123
 before_script:
-  - psql --command="CREATE USER ${DB_USER};"
-  - psql --command="CREATE DATABASE ${DB_NAME} WITH OWNER = ${DB_USER};"
-  - psql --dbname=$DB_NAME --file=sql/create-tables.sql
+  - psql -c 'create database testsystem;' -U postgres
+  - psql -c "CREATE USER postgres WITH PASSWORD 'super123';" -U postgres
+script: mvn clean verify
