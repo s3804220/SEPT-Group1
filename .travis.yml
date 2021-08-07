@@ -15,7 +15,14 @@ services:
   - postgresql
 
 addons:
-  postgresql: '13.2'
+  # Use a different PostgreSQL version than the default:
+  postgresql: '13'
+  apt:
+    update: true
+    packages:
+      - postgresql-13
+      - postgresql-13-postgis-3
+
 env:
   global:
     - PGUSER=postgres
