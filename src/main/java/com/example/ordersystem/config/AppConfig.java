@@ -67,9 +67,9 @@ public class AppConfig implements WebMvcConfigurer {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/cosc2101");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("postgres");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+        dataSource.setUsername("pg");
+        dataSource.setPassword("1234");
 //        dataSource.setPassword("super123");
 
 

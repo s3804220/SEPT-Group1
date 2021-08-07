@@ -253,7 +253,7 @@
                                 <ul class="checkout__total__products" th:if="${not #lists.isEmpty(cartItems)}">
                                 	<div th:each="item : ${cartItems}">
                                 		<div th:with="product = ${item.shop}">
-                                			<li> <div th:text="${product.name}"></div> <div class="cart__price itemSmallSum" th:text="${item.getSmallSum}"></div></li>
+                                			<li> <div th:text="${product.name}"></div> <div class="cart__price itemSmallSum" th:text="${'$'+item.getSmallSum}"></div></li>
                                 		</div>
                                 	</div>
                                 </ul>
@@ -384,7 +384,7 @@
         total = 0.0;
 
         $(".itemSmallSum").each(function(index, element) {
-            total = total + parseFloat(element.innerHTML);
+            total = total + parseFloat(element.innerHTML.substring(1));
         });
         $("#totalSum").text("$" + total);
     });
