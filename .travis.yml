@@ -1,6 +1,7 @@
 language: java
 dist: xenial
 os: linux
+sudo: enabled
 before_install:
   - sudo apt-get update
   - sudo apt-get --yes remove postgresql\*
@@ -24,4 +25,5 @@ addons:
 before_script:
 #  - psql -c "CREATE USER postgres WITH PASSWORD 'super123';" -U postgres -p 5432
   - psql -c 'create database testsystem' -U postgres -p 5432
+  - sudo -u postgres psql -c "ALTER ROLE postgres WITH password 'super123'"
 script: mvn clean verify
