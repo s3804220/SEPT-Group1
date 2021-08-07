@@ -86,6 +86,15 @@ function saveItem() {
             .then(res => res.json())
             // Call function to upload all image files to a directory corresponding with that item's ID on the server
             .then(itemid => uploadImg(itemid))
+            .then(() => fetch('http://localhost:8080/shopitem', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify({name: itemname, price: price, description: description, image: 'img/shop/'+fileinput.files.item(0).name})
+            }))
+            .then(() => uploadShopImg())
             //Display the appropriate message to the admin in HTML
             .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="item-list.html" class="item-link">here</a>.</span>`)
     }else{
@@ -119,6 +128,21 @@ function uploadImg(id){
 
     //Upload all images to the server with a POST request
     fetch('http://localhost:8080/upload', {
+        method: "POST",
+        body: imgData
+    })
+}
+
+function uploadShopImg(){
+    //Create new FormData object
+    let imgData = new FormData()
+    let fileinput = document.getElementById('item-images')
+
+    //Append image data into the FormData
+    imgData.append("imgshop",fileinput.files.item(0))
+
+    //Upload image to the Shop folder on server with a POST request
+    fetch('http://localhost:8080/uploadshop', {
         method: "POST",
         body: imgData
     })
