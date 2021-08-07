@@ -11,4 +11,5 @@ os:
 env:
   global:
     - PGUSER=postgres
+    - PGPASSWORD=super123
     - PGPORT=5432
