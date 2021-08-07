@@ -45,7 +45,7 @@
 * http://localhost:8080/user/update : for updating account info and delete account
 * http://localhost:8080/admin/account-management : for promoting and revoking admin rights (needs to be admin)
 * To become root admin: 
-1. Go to application.properties and set "app.init-db" to true, this is done to create root admin and create 1 "dummy" user account.
+1. Go to application.properties and set "app.init-db" to true, this is done to create root admin, create 1 "dummy" user account and create 2 "dummy" products.
 Note: please remember to set "app.init-db" to false when you want to run Spring Boot again, if not, there will be an error because the system tries to generate the same dummy accounts
 2. Run Spring Boot application
 3. Login with:
