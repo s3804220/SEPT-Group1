@@ -76,6 +76,6 @@ Due to that, the delete item function only removes such item from item table in 
 
 ## Travis-CI Build
 * We had issues setting up Travis-CI to create and connect the application to the PostgreSQL database, which result in a failed CI build.
-*
+
 ![Screen Shot 2021-08-07 at 10 20 33 PM](https://user-images.githubusercontent.com/61973799/128605194-127c1b93-3053-4220-bebe-5b9f97ff1d7c.png)
 
