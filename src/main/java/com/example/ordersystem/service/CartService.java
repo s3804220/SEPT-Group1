@@ -60,16 +60,6 @@ public class CartService implements CustomCartRepository {
         cartRepository.save(cart);
         return addedAmount;
 
-//        em.createNativeQuery("INSERT INTO Cart(userId, userName, shopId, shopName, shopPrice, image, amount) " +
-//                                "VALUES(?, ?, ?, ?, ?, ?, ?)")
-//                .setParameter(1, cart.getUserId())
-//                .setParameter(2, cart.getUserName())
-//                .setParameter(3, cart.getShopId())
-//                .setParameter(4, cart.getShopName())
-//                .setParameter(5, cart.getShopPrice())
-//                .setParameter(6, cart.getImage())
-//                .setParameter(7, cart.getAmount())
-//                .executeUpdate();
     }
 
 
@@ -78,9 +68,6 @@ public class CartService implements CustomCartRepository {
     }
 
 
-//    public List<Cart> getAllCarts(){
-//        return cartRepository.findAll();
-//    }
     public List<Cart> getAllCarts(Account account){
         return cartRepository.findByAccount(account);
     }
@@ -90,50 +77,20 @@ public class CartService implements CustomCartRepository {
     }
 
 
-    public void modifyCart(Cart cart) {
-//        em.createQuery("update Cart c set c.amount = :amount where" +
-////                " c.userId = :userId and" +
-//                " c.shopId = :shopId")
-//                .setParameter("amount", cart.getAmount())
-////                .setParameter("userId", cart.getUserId())
-//                .setParameter("shopId", cart.getShopId())
-//                .executeUpdate();
-    }
 
-//    @Override
-    public int sumPrice(String userId) {
-//        return 9999999;
-        return ((int) em.createQuery("select sum(c.price) from Cart as c "
-//                +"where c.userId = :userId"
-                )
-//                .setParameter("userId", userId)
-                .getSingleResult());
-    }
 
 //    @Override
     public Cart findCartById(Long id) {
         return cartRepository.findById(id).orElse(new Cart());
     }
 
-//    @Override
-    public int countCart(Long shopId, String userId) {
-        return ((Number) em.createQuery("select count(*) from Cart as c where" +
-//                " c.userId = :userId and" +
-                " c.shopId = :shopId")
-//                .setParameter("userId", userId)
-                .setParameter("shopId", shopId)
-                .getSingleResult()).intValue();
-    }
+
+
 
 
     // Update the amount of a cart item
     public int updateAmount(int amount, Long shopId, Account user) {
-//        em.createQuery("update Cart c set c.amount = :amount where c.account.id = :userId and c.shop.id = :shopId")
-//                .setParameter("amount", amount)
-//                .setParameter("userId", accountId)
-//                .setParameter("shopId", shopId)
-//                .executeUpdate();
-//        System.out.println("Amount: "+amount +" - sName: "+shopRepository.findShopById(shopId).getName()+" user - "+user);
+
         cartRepository.updateAmount(amount, shopId, user.getId());
         Shop shop = shopRepository.findShopById(shopId);
 

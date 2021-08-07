@@ -57,10 +57,7 @@ public class CartController {
 
         Account user = accountService.getAccountById(userId);
         List<Cart> cartList = cartService.getAllCarts(user);
-        System.out.println("shoping-cart list @@@");
-//        model.addAttribute("shopingCart", cartList);
         model.addAttribute("cartItems", cartList);
-    //        model.addAttribute("shopDetail", shopService.getShop(id));
 
         return "shoping-cart";
     }
@@ -78,7 +75,6 @@ public class CartController {
 
         int addedAmount = cartService.addShop(shopId, amount, user);
 
-        System.out.println(amount+" items added!");
         return "redirect:/shoping-cart";
     }
 
@@ -86,7 +82,6 @@ public class CartController {
     @GetMapping("/shoping-cart/delete/{deleteId}")
     public String delete(@PathVariable(name = "deleteId") Long id) {
         cartService.deleteCart(id);
-        System.out.println("An Cart Deleted @@@@@@");
         return "redirect:/shoping-cart";
     }
 
@@ -101,12 +96,6 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
-//        String userId = (String) session.getAttribute("userId");
-        System.out.println("@@@@@@@@ update clicked!");
-        System.out.println("shopName: "+ shopService.findShopById(shopId).getName());
-        System.out.println("shopId: "+ shopId);
-        System.out.println("amount: " + amount);
-        System.out.println();
 
         int smallSum = cartService.updateAmount(amount, shopId, user);
 

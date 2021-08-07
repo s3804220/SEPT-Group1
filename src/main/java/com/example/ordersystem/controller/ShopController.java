@@ -32,11 +32,6 @@ public class ShopController {
         this.shopService = shopService;
     }
 
-//    @GetMapping("/greeting")
-//    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-//        model.addAttribute("name", name);
-//        return "greeting";
-//    }
 
 
     @GetMapping("/shop")
@@ -48,11 +43,12 @@ public class ShopController {
         Pagination pagination = new Pagination(totalNum, page);
 
         int startIndex = pagination.getStartIndex();
+
         // Max num of items in a page
         int pageSize = pagination.getPageSize();
 
         List<Shop> shopList = shopService.findListPaging(startIndex, pageSize);
-        
+
 
 
 
@@ -63,19 +59,10 @@ public class ShopController {
     }
 
 
-//    @GetMapping("/shop")
-//    public String listAll(Model model) throws Exception {
-//
-//        shopService.saveShop(shop1);
-//
-//        model.addAttribute("shops", shopService.getAllShops());
-//        return "shop";
-//    }
 
     @GetMapping("/shop-details")
     public String readDetail(Model model, @RequestParam("id") Long id) throws Exception {
 
-        System.out.println("@@@@@@@@ Shop Details");
         model.addAttribute("shopDetail", shopService.findShopById(id));
 //        model.addAttribute("shopDetail", shopService.getShop(id));
 
@@ -83,10 +70,4 @@ public class ShopController {
         return "shop-details";
     }
 
-//    @PostMapping("/shoping-cart")
-//    public String editShopForCart(@PathVariable Long itemId, @ModelAttribute Cart cart) {
-//
-//
-//        return "shoping-cart";
-//    }
 }
