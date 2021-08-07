@@ -55,4 +55,13 @@ public class OrderService {
     	Order order = orderRepository.findByAccount(user);
     	order.setConfirm(true);
     }
+    
+    public void unconfirmOrder(Account user) {
+    	Order order = orderRepository.findByAccount(user);
+    	order.setConfirm(false);
+    }
+    
+    public List<Order> getAllOrders() {
+    	return orderRepository.findAll();
+    }
 }

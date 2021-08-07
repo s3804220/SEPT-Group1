@@ -20,7 +20,11 @@ import java.util.List;
 @AllArgsConstructor
 public class RegistrationController {
     private AccountService accountService;
-
+    
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
     // ModelMap is used to parse objects from controller to html through thymeleaf
 
     @RequestMapping(value="registration", method=RequestMethod.GET)
