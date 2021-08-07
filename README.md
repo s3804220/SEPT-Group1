@@ -73,3 +73,8 @@ Note: please remember to set "app.init-db" to false when you want to run Spring 
 * The anchor links for updating account and logout below account name (appears after logged in) can not be open directly. However opening those links on a new tab and pressing enter to access them works.
 * Currently, in the code, Item and Shop are 2 separate entities. Item is for Admins to do CRUD on items in the database using a form, and Shop is the entity that displays items to the shopping page and cart.
 Due to that, the delete item function only removes such item from item table in the database, and not the shop table. Because of this, those deleted items will still show up in localhost:8080/shop. In the next sprint, we will merge these 2 entities which will coherently resolve this issue.
+
+## Travis-CI Build
+* We had issues setting up Travis-CI to create and connect the application to the PostgreSQL database, which result in a failed CI build.
+![Screen Shot 2021-08-07 at 10 20 33 PM](https://user-images.githubusercontent.com/61973799/128605194-127c1b93-3053-4220-bebe-5b9f97ff1d7c.png)
+
