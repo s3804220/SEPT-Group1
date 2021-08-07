@@ -5,7 +5,7 @@ before_install:
 services:
   - postgresql
 os:
-  - linux
+  - osx
 addons:
   postgresql: '13.2'
 env:
