@@ -4,12 +4,21 @@ before_install:
   - chmod +x mvnw
 services:
   - postgresql
-before_script:
-  - psql -c 'create database testsystem;' -U postgres
 os:
   - linux
+addons:
+  postgresql: '12'
+  apt:
+    packages:
+      - postgresql-12
+      - postgresql-client-12
 env:
   global:
-    - PGUSER=postgres
-    - PGPASSWORD=super123
     - PGPORT=5432
+    - DB_NAME=testsystem
+    - DB_USER=postgres
+    - DB_PASSWORD=super123
+before_script:
+  - psql --command="CREATE USER ${DB_USER};"
+  - psql --command="CREATE DATABASE ${DB_NAME} WITH OWNER = ${DB_USER};"
+  - psql --dbname=$DB_NAME --file=sql/create-tables.sql
