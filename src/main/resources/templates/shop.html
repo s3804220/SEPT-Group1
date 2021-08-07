@@ -244,9 +244,9 @@
                                     <span class="arrow_carrot-left"></span>
                                 </a>
                             </li>
-                            <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                            <th:block th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}">
                                 <li
-                                        th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
+                                        th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
                                     <a th:href="@{?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
                                 </li>

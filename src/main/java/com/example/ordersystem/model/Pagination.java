@@ -18,10 +18,10 @@ public class Pagination {
 
 
     private int startPage = 1;
-    private int endPage = 1;
+    private int lastPage = 1;
 
     // Index of first item used from DB
-    private int startIndex = 0;
+    private int beginIndex = 0;
 
     private int prevBlock;
     private int nextBlock;
@@ -42,9 +42,9 @@ public class Pagination {
 
         setStartPage((block - 1) * blockSize + 1);
 
-        setEndPage(startPage + blockSize - 1);
+        setLastPage(startPage + blockSize - 1);
 
-        if(endPage > totalPages){this.endPage = totalPages;}
+        if(lastPage > totalPages){this.lastPage = totalPages;}
 
         setPrevBlock((block * blockSize) - blockSize);
 
@@ -54,7 +54,7 @@ public class Pagination {
 
         if(nextBlock > totalPages) {nextBlock = totalPages;}
 
-        setStartIndex((page-1) * pageSize);
+        setBeginIndex((page-1) * pageSize);
 
     }
 
@@ -125,20 +125,20 @@ public class Pagination {
         this.startPage = startPage;
     }
 
-    public int getEndPage() {
-        return endPage;
+    public int getLastPage() {
+        return lastPage;
     }
 
-    public void setEndPage(int endPage) {
-        this.endPage = endPage;
+    public void setLastPage(int lastPage) {
+        this.lastPage = lastPage;
     }
 
-    public int getStartIndex() {
-        return startIndex;
+    public int getBeginIndex() {
+        return beginIndex;
     }
 
-    public void setStartIndex(int startIndex) {
-        this.startIndex = startIndex;
+    public void setBeginIndex(int beginIndex) {
+        this.beginIndex = beginIndex;
     }
 
     public int getPrevBlock() {

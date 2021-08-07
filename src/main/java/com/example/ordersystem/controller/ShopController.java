@@ -1,6 +1,5 @@
 package com.example.ordersystem.controller;
 
-import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Pagination;
 import com.example.ordersystem.model.Shop;
 import com.example.ordersystem.service.CartService;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -42,12 +39,12 @@ public class ShopController {
 
         Pagination pagination = new Pagination(totalNum, page);
 
-        int startIndex = pagination.getStartIndex();
+        int beginIndex = pagination.getBeginIndex();
 
         // Max num of items in a page
         int pageSize = pagination.getPageSize();
 
-        List<Shop> shopList = shopService.findListPaging(startIndex, pageSize);
+        List<Shop> shopList = shopService.findListPaging(beginIndex, pageSize);
 
 
 

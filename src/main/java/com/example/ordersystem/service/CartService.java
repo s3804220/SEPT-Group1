@@ -36,7 +36,7 @@ public class CartService implements CustomCartRepository {
     }
 
 
-
+    // Update/Create cart and return the amount of items in the cart
     public int addShop(
 //            Cart cart
             Long shopId, int amount, Account user
@@ -75,7 +75,6 @@ public class CartService implements CustomCartRepository {
     public void deleteCart(Long id){
         cartRepository.delete(getCart(id));
     }
-
 
 
 
