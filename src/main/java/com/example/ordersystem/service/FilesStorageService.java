@@ -38,7 +38,7 @@ public class FilesStorageService {
     //Save image file into the shop folder
     public void save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), Paths.get("src\\main\\resources\\static\\img\\shop".replace("\\", File.separator)).resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), Paths.get("target\\classes\\static\\img\\shop".replace("\\", File.separator)).resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
