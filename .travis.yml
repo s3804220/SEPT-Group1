@@ -1,0 +1,19 @@
+language: java
+dist: xenial
+before_install:
+  - chmod +x mvnw
+services:
+  - postgresql
+os:
+  - linux
+addons:
+  postgresql: '13.2'
+env:
+  global:
+    - PGUSER=postgres
+    - PGPASSWORD=super123
+    - PGPORT=5432
+before_script:
+  - psql -c 'create database testsystem' -U postgres
+#  - psql -c "CREATE USER postgres WITH CREATEDB PASSWORD 'super123';" -U postgres -p 5433
+script: mvn clean verify
