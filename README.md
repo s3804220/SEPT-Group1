@@ -44,6 +44,7 @@
 * NOTE: to save product quantity in cart, please click the update button on the right of the "x" button.
 ### Checkout, admin confirm/cancel order
 * NEEDS SOMETHING HERE
-### Known issues and bugs
+
+## Known issues and bugs
 * Anchor tags bellow account name after logged in can not be open directly. However opening those tags on a new tab and pressing enter to access those links works.
 * Currently, Item and Shopping are 2 separate entities. Due to that delete item function only removes such item from item table in the database and not the shop table. Because of this, those deleted 
