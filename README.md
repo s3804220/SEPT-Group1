@@ -47,4 +47,4 @@
 
 ## Known issues and bugs
 * Anchor tags bellow account name after logged in can not be open directly. However opening those tags on a new tab and pressing enter to access those links works.
-* Currently, Item and Shop are 2 separate entities. Due to that the delete item function only removes such item from item table in the database, and not the shop table. Because of this, those deleted 
+* Currently, Item and Shop are 2 separate entities. Due to that the delete item function only removes such item from item table in the database, and not the shop table. Because of this, those deleted items will still show up in localhost:8080/shop. In the next sprint, we will merge these 2 entities which will coherently resolve this issue.
