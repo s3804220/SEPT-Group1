@@ -66,7 +66,8 @@ Note: please remember to set "app.init-db" to false when you want to run Spring 
 * http://localhost:8080/shoping-cart : for viewing the cart
 * NOTE: to update and save product quantity in cart, please click the update button on the right of the "x" button.
 ### Checkout, admin confirm/cancel order
-* NEEDS SOMETHING HERE
+* To get to checkout page, you'll need to select an item from http://localhost:8080/shop which will direct you to the cart. By pressing "Proceed to Checkout" you will be directed to the checkout form, and when you click "Place Order", the order will be saved into the system.
+* To view, confirm/cancel an order, you'll need to login with the admin account, and access http://localhost:8080/checkout/orderlist.
 
 ## Known issues and bugs
 * The anchor links for updating account and logout below account name (appears after logged in) can not be open directly. However opening those links on a new tab and pressing enter to access them works.
