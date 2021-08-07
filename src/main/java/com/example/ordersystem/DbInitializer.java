@@ -48,18 +48,23 @@ public class DbInitializer implements CommandLineRunner {
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
         accountService.signUpAccount(user1);
 
+//        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
 
+        Shop shop1 = new Shop("DBcake1", new BigDecimal("32.00"), "Good day", "img/shop/product-1.jpg");
+        Shop shop2 = new Shop("DBcake2", new BigDecimal("31.00"),"Good night", "img/shop/product-2.jpg");
 
-        Shop shop1 = new Shop("DBcake1", new BigDecimal("32.00"), "Good day", "product-1.jpg");
-        Shop shop2 = new Shop("DBcake2", new BigDecimal("31.00"),"Good night", "product-2.jpg");
+
         shopService.saveShop(shop1);
         shopService.saveShop(shop2);
+
+        List<Shop> shopList = shopService.getAllShops();
+        Shop shop3 = shopList.get(0);
 
 
         Cart cart = new Cart();
         cart.setAccount(user1);
-        cart.setShop(shop1);
+        cart.setShop(shop3);
         cart.setAmount(100);
 
         cartRepository.save(cart);

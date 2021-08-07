@@ -197,7 +197,7 @@
                                 <div th:with="product = ${item.shop}">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img th:src="@{${'img/shop/'+product.image}}" alt="" width="80" height="80">
+                                            <img th:src="@{${product.image}}" alt="" width="80" height="80">
                                         </div>
                                         <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
                                         <div class="product__cart__item__text" style="padding-top: 30px">

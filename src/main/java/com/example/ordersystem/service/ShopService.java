@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-/**
- * Created by CoT on 10/14/17.
- */
 @Transactional
 @Service
 public class ShopService implements CustomShopRepository {
@@ -41,11 +38,6 @@ public class ShopService implements CustomShopRepository {
     }
 
 
-    public Shop getShop(Long id){
-        return shopRepository.getById(id);
-    }
-
-
     @Override
     public Optional<Shop> findById(Long id) {
         return shopRepository.findById(id);
@@ -61,10 +53,6 @@ public class ShopService implements CustomShopRepository {
         return shopRepository.findAll();
     }
 
-    public void deleteShop(Long id){
-        shopRepository.delete(getShop(id));
-    }
-
 
     public int findTotal() {
         return ((Number) em.createQuery("select count(*) from Shop")
@@ -76,5 +64,13 @@ public class ShopService implements CustomShopRepository {
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
                 .getResultList();
+    }
+
+    public Shop getShop(Long id){
+        return shopRepository.getById(id);
+    }
+
+    public void deleteShop(Long id){
+        shopRepository.delete(getShop(id));
     }
 }
