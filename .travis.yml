@@ -16,12 +16,12 @@ addons:
   # Use a different PostgreSQL version than the default:
   postgresql: '11'
 
-env:
-  global:
-    - PGUSER=postgres
-    - PGPASSWORD=super123
-    - PGPORT=5432
+#env:
+#  global:
+#    - PGUSER=postgres
+#    - PGPASSWORD=super123
+#    - PGPORT=5432
 before_script:
+  - psql -c "CREATE USER postgres WITH PASSWORD 'super123';" -U postgres -p 5432
   - psql -c 'create database testsystem' -U postgres -p 5432
-#  - psql -c "CREATE USER postgres WITH CREATEDB PASSWORD 'super123';" -U postgres -p 5433
 script: mvn clean verify
