@@ -18,6 +18,7 @@
 
 ##  FRONTEND
 ### Frontend technologies:
+* Thymeleaf
 * HTML/CSS/JS
 * Bootstrap
 * A template by Colorlib
