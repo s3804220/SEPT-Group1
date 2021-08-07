@@ -106,13 +106,24 @@ public class ShopServiceTest {
         Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
         Shop testShop2 = new Shop("testCake2", new BigDecimal("8.00"),"Last test", "img/shop/product-2.jpg");
 
+        shopService.saveShop(testShop1);
+        shopService.saveShop(testShop2);
+
+        int amount = 2;
         int num = shopService.findTotal();
 
+        assertTrue(amount <= shopService.findTotal());
         assertEquals(num, shopService.findTotal());
     }
 
     @Test
     public void findListPaging() {
+        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Shop testShop2 = new Shop("testCake2", new BigDecimal("8.00"),"Last test", "img/shop/product-2.jpg");
+
+        shopService.saveShop(testShop1);
+        shopService.saveShop(testShop2);
+
         List<Shop> shopList = shopService.findListPaging(0, 12);
 
         List<Shop> shopList2 = shopService.getAllShops();
