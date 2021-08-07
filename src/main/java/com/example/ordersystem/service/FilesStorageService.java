@@ -17,7 +17,7 @@ public class FilesStorageService {
 
     //Create new folder (if not exists) with name associated with ID to store each item's images
     public Path init(String id) {
-        Path itemRoot = Paths.get("src\\main\\resources\\static\\img\\upload\\item".replace("\\", File.separator)+id);
+        Path itemRoot = Paths.get("target\\classes\\static\\img\\upload\\item".replace("\\", File.separator)+id);
         try {
             Files.createDirectories(itemRoot);
             return itemRoot;
