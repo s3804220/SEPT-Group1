@@ -69,24 +69,24 @@ public class OrderController {
         return "redirect:/shoping-cart";
     }
     
-    @RequestMapping(value="/checkout/orderlist", method=RequestMethod.GET)
+    @RequestMapping(value="/orderlist", method=RequestMethod.GET)
     public String showOrderList(ModelMap model){
         List<Order> orderList = orderService.getAllOrders();
         model.addAttribute("orderList",orderList);
         return "orderlist";
     }
     
-    @RequestMapping(value="checkout/orderlist/confirm-order/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="orderlist/confirm-order/{id}", method= RequestMethod.GET)
     public String confirmorder(@PathVariable Long id){
     	Account user = accountService.getAccountById(id);
         orderService.confirmOrder(user);
-        return "redirect:/checkout/orderlist";
+        return "redirect:/orderlist";
     }
 
-    @RequestMapping(value="checkout/orderlist/unconfirm-order/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="orderlist/unconfirm-order/{id}", method= RequestMethod.GET)
     public String unconfirmOrder(@PathVariable Long id){
     	Account user = accountService.getAccountById(id);
         orderService.unconfirmOrder(user);
-        return "redirect:/checkout/orderlist";
+        return "redirect:/orderlist";
     }
 }
