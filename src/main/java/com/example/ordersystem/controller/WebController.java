@@ -23,4 +23,9 @@ public class WebController {
         return "table";
     }
 
+    @GetMapping("/admin-panel")
+    public String adminPanel(){
+        return "admin-panel";
+    }
+
 }
