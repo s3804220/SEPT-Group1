@@ -1,9 +1,6 @@
 package com.example.ordersystem.service;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.AccountRole;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Shop;
+import com.example.ordersystem.model.*;
 import com.example.ordersystem.repository.CartRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +30,7 @@ public class CartServiceTest {
     CartService cartService;
 
     @Autowired
-    private ShopService shopService;
+    private ItemService itemService;
 
     @Autowired
     public AccountService accountService;
@@ -52,11 +49,11 @@ public class CartServiceTest {
     public void addShop() {
 
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        int addedAmount = cartService.addShop(testShop1.getId(), amount, testUser1);
+        itemService.saveItem(testItem1);
+        int addedAmount = cartService.addItem(testItem1.getId(), amount, testUser1);
 
         assertTrue(addedAmount >= 5);
     }
@@ -64,12 +61,12 @@ public class CartServiceTest {
     @Test
     public void getCart() {
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        int addedAmount = cartService.addShop(testShop1.getId(), amount, testUser1);
-        Cart testCart1 = cartRepository.findByAccountAndShop(testUser1, testShop1);
+        itemService.saveItem(testItem1);
+        int addedAmount = cartService.addItem(testItem1.getId(), amount, testUser1);
+        Cart testCart1 = cartRepository.findByAccountAndItem(testUser1, testItem1);
 
         Cart testCart2 = cartService.getCart(testCart1.getId());
 
@@ -80,19 +77,18 @@ public class CartServiceTest {
     public void getAllCarts() {
 
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), amount, testUser1);
-        Cart testCart1 = cartRepository.findByAccountAndShop(testUser1, testShop1);
+        itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), amount, testUser1);
+        Cart testCart1 = cartRepository.findByAccountAndItem(testUser1, testItem1);
 
+        Item testItem2 = new Item("testCake2", "Second test", "product-2.jpg", new BigDecimal("22.00"));
+        itemService.saveItem(testItem2);
 
-        Shop testShop2 = new Shop("testCake2", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
-        shopService.saveShop(testShop2);
-
-        cartService.addShop(testShop2.getId(), amount, testUser1);
-        Cart testCart2 = cartRepository.findByAccountAndShop(testUser1, testShop2);
+        cartService.addItem(testItem2.getId(), amount, testUser1);
+        Cart testCart2 = cartRepository.findByAccountAndItem(testUser1, testItem2);
 
         List<Cart> cartlist = cartService.getAllCarts(testUser1);
 
@@ -103,12 +99,12 @@ public class CartServiceTest {
     @Test
     public void deleteCart() {
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), amount, testUser1);
-        Cart testCart1 = cartRepository.findByAccountAndShop(testUser1, testShop1);
+        itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), amount, testUser1);
+        Cart testCart1 = cartRepository.findByAccountAndItem(testUser1, testItem1);
 
         int before = cartService.getAllCarts(testUser1).size();
 
@@ -122,12 +118,12 @@ public class CartServiceTest {
     @Test
     public void findCartById() {
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), amount, testUser1);
-        Cart testCart1 = cartRepository.findByAccountAndShop(testUser1, testShop1);
+        itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), amount, testUser1);
+        Cart testCart1 = cartRepository.findByAccountAndItem(testUser1, testItem1);
 
         Cart testCart2 = cartService.findCartById(testCart1.getId());
 
@@ -137,15 +133,15 @@ public class CartServiceTest {
     @Test
     public void updateAmount() {
         Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-        Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
         int amount = 5;
         accountService.signUpAccount(testUser1);
-        shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), amount, testUser1);
+        itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), amount, testUser1);
 
-        int AddedAmount = cartService.updateAmount(2, testShop1.getId(), testUser1);
+        int addedAmount = cartService.updateAmount(2, testItem1.getId(), testUser1);
 
-        Cart testCart1 = cartRepository.findByAccountAndShop(testUser1, testShop1);
+        Cart testCart1 = cartRepository.findByAccountAndItem(testUser1, testItem1);
 
         assertEquals(amount, testCart1.getAmount());
     }

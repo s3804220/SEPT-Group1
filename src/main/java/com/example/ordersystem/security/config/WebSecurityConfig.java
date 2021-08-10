@@ -31,12 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration/**").permitAll()
                 .antMatchers("/shop/**").permitAll()
                 .antMatchers("/shop-details/**").permitAll()
-                .antMatchers("/item-form.html").hasAuthority("ADMIN")
-                .antMatchers("/item-list.html").hasAuthority("ADMIN")
+                .antMatchers("/item-form").hasAuthority("ADMIN")
+                .antMatchers("/item-list").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
-                .defaultSuccessUrl("/user", true)
+                .defaultSuccessUrl("/", true)
         ;
     }
 

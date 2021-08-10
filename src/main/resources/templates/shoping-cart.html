@@ -191,33 +191,33 @@
 
                             <!--Iteration Begin-->
 
-                            <tr th:each="item : ${cartItems}">
+                            <tr th:each="shop : ${cartItems}">
                                 <form method="post" th:action="@{/shoping-cart/update}">
                                 <!--                                        <div th:with="var=${item.shopPrice * item.amount}">-->
-                                <div th:with="product = ${item.shop}">
+                                <div th:with="product = ${shop.item}">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img th:src="@{${product.image}}" alt="" width="80" height="80">
+                                            <img th:src="@{${'img/upload/item'+product.id+'/'+#strings.arraySplit(product.itemImage, '|')[0]}}" alt="" width="80" height="80">
                                         </div>
                                         <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
                                         <div class="product__cart__item__text" style="padding-top: 30px">
-                                            <h6 th:text="${product.name}"></h6>
-                                            <span>price: </span><span th:text="${product.price}"></span>
+                                            <h6 th:text="${product.itemName}"></h6>
+                                            <span>price: </span><span th:text="${product.itemPrice}"></span>
                                         </div>
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty">
 
-                                                <input type="text" name="amount" th:value="${item.amount}">
+                                                <input type="text" name="amount" th:value="${shop.amount}">
 
                                             </div>
                                         </div>
                                         <input type="hidden" name="shopId" th:value="${product.id}">
                                     </td>
-                                    <td class="cart__price itemSmallSum" th:text="${item.getSmallSum}"></td>
+                                    <td class="cart__price itemSmallSum" th:text="${shop.getSmallSum}"></td>
                                     <td class="cart__close">
-                                        <a th:href="@{/shoping-cart/delete/{deleteId}(deleteId=${item.id})}">
+                                        <a th:href="@{/shoping-cart/delete/{deleteId}(deleteId=${shop.id})}">
                                             <span class="icon_close"></span>
                                         </a>
                                     </td>

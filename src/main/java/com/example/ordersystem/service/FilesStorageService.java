@@ -35,15 +35,6 @@ public class FilesStorageService {
         }
     }
 
-    //Save image file into the shop folder
-    public void save(MultipartFile file) {
-        try {
-            Files.copy(file.getInputStream(), Paths.get("target\\classes\\static\\img\\shop".replace("\\", File.separator)).resolve(file.getOriginalFilename()));
-        } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-        }
-    }
-
     //Delete the whole folder corresponding with that item's ID
     public void deleteAll(String id) {
         FileSystemUtils.deleteRecursively(init(id).toFile());

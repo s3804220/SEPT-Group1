@@ -14,16 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CartRestController {
-
-
-    private CartService cartService;
-    private AccountService accountService;
-
     @Autowired
-    public CartRestController(CartService cartService, AccountService accountService) {
-        this.cartService = cartService;
-        this.accountService = accountService;
-    }
+    private CartService cartService;
+    @Autowired
+    private AccountService accountService;
 
 //    @PostMapping("/shoping-cart/add")
 //    public String addShopToCart(@RequestParam("sid") Long shopId,

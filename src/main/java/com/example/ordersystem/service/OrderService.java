@@ -14,7 +14,6 @@ import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Order;
 import com.example.ordersystem.repository.CartRepository;
 import com.example.ordersystem.repository.OrderRepository;
-import com.example.ordersystem.repository.ShopRepository;
 
 @Transactional
 @Service

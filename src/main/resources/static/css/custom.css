@@ -25,3 +25,26 @@
     color: #0b0b0b;
     text-decoration: underline;
 }
+.product__details__big__img {
+    width: calc(84% - 20px);
+    float: left;
+    margin-right: 20px;
+}
+.product__details__big__img img {
+    min-width: 100%;
+}
+
+.product__details__thumb {
+    height: 100%;
+    float: left;
+    width: 16%;
+    overflow: hidden;
+}
+.product__details__thumb .pt__item {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.product__details__thumb .pt__item img {
+    min-width: 100%;
+    max-height: 100px;
+}

@@ -1,48 +1,57 @@
 package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Item;
+import com.example.ordersystem.model.Pagination;
 import com.example.ordersystem.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
-@RestController
+@Controller
 public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping(path = "/items")
-    public List<Item> getAllItems(){
-        return itemService.getAllItems();
+    @GetMapping("/shop")
+    public String listAll(Model model, @RequestParam(defaultValue = "1") int page) {
+
+        // The number of total items
+        int totalNum = itemService.findTotal();
+
+        Pagination pagination = new Pagination(totalNum, page);
+
+        int beginIndex = pagination.getBeginIndex();
+
+        // Max num of items in a page
+        int pageSize = pagination.getPageSize();
+
+        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize);
+
+        model.addAttribute("shopList", shopList);
+        model.addAttribute("pagination", pagination);
+
+        return "shop";
     }
 
-    //Add a new item to the database and return its ID as a response for checking and later usage
-    @PostMapping(path = "/items")
-    public ResponseEntity<String> addItem(@RequestBody Item item){
-        Long newID= itemService.saveItem(item);
-        String IDstring = newID.toString();
-        return ResponseEntity.status(HttpStatus.OK).body(IDstring);
+    @GetMapping("/shop-details")
+    public String readDetail(Model model, @RequestParam("id") Long id) throws Exception {
+
+        model.addAttribute("shopDetail", itemService.getItem(id).get());
+
+        return "shop-details";
     }
 
-    //Update an item in the database and return its ID as a response for checking and later usage
-    @PutMapping(path = "/items")
-    public ResponseEntity<String> updateItem(@RequestBody Item item){
-        Long newID= itemService.saveItem(item);
-        String IDstring = newID.toString();
-        return ResponseEntity.status(HttpStatus.OK).body(IDstring);
+    @GetMapping(path = "/item-form")
+    public String itemForm(){
+        return "item-form";
     }
 
-    @DeleteMapping(path = "/items/{id}")
-    public void deleteItem(@PathVariable Long id){
-        itemService.deleteItem(id);
-    }
-
-    @GetMapping(path = "/items/{id}")
-    public Optional<Item> getItemById(@PathVariable Long id){
-        return itemService.getItem(id);
+    @GetMapping(path = "/item-list")
+    public String itemList(){
+        return "item-list";
     }
 }

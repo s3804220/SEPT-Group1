@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @Service
 public class ItemService {
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     private ItemRepository itemRepository;
 
@@ -34,5 +39,17 @@ public class ItemService {
     //Delete an item by ID
     public void deleteItem(Long id){
         itemRepository.deleteById(id);
+    }
+
+    public int findTotal() {
+        return ((Number) em.createQuery("select count(*) from Item")
+                .getSingleResult()).intValue();
+    }
+
+    public List<Item> findListPaging(int startIndex, int pageSize) {
+        return em.createQuery("select b from Item b", Item.class)
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 }

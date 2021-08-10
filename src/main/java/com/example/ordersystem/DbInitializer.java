@@ -24,10 +24,8 @@ public class DbInitializer implements CommandLineRunner {
     private AccountRepository accountRepository;
 
     @Autowired
-    private ShopService shopService;
+    private ItemService itemService;
 
-
-    private ShopRepository shopRepository;
     private CartRepository cartRepository;
 
     @Override
@@ -50,22 +48,19 @@ public class DbInitializer implements CommandLineRunner {
 
 //        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
+        Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("31.00"));
+        Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("32.00"));
 
-        Shop shop1 = new Shop("DBcake1", new BigDecimal("32.00"), "Good day", "img/shop/product-1.jpg");
-        Shop shop2 = new Shop("DBcake2", new BigDecimal("31.00"),"Good night", "img/shop/product-2.jpg");
+        itemService.saveItem(item1);
+        itemService.saveItem(item2);
 
-
-        shopService.saveShop(shop1);
-        shopService.saveShop(shop2);
-
-        List<Shop> shopList = shopService.getAllShops();
-        Shop shop3 = shopList.get(0);
-
+        List<Item> itemList = itemService.getAllItems();
+        Item item3 = itemList.get(0);
 
         Cart cart = new Cart();
         cart.setAccount(user1);
-        cart.setShop(shop3);
-        cart.setAmount(100);
+        cart.setItem(item3);
+        cart.setAmount(5);
 
         cartRepository.save(cart);
     }

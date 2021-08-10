@@ -41,10 +41,10 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value="user", method=RequestMethod.GET)
+    @RequestMapping(value="/", method=RequestMethod.GET)
     public String getWelcomePage(ModelMap model){
         model.addAttribute("account", new Account());
-        return "loggedin_index";
+        return "index";
     }
 
     @RequestMapping(value="user/update", method=RequestMethod.GET)

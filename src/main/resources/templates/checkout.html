@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -251,9 +251,11 @@
                                 <h6 class="order__title">Your order</h6>
                                 <div class="checkout__order__products">Product</div>
                                 <ul class="checkout__total__products" th:if="${not #lists.isEmpty(cartItems)}">
-                                	<div th:each="item : ${cartItems}">
-                                		<div th:with="product = ${item.shop}">
-                                			<li> <div th:text="${product.name}"></div> <div class="cart__price itemSmallSum" th:text="${'$'+item.getSmallSum}"></div></li>
+                                	<div th:each="shop : ${cartItems}">
+                                		<div th:with="product = ${shop.item}">
+                                			<li> <div th:text="${product.itemName}"></div>
+                                                <div class="cart__price itemSmallSum" th:text="${'$'+shop.getSmallSum}"></div>
+                                            </li>
                                 		</div>
                                 	</div>
                                 </ul>

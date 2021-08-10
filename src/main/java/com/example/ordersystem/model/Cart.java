@@ -1,6 +1,7 @@
 
 package com.example.ordersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +18,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-
     @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
+    @JsonBackReference(value = "cart-item")
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -31,7 +32,7 @@ public class Cart {
 
     @Transient
     public float getSmallSum() {
-        return  this.shop.getPrice().floatValue() * amount;
+        return  this.item.getItemPrice().floatValue() * amount;
     }
 
 
@@ -43,12 +44,12 @@ public class Cart {
         this.id = id;
     }
 
-    public Shop getShop() {
-        return shop;
+    public Item getItem() {
+        return item;
     }
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Account getAccount() {

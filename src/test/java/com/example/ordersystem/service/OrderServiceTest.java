@@ -1,10 +1,6 @@
 package com.example.ordersystem.service;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.AccountRole;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Order;
-import com.example.ordersystem.model.Shop;
+import com.example.ordersystem.model.*;
 import com.example.ordersystem.repository.CartRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +41,7 @@ public class OrderServiceTest {
     public AccountService accountService;
     
     @Autowired
-    private ShopService shopService;
+    private ItemService itemService;
     
     @Before
     public void setUp() throws Exception {
@@ -60,10 +56,10 @@ public class OrderServiceTest {
 	@Test
 	public void testAddOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
 		accountService.signUpAccount(testUser1);
-		shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), 5, testUser1);
+		itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), 5, testUser1);
 		int price = orderService.addOrder(testUser1);
 		
 		assertTrue(price == 55);
@@ -72,10 +68,10 @@ public class OrderServiceTest {
 	@Test
 	public void testConfirmOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
 		accountService.signUpAccount(testUser1);
-		shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), 5, testUser1);
+		itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), 5, testUser1);
 		orderService.addOrder(testUser1);
 		orderService.confirmOrder(testUser1);
 		List<Order> orders = orderService.getAllOrders();
@@ -91,10 +87,10 @@ public class OrderServiceTest {
 	@Test
 	public void testUnconfirmOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
 		accountService.signUpAccount(testUser1);
-		shopService.saveShop(testShop1);
-        cartService.addShop(testShop1.getId(), 5, testUser1);
+		itemService.saveItem(testItem1);
+        cartService.addItem(testItem1.getId(), 5, testUser1);
 		orderService.addOrder(testUser1);
 		orderService.confirmOrder(testUser1);
 		orderService.unconfirmOrder(testUser1);
@@ -114,13 +110,13 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		Account testUser2 = new Account("Alley", "Cat", "112 Testing Lane", "0933684439", "test2@gmail.com", "password2", AccountRole.USER);
 		accountService.signUpAccount(testUser2);
-		Shop testShop1 = new Shop("testCake1", new BigDecimal("11.00"), "Frist test", "img/shop/product-1.jpg");
-		shopService.saveShop(testShop1);
-		Shop testShop2 = new Shop("testCake2", new BigDecimal("12.00"), "Frist test", "img/shop/product-2.jpg");
-        shopService.saveShop(testShop2);
-        cartService.addShop(testShop1.getId(), 5, testUser1);
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
+		itemService.saveItem(testItem1);
+		Item testItem2 = new Item("testCake2", "Second test", "product-2.jpg", new BigDecimal("12.00"));
+        itemService.saveItem(testItem2);
+        cartService.addItem(testItem1.getId(), 5, testUser1);
 		orderService.addOrder(testUser1);
-		cartService.addShop(testShop2.getId(), 4, testUser2);
+		cartService.addItem(testItem2.getId(), 4, testUser2);
 		orderService.addOrder(testUser2);
 		List<Order> orders = orderService.getAllOrders();
 		Order target1 = null;

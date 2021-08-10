@@ -66,7 +66,8 @@
                         <li>ENG</li>
                     </ul>
                 </li>
-                <li><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
             </ul>
         </div>
     </div>
@@ -93,10 +94,11 @@
                                             <li>ENG</li>
                                         </ul>
                                     </li>
-                                    <li><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                    <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                                    <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
                                         <ul style="width: 180px;">
-                                            <li><a class="update" href="localhost:8080/user/update" style="color:white; display:block">Update Account</a></li>
-                                            <li><a class="logout" href="localhost:8080/logout" style="color:white" onclick="window.open('localhost:8080/logout', '_blank')">Logout</a>
+                                            <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                            <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -126,7 +128,7 @@
                 <div class="col-lg-12">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li class="active"><a href="./">Home</a></li>
                             <li><a href="./about.html">About</a></li>
                             <li><a href="/shop">Shop</a></li>
                             <li><a href="#">Pages</a>

@@ -26,6 +26,7 @@
     <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}" type="text/css">
     <link rel="stylesheet" th:href="@{css/slicknav.min.css}" type="text/css">
     <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{css/custom.css}" type="text/css">
 </head>
 
 <body>
@@ -178,21 +179,31 @@
     <div class="container">
         <form class="row" th:object="${shopDetail}" th:action="@{/shoping-cart/add}" method="post">
             <!-- Connect to shoping-cart/insert -->
-            <!--'shopDetail' took from ShopController-->
+            <!--'shopDetail' took from ItemController-->
             <div class="col-lg-6">
                 <div class="product__details__img">
                     <div class="product__details__big__img">
-                        <img class="big_img" th:src="@{${shopDetail.image}}" alt=""><!--"@{${'/img/shop/'+shopDetail.image}}"-->
+                        <img class="big_img" th:src="@{${'img/upload/item'+shopDetail.id+'/'+#strings.arraySplit(shopDetail.itemImage, '|')[0]}}" alt=""><!--"@{${'/img/shop/'+shopDetail.image}}"-->
 
+                    </div>
+                    <div th:with="imgArray=${#strings.arraySplit(shopDetail.itemImage, '|')}">
+                        <div th:if="${#arrays.length(imgArray)>1}">
+                            <div class="product__details__thumb" th:each="image : ${imgArray}">
+                                <div class="pt__item" th:classappend="${imageStat.index==0} ? active">
+                                    <img th:attr="data-imgbigurl=${'img/upload/item'+shopDetail.id+'/'+image}"
+                                         th:src="@{${'img/upload/item'+shopDetail.id+'/'+image}}" alt="">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <div class="product__label">Cupcake</div>
-                    <h4 th:text="${shopDetail.name}"></h4>
-                    <h5 th:text="${shopDetail.price}"></h5>
-                    <p th:text="${shopDetail.description}"></p>
+                    <h4 th:text="${shopDetail.itemName}"></h4>
+                    <h5 th:text="${shopDetail.itemPrice}"></h5>
+                    <p th:text="${shopDetail.itemDescription}"></p>
 
                     <div class="product__details__option">
 
@@ -200,7 +211,6 @@
                         <div class="quantity">
                             <div class="pro-qty">
                                 <input type="number" id="amount" name="amount" value="2" min="1">
-
 
                             </div>
                         </div>
@@ -212,6 +222,7 @@
             </div>
 
         </form>
+
         <div class="product__details__tab">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs" role="tablist">

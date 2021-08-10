@@ -45,7 +45,12 @@ function checkInput(){
         fileMessage.style.color = "red"
         fileMessage.innerHTML = 'Please select at least 1 file!'
         validated = false
-    }else {
+    }else if(fileinput.files.length>5){
+        fileMessage.style.display = "block"
+        fileMessage.style.color = "red"
+        fileMessage.innerHTML = 'Please select a maximum of 5 images!'
+        validated = false
+    } else {
         fileMessage.style.display = "none"
     }
     //If there is no problem with any inputs, call function to save the item into the database
@@ -86,17 +91,8 @@ function saveItem() {
             .then(res => res.json())
             // Call function to upload all image files to a directory corresponding with that item's ID on the server
             .then(itemid => uploadImg(itemid))
-            .then(() => fetch('http://localhost:8080/shopitem', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify({name: itemname, price: price, description: description, image: 'img/shop/'+fileinput.files.item(0).name})
-            }))
-            .then(() => uploadShopImg())
             //Display the appropriate message to the admin in HTML
-            .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="item-list.html" class="item-link">here</a>.</span>`)
+            .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
     }else{
         //If there is a specified ID, update the item with that ID in the database with a PUT request
         //the rest of the process is similar to above
@@ -109,7 +105,7 @@ function saveItem() {
             body: JSON.stringify({id:id, itemName: itemname,itemDescription: description, itemPrice: price, itemImage: filenames})
         }).then(res => res.json())
             .then(itemid => uploadImg(itemid))
-            .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="item-list.html" class="item-link">here</a>.</span>`)
+            .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
     }
 
 }
@@ -128,21 +124,6 @@ function uploadImg(id){
 
     //Upload all images to the server with a POST request
     fetch('http://localhost:8080/upload', {
-        method: "POST",
-        body: imgData
-    })
-}
-
-function uploadShopImg(){
-    //Create new FormData object
-    let imgData = new FormData()
-    let fileinput = document.getElementById('item-images')
-
-    //Append image data into the FormData
-    imgData.append("imgshop",fileinput.files.item(0))
-
-    //Upload image to the Shop folder on server with a POST request
-    fetch('http://localhost:8080/uploadshop', {
         method: "POST",
         body: imgData
     })
@@ -183,7 +164,7 @@ function getItemList(){
 function redirectEdit(id){
     //Redirect the admin to the form to edit the item with the specified ID
     if (id) {
-        window.location = '/item-form.html?id=' + id
+        window.location = '/item-form?id=' + id
     }
 }
 
@@ -210,8 +191,8 @@ function loadInfo(){
                     price.value = json.itemPrice
                 }else{
                     //If the item with that ID cannot be found, display a message to the admin
-                    document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="item-list.html" class="item-link">item list</a> or your database to find the item you want to edit.
-                    <br>Or you can proceed to add a new item <a href="item-form.html" class="item-link">here</a>.</span>`
+                    document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
+                    <br>Or you can proceed to add a new item <a href="/item-form" class="item-link">here</a>.</span>`
                 }
             })
     }

@@ -58,7 +58,7 @@ public class OrderController {
     }
     
     @PostMapping("/checkout/add")
-    public String addShopToCart() {
+    public String addItemToCart() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
