@@ -54,7 +54,7 @@ public class DbInitializer implements CommandLineRunner {
         itemService.saveItem(item1);
         itemService.saveItem(item2);
 
-        List<Item> itemList = itemService.getAllItems();
+        /*List<Item> itemList = itemService.getAllItems();
         Item item3 = itemList.get(0);
 
         Cart cart = new Cart();
@@ -62,7 +62,7 @@ public class DbInitializer implements CommandLineRunner {
         cart.setItem(item3);
         cart.setAmount(5);
 
-        cartRepository.save(cart);
+        cartRepository.save(cart);*/
     }
 
 }

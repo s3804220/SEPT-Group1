@@ -28,4 +28,14 @@ public class WebController {
         return "admin-panel";
     }
 
+    @GetMapping("/about")
+    public String aboutPage(){
+        return "about";
+    }
+
+    @GetMapping("/contact")
+    public String contactPage(){
+        return "contact";
+    }
+
 }

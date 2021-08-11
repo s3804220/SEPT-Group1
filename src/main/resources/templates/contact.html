@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-security5">
 
 <head>
     <meta charset="UTF-8">
@@ -130,8 +131,8 @@
                             <li><a href="./">Home</a></li>
                             <li><a href="/about">About</a></li>
                             <li><a href="/shop">Shop</a></li>
-                            <li class="active"><a href="/shoping-cart">Cart</a></li>
-                            <li><a href="/contact">Contact</a></li>
+                            <li><a href="/shoping-cart">Cart</a></li>
+                            <li class="active"><a href="/contact">Contact</a></li>
                             <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                         </ul>
                     </nav>
@@ -141,165 +142,123 @@
     </header>
     <!-- Header Section End -->
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
+    <!-- Contact Section Begin -->
+    <section class="contact spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="breadcrumb__text">
-                        <h2>Checkout</h2>
+            <div class="map">
+                <div class="container">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-4 col-md-7">
+                            <div class="map__inner">
+                                <h6>COlorado</h6>
+                                <ul>
+                                    <li>1000 Lakepoint Dr, Frisco, CO 80443, USA</li>
+                                    <li>Sweetcake@support.com</li>
+                                    <li>+1 800-786-1000</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="breadcrumb__links">
-                        <a href="./">Home</a>
-                        <span>Checkout</span>
+                <div class="map__iframe">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d10784.188505644011!2d19.053119335158936!3d47.48899529453826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1543907528304" height="300" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+            </div>
+            <div class="contact__address">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="contact__address__item">
+                            <h6>san bernardino</h6>
+                            <ul>
+                                <li>
+                                    <span class="icon_pin_alt"></span>
+                                    <p>795 W 5th St, San Bernardino, CA 92410, USA</p>
+                                </li>
+                                <li><span class="icon_headphones"></span>
+                                    <p>+1 800-786-1000</p>
+                                </li>
+                                <li><span class="icon_mail_alt"></span>
+                                    <p>Sweetcake@support.com</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="contact__address__item">
+                            <h6>Los angeles</h6>
+                            <ul>
+                                <li>
+                                    <span class="icon_pin_alt"></span>
+                                    <p>639 S Spring St, Los Angeles, CA 90014, USA</p>
+                                </li>
+                                <li><span class="icon_headphones"></span>
+                                    <p>+1 213-612-3000</p>
+                                </li>
+                                <li><span class="icon_mail_alt"></span>
+                                    <p>Sweetcake@support.com</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="contact__address__item">
+                            <h6>san bernardino</h6>
+                            <ul>
+                                <li>
+                                    <span class="icon_pin_alt"></span>
+                                    <p>1000 Lakepoint Dr, Frisco, CO 80443, USA</p>
+                                </li>
+                                <li><span class="icon_headphones"></span>
+                                    <p>+1 800-786-1000</p>
+                                </li>
+                                <li><span class="icon_mail_alt"></span>
+                                    <p>Sweetcake@support.com</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
-
-    <!-- Checkout Section Begin -->
-    <section class="checkout spad">
-        <div class="container">
-            <div class="checkout__form">
-                <form th:action="@{/checkout/add}" method="post">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-6">
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                            here</a> to enter your code</h6>
-                            <h6 class="checkout__title">Billing Details</h6>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Fist Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc">
-                                    Create an account?
-                                    <input type="checkbox" id="acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Note about your order, e.g, special noe for delivery
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Order notes<span>*</span></p>
-                                <input type="text"
-                                placeholder="Notes about your order, e.g. special notes for delivery.">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="checkout__order">
-                                <h6 class="order__title">Your order</h6>
-                                <div class="checkout__order__products">Product</div>
-                                <ul class="checkout__total__products" th:if="${not #lists.isEmpty(cartItems)}">
-                                	<div th:each="shop : ${cartItems}">
-                                		<div th:with="product = ${shop.item}">
-                                			<li> <div th:text="${product.itemName}"></div>
-                                                <div class="cart__price itemSmallSum" th:text="${'$'+shop.getSmallSum}"></div>
-                                            </li>
-                                		</div>
-                                	</div>
-                                </ul>
-                                <ul class="checkout__total__all">
-                                    <li>Total <span id="totalSum"></span></li>
-                                </ul>
-                                <div class="checkout__input__checkbox">
-                                    <label for="acc-or">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-or">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit" class="site-btn" onclick="alert('Order placed')">PLACE ORDER</button>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="contact__text">
+                        <h3>Contact With us</h3>
+                        <ul>
+                            <li>Representatives or Advisors are available:</li>
+                            <li>Mon-Fri: 5:00am to 9:00pm</li>
+                            <li>Sat-Sun: 6:00am to 9:00pm</li>
+                        </ul>
+                        <img src="img/cake-piece.png" alt="">
                     </div>
-                </form>
+                </div>
+                <div class="col-lg-8">
+                    <div class="contact__form">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="text" placeholder="Name">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="text" placeholder="Email">
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea placeholder="Message"></textarea>
+                                    <button type="submit" class="site-btn">Send Us</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <!-- Checkout Section End -->
+    <!-- Contact Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4">
                     <div class="footer__widget">
                         <h6>WORKING HOURS</h6>
                         <ul>
@@ -309,7 +268,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4">
                     <div class="footer__about">
                         <div class="footer__logo">
                             <a href="#"><img src="img/footer-logo.png" alt=""></a>
@@ -324,7 +283,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4">
                     <div class="footer__newslatter">
                         <h6>Subscribe</h6>
                         <p>Get latest updates and offers.</p>
@@ -381,17 +340,6 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/jquery.nicescroll.min.js"></script>
 <script src="js/main.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        total = 0.0;
-
-        $(".itemSmallSum").each(function(index, element) {
-            total = total + parseFloat(element.innerHTML.substring(1));
-        });
-        $("#totalSum").text("$" + total);
-    });
-
-</script>
 </body>
 
 </html>

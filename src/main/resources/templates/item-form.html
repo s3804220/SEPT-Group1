@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-security5">
 
 <head>
   <meta charset="UTF-8">
@@ -50,7 +51,7 @@
     </div>
   </div>
   <div class="offcanvas__logo">
-    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+    <a href="./"><img src="img/logo.png" alt=""></a>
   </div>
   <div id="mobile-menu-wrap"></div>
   <div class="offcanvas__option">
@@ -67,7 +68,8 @@
           <li>ENG</li>
         </ul>
       </li>
-      <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+      <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+      <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
     </ul>
   </div>
 </div>
@@ -94,7 +96,14 @@
                     <li>ENG</li>
                   </ul>
                 </li>
-                <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                  <ul style="width: 180px;">
+                    <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                    <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </div>
             <div class="header__logo">
@@ -122,19 +131,10 @@
         <nav class="header__menu mobile-menu">
           <ul>
             <li><a href="./">Home</a></li>
-            <li><a href="./about.html">About</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/shop">Shop</a></li>
-            <li><a href="#">Pages</a>
-              <ul class="dropdown">
-                <li><a href="/shoping-cart">Shoping Cart</a></li>
-                <li><a href="./checkout.html">Check Out</a></li>
-                <li><a href="./wisslist.html">Wisslist</a></li>
-                <li><a href="./Class.html">Class</a></li>
-                <li><a href="./blog-details.html">Blog Details</a></li>
-              </ul>
-            </li>
-            <li><a href="./blog.html">Blog</a></li>
-            <li><a href="./contact.html">Contact</a></li>
+            <li><a href="/shoping-cart">Cart</a></li>
+            <li><a href="/contact">Contact</a></li>
             <li class="active"><a href="/admin-panel">Admin Panel</a></li>
           </ul>
         </nav>
