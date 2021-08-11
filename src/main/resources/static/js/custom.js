@@ -1,3 +1,6 @@
+document.getElementById("save-button").addEventListener("click", checkInput)
+document.addEventListener('DOMContentLoaded',loadInfo)
+
 function checkInput(){
     //Get the inputs entered by the admin from the HTML form elements
     let itemname = document.getElementById('item-name').value
@@ -129,51 +132,12 @@ function uploadImg(id){
     })
 }
 
-function getItemList(){
-    let itemList = document.getElementById('item-list-rows')
-    itemList.innerHTML = ''
-
-    //Get a list of all items in the database
-    fetch('http://localhost:8080/items')
-        .then(res => res.json())
-        .then(json => {
-            for (let i = 0; i < json.length; i++) {
-
-                //Get an array of image names by splitting the string of names in the database
-                let images = json[i].itemImage.split("|")
-
-                //For each item in the list, add a new HTML table row with the corresponding information
-                //the last two elements are buttons to edit and delete that item
-                itemList.innerHTML += `<tr>
-                            <td class="product__cart__item">
-                                <div class="product__cart__item__pic">
-                                    <img src="img/upload/item${json[i].id}/${images[0]}" alt="" style="width: 100px;height: 100px">
-                                </div>
-                                <div class="product__cart__item__text">
-                                    <h6>${json[i].itemName}</h6>
-                                </div>
-                                </td>
-                            <td class="cart__price">$ ${json[i].itemPrice}</td>
-                            <td class="cart__stock">Available</td>
-                            <td class="cart__btn"><button class="primary-btn" onclick="redirectEdit(${json[i].id})">Edit</button></td>
-                            <td class="cart__close"><i class="bi bi-x-circle-fill" style="color: #e60000; font-size: 2em; margin-left: -50px; cursor: pointer;" onclick="deleteItem(${json[i].id})"></i></td></tr>`
-            }
-        })
-}
-
-function redirectEdit(id){
-    //Redirect the admin to the form to edit the item with the specified ID
-    if (id) {
-        window.location = '/item-form?id=' + id
-    }
-}
-
 function loadInfo(){
     let params = new URLSearchParams(document.location.search.substring(1))
     let itemid = params.get("id")
 
     //Check if there is an ID parameter in the URL
-    if(itemid){
+    if(itemid && !isNaN(Number(itemid))){
         let id = document.getElementById('item-input-id')
         let name = document.getElementById('item-name')
         let description = document.getElementById('item-description')
@@ -195,21 +159,5 @@ function loadInfo(){
                     <br>Or you can proceed to add a new item <a href="/item-form" class="item-link">here</a>.</span>`
                 }
             })
-    }
-}
-
-function deleteItem(id){
-    //Display a pop-up confirmation box to the admin
-    let confirmation = confirm("Are you sure you want to delete this item?")
-
-    //If okay is selected, send a DELETE request to delete the item with the specified ID from the database
-    if(confirmation){
-        fetch('http://localhost:8080/items/'+id, {
-            method: "DELETE"
-        }) //Also delete all image files of the specified item from the server
-            .then(() => fetch('http://localhost:8080/deletefiles/'+id, {
-            method: "DELETE"
-        })) //Then reload the list on the page to show the updated list
-            .then(() => getItemList())
     }
 }

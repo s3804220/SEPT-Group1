@@ -285,7 +285,7 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn" onclick="alert('Order placed')">PLACE ORDER</button>
+                                <button type="submit" class="site-btn" id="order-button">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -381,17 +381,8 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/jquery.nicescroll.min.js"></script>
 <script src="js/main.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        total = 0.0;
+<script src="js/checkout.js"></script>
 
-        $(".itemSmallSum").each(function(index, element) {
-            total = total + parseFloat(element.innerHTML.substring(1));
-        });
-        $("#totalSum").text("$" + total);
-    });
-
-</script>
 </body>
 
 </html>

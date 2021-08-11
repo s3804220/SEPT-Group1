@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
-<body onload="getItemList()">
+<body>
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -180,7 +180,20 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody id="item-list-rows">
+                        <tbody id="item-list-rows" th:each="item : ${itemList}">
+                        <tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img th:src="@{img/upload/item{id}/{name}(id=${item.id},name=${#strings.arraySplit(item.itemImage, '|')[0]})}" alt="" style="width: 100px;height: 100px">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6 th:text="${item.itemName}"></h6>
+                                </div>
+                            </td>
+                            <td class="cart__price" th:text="${'$ ' + item.itemPrice}"></td>
+                            <td class="cart__stock">Available</td>
+                            <td class="cart__btn"><a th:href="@{/item-form(id=${item.id})}"><button class="primary-btn">Edit</button></a></td>
+                            <td class="cart__close"><i class="bi bi-x-circle-fill delete-button" style="color: #e60000; font-size: 2em; margin-left: -50px; cursor: pointer;" th:attr="data-itemid=${item.id}"></i></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -276,7 +289,7 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/jquery.nicescroll.min.js"></script>
 <script src="js/main.js"></script>
-<script src="js/custom.js"></script>
+<script src="js/item-list.js"></script>
 </body>
 
 </html>
