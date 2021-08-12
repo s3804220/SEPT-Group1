@@ -32,20 +32,7 @@ public class LoginController {
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, update their top-right cart
-            //and redirect to home page
-            Account loggedInAcc = (Account)auth.getPrincipal();
-            Long userId = loggedInAcc.getId();
-
-            Account user = accountService.getAccountById(userId);
-            List<Cart> cartList = cartService.getAllCarts(user);
-
-            cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
-            }
-            model.addAttribute("cartSum",cartSum);
-            model.addAttribute("cartQty",cartQty);
+            //If the user is already logged in, redirect to home page
             return "redirect:/";
         }
         model.addAttribute("cartSum",cartSum);

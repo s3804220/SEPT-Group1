@@ -5,6 +5,7 @@ import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,19 +41,15 @@ public class WebController {
         float cartSum = 0;
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try{
-            Account loggedInAcc = (Account)auth.getPrincipal();
-            Long userId = loggedInAcc.getId();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
 
-            Account user = accountService.getAccountById(userId);
-            List<Cart> cartList = cartService.getAllCarts(user);
+        Account user = accountService.getAccountById(userId);
+        List<Cart> cartList = cartService.getAllCarts(user);
 
-            cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
-            }
-        }catch (ClassCastException e){
-            System.out.println("Not account");
+        cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
@@ -64,7 +61,8 @@ public class WebController {
         float cartSum = 0;
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try{
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            //If the user is already logged in, update their top-right cart info
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
 
@@ -75,8 +73,6 @@ public class WebController {
             for (Cart cart : cartList) {
                 cartSum += cart.getSmallSum();
             }
-        }catch (ClassCastException e){
-            System.out.println("Not account");
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
@@ -88,7 +84,8 @@ public class WebController {
         float cartSum = 0;
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try{
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            //If the user is already logged in, update their top-right cart info
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
 
@@ -99,8 +96,6 @@ public class WebController {
             for (Cart cart : cartList) {
                 cartSum += cart.getSmallSum();
             }
-        }catch (ClassCastException e){
-            System.out.println("Not account");
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);

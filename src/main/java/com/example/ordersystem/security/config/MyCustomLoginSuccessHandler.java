@@ -19,11 +19,14 @@ public class MyCustomLoginSuccessHandler extends SavedRequestAwareAuthentication
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("url_prior_login");
-            if (redirectUrl != null) {
-                // we do not forget to clean this attribute from session
+            if (redirectUrl != null && !redirectUrl.contains("user/update")) {
+                // Clean this attribute from session
                 session.removeAttribute("url_prior_login");
                 // then we redirect
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+            } else if (redirectUrl != null) {
+                session.removeAttribute("url_prior_login");
+                super.onAuthenticationSuccess(request, response, authentication);
             } else {
                 super.onAuthenticationSuccess(request, response, authentication);
             }

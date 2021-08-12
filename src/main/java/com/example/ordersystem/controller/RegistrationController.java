@@ -57,7 +57,8 @@ public class RegistrationController {
         float cartSum = 0;
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try{
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            //If the user is already logged in, update their top-right cart info
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
 
@@ -68,8 +69,6 @@ public class RegistrationController {
             for (Cart cart : cartList) {
                 cartSum += cart.getSmallSum();
             }
-        }catch (ClassCastException e){
-            System.out.println("Not account");
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
