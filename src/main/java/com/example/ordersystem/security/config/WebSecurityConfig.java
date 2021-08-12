@@ -37,12 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin-panel").hasAuthority("ADMIN")
                 .antMatchers("/item-form").hasAuthority("ADMIN")
                 .antMatchers("/item-list").hasAuthority("ADMIN")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/orderlist").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(successHandler())
                 .failureUrl("/login?error=true")
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied")
         ;
         http
                 .headers()

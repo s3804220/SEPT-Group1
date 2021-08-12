@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -100,6 +101,29 @@ public class WebController {
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
         return "contact";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessPage(ModelMap model){
+        float cartSum = 0;
+        int cartQty = 0;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            //If the user is already logged in, update their top-right cart info
+            Account loggedInAcc = (Account)auth.getPrincipal();
+            Long userId = loggedInAcc.getId();
+
+            Account user = accountService.getAccountById(userId);
+            List<Cart> cartList = cartService.getAllCarts(user);
+
+            cartQty = cartList.size();
+            for (Cart cart : cartList) {
+                cartSum += cart.getSmallSum();
+            }
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
+        return "access-denied";
     }
 
 }
