@@ -43,8 +43,8 @@
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="cart__price">Cart: <span>$0.00</span></div>
+            <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
@@ -112,8 +112,8 @@
                                 <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                                <div class="cart__price">Cart: <span>$0.00</span></div>
+                                <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                                     </td>
                                     <td>
                                         <button class="cart__close" type="submit" style="width: 56px; height: 46px">
-                                            <span class="icon_archive"></span>
+                                            <i class="fa fa-spinner"></i>
                                             <!-- /${item.shopId}/${item.amount}-->
                                         </button>
                                     </td>
@@ -230,11 +230,6 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="continue__btn">
                             <a href="/shop">Continue Shopping</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="continue__btn update__btn">
-                            <a><i class="fa fa-spinner"></i> Update cart</a>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,9 @@ package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
+import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.service.AccountService;
+import com.example.ordersystem.service.CartService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.List;
 @AllArgsConstructor
 public class RegistrationController {
     private AccountService accountService;
+    @Autowired
+    private CartService cartService;
     
     @Autowired
     public void setAccountService(AccountService accountService) {
@@ -44,6 +48,25 @@ public class RegistrationController {
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String getWelcomePage(ModelMap model){
         model.addAttribute("account", new Account());
+        float cartSum = 0;
+        int cartQty = 0;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        try{
+            Account loggedInAcc = (Account)auth.getPrincipal();
+            Long userId = loggedInAcc.getId();
+
+            Account user = accountService.getAccountById(userId);
+            List<Cart> cartList = cartService.getAllCarts(user);
+
+            cartQty = cartList.size();
+            for (Cart cart : cartList) {
+                cartSum += cart.getSmallSum();
+            }
+        }catch (ClassCastException e){
+            System.out.println("Not account");
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
         return "index";
     }
 

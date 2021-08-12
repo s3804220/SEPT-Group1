@@ -54,6 +54,15 @@ public class OrderController {
         List<Cart> cartList = cartService.getAllCarts(user);
         model.addAttribute("cartItems", cartList);
 
+        float cartSum = 0;
+        int cartQty = 0;
+        cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
+
         return "checkout";
     }
     

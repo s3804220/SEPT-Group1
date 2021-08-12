@@ -43,8 +43,8 @@
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="cart__price">Cart: <span>$0.00</span></div>
+            <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
@@ -112,8 +112,8 @@
                                 <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                                <div class="cart__price">Cart: <span>$0.00</span></div>
+                                <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -239,7 +239,7 @@
                                 <li
                                         th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
-                                    <a th:href="@{?page={page}(page = ${pageButton})}" th:text=${pageButton}></a>
+                                    <a th:href="@{?page={page}(page = ${pageButton})}" th:text="${pageButton}"></a>
                                 </li>
                             </th:block>
                             <li>
@@ -255,7 +255,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="shop__last__text">
                         <span>Current page  </span>
-                        <span th:text=${pagination.page}></span>
+                        <span th:text="${pagination.page}"></span>
                     </div>
                 </div>
             </div>

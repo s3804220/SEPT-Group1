@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -46,6 +47,13 @@ public class CartController {
 
         Account user = accountService.getAccountById(userId);
         List<Cart> cartList = cartService.getAllCarts(user);
+        float cartSum = 0;
+        int cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
         model.addAttribute("cartItems", cartList);
 
         return "shoping-cart";
