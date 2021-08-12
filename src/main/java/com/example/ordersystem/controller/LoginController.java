@@ -32,7 +32,8 @@ public class LoginController {
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is logged in
+            //If the user is already logged in, update their top-right cart
+            //and redirect to home page
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
 

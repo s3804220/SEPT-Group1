@@ -8,6 +8,7 @@ import com.example.ordersystem.service.CartService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,11 @@ public class RegistrationController {
     @RequestMapping(value="registration", method=RequestMethod.GET)
     public String getForm(ModelMap model){
         model.addAttribute("account", new Account());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            //If user is already logged in, redirect to home page
+            return "redirect:/";
+        }
         return "registration";
     }
 
