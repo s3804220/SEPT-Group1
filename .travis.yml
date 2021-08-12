@@ -1,29 +1,21 @@
 language: java
-dist: xenial
-os: linux
-sudo: enabled
+dist: trusty
+jdk:
+ - openjdk11
 before_install:
-  - sudo apt-get update
-  - sudo apt-get --yes remove postgresql\*
-  - sudo apt-get install -y postgresql-11 postgresql-client-11
-  - sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
-  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
-  - sudo service postgresql restart 11
   - chmod +x mvnw
+os:
+  - linux
+sudo: enabled
+addons:
+  postgresql: "13.3"
+before_script:
+  - psql -c "create database testsystem;" -U postgres -p 5433
+  - sudo -u postgres psql -c "ALTER ROLE postgres WITH password 'super123'"
 services:
   - postgresql
-
-addons:
-  # Use a different PostgreSQL version than the default:
-  postgresql: '11'
-
-#env:
-#  global:
-#    - PGUSER=postgres
-#    - PGPASSWORD=super123
-#    - PGPORT=5432
-before_script:
-#  - psql -c "CREATE USER postgres WITH PASSWORD 'super123';" -U postgres -p 5432
-  - psql -c 'create database testsystem' -U postgres -p 5432
-  - sudo -u postgres psql -c "ALTER ROLE postgres WITH password 'super123'"
-script: mvn clean verify
+install:
+ - mvn -N io.takari:maven:wrapper
+ - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+ - mvn clean verify
