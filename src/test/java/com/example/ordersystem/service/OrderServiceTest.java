@@ -56,7 +56,7 @@ public class OrderServiceTest {
 	@Test
 	public void testAddOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
@@ -68,7 +68,7 @@ public class OrderServiceTest {
 	@Test
 	public void testConfirmOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
@@ -87,7 +87,7 @@ public class OrderServiceTest {
 	@Test
 	public void testUnconfirmOrder() {
 		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
-		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
@@ -110,9 +110,9 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		Account testUser2 = new Account("Alley", "Cat", "112 Testing Lane", "0933684439", "test2@gmail.com", "password2", AccountRole.USER);
 		accountService.signUpAccount(testUser2);
-		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
 		itemService.saveItem(testItem1);
-		Item testItem2 = new Item("testCake2", "Second test", "product-2.jpg", new BigDecimal("12.00"));
+		Item testItem2 = new Item("testCake2", "Second test", "product-2.jpg", new BigDecimal("12.00"),"Cake",true);
         itemService.saveItem(testItem2);
         cartService.addItem(testItem1.getId(), 5, testUser1);
 		orderService.addOrder(testUser1);

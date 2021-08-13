@@ -48,8 +48,8 @@ public class DbInitializer implements CommandLineRunner {
 
 //        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
-        Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("31.00"));
-        Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("32.00"));
+        Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("31.00"), "Cupcake",true);
+        Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("32.00"),"Cupcake",true);
 
         itemService.saveItem(item1);
         itemService.saveItem(item2);

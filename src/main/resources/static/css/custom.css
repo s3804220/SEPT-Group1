@@ -62,3 +62,10 @@
 .admin-btn a{
     color: #fff;
 }
+.checkout__input input[type=radio] {
+    margin-right: 0px;
+    border: 0px;
+    max-width: 10%;
+    height: 2em;
+    display: inline-block;
+}

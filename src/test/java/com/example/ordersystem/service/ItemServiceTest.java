@@ -31,7 +31,7 @@ public class ItemServiceTest {
         //Delete all items in the database before testing
         itemRepository.deleteAll();
         //Add new item before each test case
-        Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"));
+        Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"),"Hotdog",true);
         itemService.saveItem(newItem);
     }
 
@@ -47,7 +47,7 @@ public class ItemServiceTest {
         assertEquals("Hot dog", itemService.getItem(1L).get().getItemName());
 
         //Add another item with special characters for a similar test
-        Item newItem2 = new Item("Pie","Yummy pie!!!!&%%%w0w=*","food.png|image.jpg",new BigDecimal("7"));
+        Item newItem2 = new Item("Pie","Yummy pie!!!!&%%%w0w=*","food.png|image.jpg",new BigDecimal("7"),"Pie",true);
         itemService.saveItem(newItem2);
         assertEquals(2,itemService.getAllItems().size());
         assertEquals(newItem2.getItemDescription(), itemService.getItem(2L).get().getItemDescription());
@@ -114,9 +114,9 @@ public class ItemServiceTest {
     @Test
     public void getItemsListTests(){
         //Add two more items
-        Item newItem2 = new Item("Pie","Yummy pie","food.png|image.jpg",new BigDecimal("7"));
+        Item newItem2 = new Item("Pie","Yummy pie","food.png|image.jpg",new BigDecimal("7"),"Pie",true);
         itemService.saveItem(newItem2);
-        Item newItem3 = new Item("Chocolate cake","Sweet and dark","choco.png",new BigDecimal("12"));
+        Item newItem3 = new Item("Chocolate cake","Sweet and dark","choco.png",new BigDecimal("12"),"Cake",true);
         itemService.saveItem(newItem3);
 
         //Test that the list reflects the correct size
@@ -130,6 +130,8 @@ public class ItemServiceTest {
         assertEquals("Yummy pie",itemService.getAllItems().get(0).getItemDescription());
         assertEquals("food.png|image.jpg",itemService.getAllItems().get(0).getItemImage());
         assertEquals(new BigDecimal("7.00"),itemService.getAllItems().get(0).getItemPrice());
+        assertEquals("Pie",itemService.getAllItems().get(0).getCategory());
+        assertTrue(itemService.getAllItems().get(0).isAvailability());
 
         //Test that the list is updated correctly if there is no item in the database
         itemRepository.deleteAll();
@@ -138,8 +140,8 @@ public class ItemServiceTest {
 
     @Test
     public void findTotalTests() {
-        Item testItem1 = new Item("testCake1", "Frist test", "product-1.jpg", new BigDecimal("11.00"));
-        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"));
+        Item testItem1 = new Item("testCake1", "Frist test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
+        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"),"Cake",true);
 
         itemService.saveItem(testItem1);
         itemService.saveItem(testItem2);
@@ -153,8 +155,8 @@ public class ItemServiceTest {
 
     @Test
     public void findListPaging() {
-        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"));
-        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"));
+        Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
+        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"),"Cake",true);
 
         itemService.saveItem(testItem1);
         itemService.saveItem(testItem2);
