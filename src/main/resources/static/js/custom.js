@@ -69,6 +69,8 @@ function saveItem() {
     let itemname = document.getElementById('item-name').value
     let description = document.getElementById('item-description').value
     let price = document.getElementById('item-price').value
+    let category = document.getElementById('item-category').value
+    let availability = document.querySelector('input[name="item-availability"]:checked').value
     let fileinput = document.getElementById('item-images')
     let filenames = ''
 
@@ -89,7 +91,7 @@ function saveItem() {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({itemName: itemname,itemDescription: description, itemPrice: price, itemImage: filenames})
+            body: JSON.stringify({itemName: itemname,itemDescription: description,itemPrice: price,category: category,availability:availability,itemImage: filenames})
         }) //Get the newly added item's ID from the response
             .then(res => res.json())
             // Call function to upload all image files to a directory corresponding with that item's ID on the server
@@ -105,7 +107,7 @@ function saveItem() {
                 'Content-Type': 'application/json'
             },
             method: "PUT",
-            body: JSON.stringify({id:id, itemName: itemname,itemDescription: description, itemPrice: price, itemImage: filenames})
+            body: JSON.stringify({id:id,itemName: itemname,itemDescription: description,itemPrice: price,category: category,availability:availability,itemImage: filenames})
         }).then(res => res.json())
             .then(itemid => uploadImg(itemid))
             .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
@@ -142,6 +144,7 @@ function loadInfo(){
         let name = document.getElementById('item-name')
         let description = document.getElementById('item-description')
         let price = document.getElementById('item-price')
+        let category = document.getElementById('item-category')
 
         //Get information for the item with the specified ID in the database
         fetch('http://localhost:8080/items/'+itemid)
@@ -153,6 +156,14 @@ function loadInfo(){
                     name.value =  json.itemName
                     description.value = json.itemDescription
                     price.value = json.itemPrice
+                    category.value = json.category
+                    $("#item-category").niceSelect('update')
+                    if(json.availability){
+                        document.getElementById('available-yes').checked = true
+                    }else{
+                        document.getElementById('available-yes').checked = false
+                        document.getElementById('available-no').checked = true
+                    }
                 }else{
                     //If the item with that ID cannot be found, display a message to the admin
                     document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
