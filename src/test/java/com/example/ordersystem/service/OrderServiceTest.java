@@ -1,7 +1,9 @@
 package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.*;
+import com.example.ordersystem.repository.AccountRepository;
 import com.example.ordersystem.repository.CartRepository;
+import com.example.ordersystem.repository.ItemRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.example.ordersystem.repository.OrderRepository;
+import org.springframework.util.FileSystemUtils;
 
 import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -42,6 +47,12 @@ public class OrderServiceTest {
     
     @Autowired
     private ItemService itemService;
+
+	@Autowired
+	private ItemRepository itemRepository;
+
+	@Autowired
+	private AccountRepository accountRepository;
     
     @Before
     public void setUp() throws Exception {
@@ -51,6 +62,10 @@ public class OrderServiceTest {
     @After
     public void tearDown() throws Exception {
         orderRepository.deleteAll();
+        cartRepository.deleteAll();
+        itemRepository.deleteAll();
+        accountRepository.deleteAll();
+		FileSystemUtils.deleteRecursively(Paths.get("target\\classes\\static\\img\\upload".replace("\\", File.separator)).toFile());
     }
     
 	@Test

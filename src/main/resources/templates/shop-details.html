@@ -155,7 +155,7 @@
                 <div class="breadcrumb__links">
                     <a href="./">Home</a>
                     <a href="/shop">Shop</a>
-                    <span>Sweet autumn leaves</span>
+                    <span th:text="${shopDetail.itemName}"></span>
                 </div>
             </div>
         </div>
@@ -190,13 +190,12 @@
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <div class="product__label">Cupcake</div>
+                    <div class="product__label" th:text="${shopDetail.category}"></div>
                     <h4 th:text="${shopDetail.itemName}"></h4>
-                    <h5 th:text="${shopDetail.itemPrice}"></h5>
+                    <h5 th:text="${'$'+shopDetail.itemPrice}"></h5>
                     <p th:text="${shopDetail.itemDescription}"></p>
 
-                    <div class="product__details__option">
-
+                    <div class="product__details__option" th:if="${shopDetail.availability}">
 
                         <div class="quantity">
                             <div class="pro-qty">
@@ -206,7 +205,10 @@
                         </div>
                         <input type="hidden" id="sid" name="sid" th:value="${shopDetail.id}">
                         <button type="submit" class="primary-btn" id="addCartBtn">Add to cart</button>
-
+                    </div>
+                    <div class="product__details__option" th:unless="${shopDetail.availability}">
+                        <p style="color: red;">This item is currently unavailable for order.<br>
+                        Please try again later!</p>
                     </div>
                 </div>
             </div>

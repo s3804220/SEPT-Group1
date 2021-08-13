@@ -5,8 +5,11 @@ import com.example.ordersystem.exception.account.EmailAlreadyTakenException;
 import com.example.ordersystem.exception.account.InvalidEmailFormatException;
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
+import com.example.ordersystem.repository.AccountRepository;
 import com.example.ordersystem.service.AccountService;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -25,7 +28,14 @@ import static org.junit.Assert.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AccountServiceTest {
     @Autowired
-     public AccountService accountService;
+    public AccountService accountService;
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @After
+    public void clearDatabase(){
+        accountRepository.deleteAll();
+    }
 
     @Test
     public void loadUserByUsername() {

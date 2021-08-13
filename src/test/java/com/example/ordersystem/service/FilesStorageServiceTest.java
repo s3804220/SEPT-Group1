@@ -24,8 +24,7 @@ public class FilesStorageServiceTest {
 
     @AfterEach
     public void clearFolder(){
-        FileSystemUtils.deleteRecursively(Paths.get("target\\classes\\static\\img\\upload\\item10".replace("\\",File.separator)).toFile());
-        FileSystemUtils.deleteRecursively(Paths.get("target\\classes\\static\\img\\upload\\item999".replace("\\",File.separator)).toFile());
+        FileSystemUtils.deleteRecursively(Paths.get("target\\classes\\static\\img\\upload".replace("\\",File.separator)).toFile());
     }
 
     @Test
