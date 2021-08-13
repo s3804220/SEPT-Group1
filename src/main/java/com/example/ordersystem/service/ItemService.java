@@ -3,6 +3,7 @@ package com.example.ordersystem.service;
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +37,19 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    //Get a list of all items sorted by ID
+    public List<Item> getAllItemsSortedId(){
+        return itemRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    }
+
     //Delete an item by ID
     public void deleteItem(Long id){
         itemRepository.deleteById(id);
+    }
+
+    public void changeAvailability(Long id){
+        Item item = getItem(id).get();
+        item.setAvailability(!item.isAvailability());
     }
 
     public int findTotal() {

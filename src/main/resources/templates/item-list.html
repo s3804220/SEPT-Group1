@@ -68,8 +68,11 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span
+                    class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href=""
+                                                                             sec:authentication="principal.firstName"></a>
+                <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -96,11 +99,16 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log
+                                    in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a
+                                        sec:authentication="principal.firstName"></a> <span
+                                        class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
-                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
-                                        <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update
+                                            Account</a></li>
+                                        <li><a class="logout" href="/logout" style="color:white"
+                                               target="_blank">Logout</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -175,7 +183,7 @@
                         <tr>
                             <th>Item</th>
                             <th>Unit Price</th>
-                            <th>Stock</th>
+                            <th>Status</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -184,16 +192,29 @@
                         <tr>
                             <td class="product__cart__item">
                                 <div class="product__cart__item__pic">
-                                    <img th:src="@{img/upload/item{id}/{name}(id=${item.id},name=${#strings.arraySplit(item.itemImage, '|')[0]})}" alt="" style="width: 100px;height: 100px">
+                                    <img th:src="@{img/upload/item{id}/{name}(id=${item.id},name=${#strings.arraySplit(item.itemImage, '|')[0]})}"
+                                         alt="" style="width: 100px;height: 100px">
                                 </div>
-                                <div class="product__cart__item__text">
+                                <div class="product__cart__item__text item-name-text-column">
                                     <h6 th:text="${item.itemName}"></h6>
                                 </div>
                             </td>
                             <td class="cart__price" th:text="${'$ ' + item.itemPrice}"></td>
-                            <td class="cart__stock">Available</td>
-                            <td class="cart__btn"><a th:href="@{/item-form(id=${item.id})}"><button class="primary-btn">Edit</button></a></td>
-                            <td class="cart__close"><i class="bi bi-x-circle-fill delete-button" style="color: #e60000; font-size: 2em; margin-left: -50px; cursor: pointer;" th:attr="data-itemid=${item.id}"></i></td></tr>
+                            <td class="cart__stock stock-column" th:if="${item.availability}" style="color: #1e7e34">Available<br>
+                                <a th:href="@{/items/setavailability/{id}(id=${item.id})}">
+                                    <button class="primary-btn unavailable-button">Make<br>unavailable</button>
+                                </a></td>
+                            <td class="cart__stock stock-column" th:if="${!item.availability}" style="color: red">Unavailable<br>
+                                <a th:href="@{/items/setavailability/{id}(id=${item.id})}">
+                                    <button class="primary-btn available-button">Make<br>available</button>
+                                </a></td>
+                            <td class="cart__btn"><a th:href="@{/item-form(id=${item.id})}">
+                                <button class="primary-btn">Edit</button>
+                            </a></td>
+                            <td class="cart__close"><i class="bi bi-x-circle-fill delete-button"
+                                                       style="color: #e60000; font-size: 2em; margin-left: -50px; cursor: pointer;"
+                                                       th:attr="data-itemid=${item.id}"></i></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -248,8 +269,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
-                    <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <p class="copyright__text text-white">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
+                        by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>
