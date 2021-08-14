@@ -75,7 +75,7 @@ public class OrderController {
         Account user = accountService.getAccountById(userId);
         orderService.addOrder(user);
 
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
     
     @RequestMapping(value="/orderlist", method=RequestMethod.GET)

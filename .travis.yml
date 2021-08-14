@@ -19,3 +19,9 @@ install:
  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
  - mvn clean verify
+
+
+#only: master
+#cache:
+ #directories:
+# - '$HOME/.m2/repository'

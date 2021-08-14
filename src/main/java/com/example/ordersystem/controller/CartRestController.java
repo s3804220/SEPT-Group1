@@ -19,7 +19,7 @@ public class CartRestController {
     @Autowired
     private AccountService accountService;
 
-//    @PostMapping("/shoping-cart/add")
+//    @PostMapping("/shopping-cart/add")
 //    public String addShopToCart(@RequestParam("sid") Long shopId,
 //                          @RequestParam("amount") int amount) {
 //
@@ -36,7 +36,7 @@ public class CartRestController {
 //        int addedAmount = cartService.addShop(shopId, amount, user);
 //
 //        System.out.println(amount+" items added!");
-//        return "/shoping-cart";
+//        return "/shopping-cart";
 //    }
 
 }

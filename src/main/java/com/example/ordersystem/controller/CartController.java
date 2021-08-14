@@ -38,8 +38,8 @@ public class CartController {
         this.accountService = accountService;
     }
 
-// List items in shoping cart
-    @GetMapping("/shoping-cart")
+// List items in shopping cart
+    @GetMapping("/shopping-cart")
     public String readDetail(ModelMap model) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
@@ -56,10 +56,10 @@ public class CartController {
         model.addAttribute("cartQty",cartQty);
         model.addAttribute("cartItems", cartList);
 
-        return "shoping-cart";
+        return "shopping-cart";
     }
 
-    @PostMapping("/shoping-cart/add")
+    @PostMapping("/shopping-cart/add")
     public String addItemToCart(@RequestParam("sid") Long itemId,
                                 @RequestParam("amount") int amount) {
 
@@ -70,17 +70,17 @@ public class CartController {
 
         int addedAmount = cartService.addItem(itemId, amount, user);
 
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 
-    @GetMapping("/shoping-cart/delete/{deleteId}")
+    @GetMapping("/shopping-cart/delete/{deleteId}")
     public String delete(@PathVariable(name = "deleteId") Long id) {
         cartService.deleteCart(id);
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 
 // Update amount of an item in cart
-    @PostMapping("/shoping-cart/update") ///{sid}/{amount}
+    @PostMapping("/shopping-cart/update") ///{sid}/{amount}
     public String update(@RequestParam(name = "shopId") Long itemId,
                          @RequestParam(name = "amount") int amount, HttpSession session) {
 
@@ -91,6 +91,6 @@ public class CartController {
 
         int smallSum = cartService.updateAmount(amount, itemId, user);
 
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 }
