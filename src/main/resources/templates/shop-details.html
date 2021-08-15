@@ -131,7 +131,7 @@
                         <li><a href="./">Home</a></li>
                         <li><a href="/about">About</a></li>
                         <li class="active"><a href="/shop">Shop</a></li>
-                        <li><a href="/shoping-cart">Cart</a></li>
+                        <li><a href="/shopping-cart">Cart</a></li>
                         <li><a href="/contact">Contact</a></li>
                         <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
@@ -167,8 +167,8 @@
 <!-- Shop Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
-        <form class="row" th:object="${shopDetail}" th:action="@{/shoping-cart/add}" method="post">
-            <!-- Connect to shoping-cart/insert -->
+        <form class="row" th:object="${shopDetail}" th:action="@{/shopping-cart/add}" method="post">
+            <!-- Connect to shopping-cart/insert -->
             <!--'shopDetail' took from ItemController-->
             <div class="col-lg-6">
                 <div class="product__details__img">

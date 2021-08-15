@@ -130,7 +130,7 @@
                         <li><a href="./">Home</a></li>
                         <li><a href="/about">About</a></li>
                         <li><a href="/shop">Shop</a></li>
-                        <li class="active"><a href="/shoping-cart">Cart</a></li>
+                        <li class="active"><a href="/shopping-cart">Cart</a></li>
                         <li><a href="/contact">Contact</a></li>
                         <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
@@ -183,7 +183,7 @@
                             <!--Iteration Begin-->
 
                             <tr th:each="shop : ${cartItems}">
-                                <form method="post" class="cart-form" th:action="@{/shoping-cart/update}">
+                                <form method="post" class="cart-form" th:action="@{/shopping-cart/update}">
                                 <!--                                        <div th:with="var=${item.shopPrice * item.amount}">-->
                                 <div th:with="product = ${shop.item}">
                                     <td class="product__cart__item">
@@ -191,7 +191,7 @@
                                             <img th:src="@{${'img/upload/item'+product.id+'/'+#strings.arraySplit(product.itemImage, '|')[0]}}" alt="" width="80" height="80">
                                         </div>
                                         <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
-                                        <div class="product__cart__item__text" style="padding-top: 30px">
+                                        <div class="product__cart__item__text" style="padding-top: 16px">
                                             <h6 th:text="${product.itemName}"></h6>
                                             <span>price: </span><span th:text="${product.itemPrice}"></span>
                                         </div>
@@ -208,13 +208,13 @@
                                     </td>
                                     <td class="cart__price itemSmallSum" th:text="${shop.getSmallSum}"></td>
                                     <td class="cart__close">
-                                        <a th:href="@{/shoping-cart/delete/{deleteId}(deleteId=${shop.id})}">
+                                        <a th:href="@{/shopping-cart/delete/{deleteId}(deleteId=${shop.id})}">
                                             <span class="icon_close"></span>
                                         </a>
                                     </td>
                                     <td>
                                         <button class="site-btn" type="submit" style="margin-left: 10px;border-radius: 90px;">
-                                            <i class="fa fa-spinner"></i>
+                                            <i class="fa fa-repeat"></i>
                                             <!-- /${item.shopId}/${item.amount}-->
                                         </button>
                                     </td>
