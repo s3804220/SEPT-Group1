@@ -16,6 +16,7 @@
                 <th>ID</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Functionalities</th>
             </tr>
         </thead>
         <tbody>
@@ -24,8 +25,9 @@
                 <td th:text="${account.getEmail()}"></td>
                 <td th:text="${account.getAccountRole()}"></td>
                 <td>
-                    <a th:href="@{/admin/account-management/make-admin/{id}(id=${account.getId()})}">Make Admin</a>
-                    <a th:href="@{/admin/account-management/revoke-admin/{id}(id=${account.getId()})}">Revoke Admin</a>
+                    <a th:href="@{/admin/account-management/make-admin/{id}(id=${account.getId()})}" th:style="'padding-right:10px;'">Make Admin</a>
+                    <a th:href="@{/admin/account-management/revoke-admin/{id}(id=${account.getId()})}" th:style="'padding-right:10px;'">Revoke Admin</a>
+                    <a th:href="@{/admin/account-management/account-details/{id}(id=${account.getId()})}" th:style="'padding-right:10px;'">View Details</a>
                 </td>
             </tr>
         </tbody>
