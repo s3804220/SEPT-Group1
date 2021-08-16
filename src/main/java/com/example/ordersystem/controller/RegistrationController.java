@@ -152,8 +152,6 @@ public class RegistrationController {
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
         model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
         return "order_history";
     }
