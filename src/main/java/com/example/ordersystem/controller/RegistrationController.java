@@ -5,6 +5,7 @@ import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
+import com.example.ordersystem.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class RegistrationController {
     private AccountService accountService;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private OrderService orderService;
     
     @Autowired
     public void setAccountService(AccountService accountService) {
@@ -131,5 +134,27 @@ public class RegistrationController {
     public String revokeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.USER);
         return "redirect:/admin/account-management";
+    }
+
+    @RequestMapping(value="order-history", method = RequestMethod.GET)
+    public String getOrderHistory(ModelMap model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        float cartSum = 0;
+        int cartQty = 0;
+        Account user = accountService.getAccountById(userId);
+        List<Cart> cartList = cartService.getAllCarts(user);
+
+        cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
+        model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
+        return "order_history";
     }
 }

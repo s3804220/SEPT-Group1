@@ -1,5 +1,6 @@
 package com.example.ordersystem.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,11 +25,13 @@ public class OrderService {
 
     private CartRepository cartRepository;
     private OrderRepository orderRepository;
-    
+    private AccountService accountService;
+
     @Autowired
-    public OrderService(CartRepository cartRepository, OrderRepository orderRepository) {
+    public OrderService(CartRepository cartRepository, OrderRepository orderRepository, AccountService accountService) {
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
+        this.accountService = accountService;
     }
     
     public int addOrder(Account user){
@@ -62,5 +65,15 @@ public class OrderService {
     
     public List<Order> getAllOrders() {
     	return orderRepository.findAll();
+    }
+
+    public List<Order> getOrdersByAccountId(Long id){
+        List<Order> accountOrders = new ArrayList<>();
+        for(Order order : getAllOrders()){
+            if (order.getAccount().getId().equals(id)){
+                accountOrders.add(order);
+            }
+        }
+        return accountOrders;
     }
 }

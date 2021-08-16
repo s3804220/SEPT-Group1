@@ -40,14 +40,14 @@ public class DbInitializer implements CommandLineRunner {
 //        }
 //        this.accountRepository.deleteAll();
 
-//        //Initialize admin account
-//        Account admin = new Account("John", "Doe", "123 Tech Street", "0204648395", "admin@gmail.com", "admin", AccountRole.ADMIN);
-//        accountService.signUpAccount(admin);
-//        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
-//
-//        //Initialize user account
-//        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
-//        accountService.signUpAccount(user1);
+        //Initialize admin account
+        Account admin = new Account("John", "Doe", "123 Tech Street", "0204648395", "admin@gmail.com", "admin", AccountRole.ADMIN);
+        accountService.signUpAccount(admin);
+        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
+
+        //Initialize user account
+        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
+        accountService.signUpAccount(user1);
 
 //        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
@@ -75,6 +75,7 @@ public class DbInitializer implements CommandLineRunner {
             String[] strings = item.getItemImage().split("[|]");
             for(String imgname: strings){
                 byte[] byteArray = Files.readAllBytes(Paths.get("src\\main\\resources\\static\\img\\shop\\"+imgname.replace("\\", File.separator)));
+//                byte[] byteArray = Files.readAllBytes(Paths.get("src/main/resources/static/img/shop/"+imgname.replace("/", File.separator)));
                 MockMultipartFile file = new MockMultipartFile("file", imgname, "multipart/form-data", byteArray);
                 filesStorageService.save(file, item.getId().toString());
             }
