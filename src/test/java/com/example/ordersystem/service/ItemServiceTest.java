@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //Reset auto-generated ID back to 1 for accurate testing environment
 @SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="ALTER TABLE items ALTER COLUMN id RESTART WITH 1"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="ALTER TABLE items ALTER COLUMN id RESTART WITH 1")
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE"),
+        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE")
 })
 @SpringBootTest
 public class ItemServiceTest {
