@@ -1,8 +1,20 @@
 document.getElementById("save-button").addEventListener("click", checkInput)
 document.addEventListener('DOMContentLoaded',loadInfo)
 
+var replaceImg = false
+$('input:radio[name="image-upload"]').on('click change', function(e) {
+    if(e.currentTarget.value==="no"){
+        document.getElementById('image-upload-btn').style.display = "block"
+        replaceImg = true
+    }else {
+        document.getElementById('image-upload-btn').style.display = "none"
+        replaceImg = false
+    }
+});
+
 function checkInput(){
     //Get the inputs entered by the admin from the HTML form elements
+    let id = document.getElementById('item-input-id').value
     let itemname = document.getElementById('item-name').value
     let nameMessage = document.getElementById('name-check')
     let description = document.getElementById('item-description').value
@@ -43,35 +55,37 @@ function checkInput(){
     }else {
         priceMessage.style.display = "none"
     }
-    if(fileinput.files.length===0){
-        fileMessage.style.display = "block"
-        fileMessage.style.color = "red"
-        fileMessage.innerHTML = 'Please select at least 1 file!'
-        validated = false
-    }else if(fileinput.files.length>5){
-        fileMessage.style.display = "block"
-        fileMessage.style.color = "red"
-        fileMessage.innerHTML = 'Please select a maximum of 5 images!'
-        validated = false
-    } else {
-        for (let i = 0; i < fileinput.files.length; ++i) {
-            let filename = fileinput.files.item(i).name
-            let array = filename.split('.')
-            const validExtensions = ["jpg", "jpeg", "bmp", "gif", "png"]
-            if(array.length===1 || ( array[0] === "" && array.length === 2 )){
-                fileMessage.style.display = "block"
-                fileMessage.style.color = "red"
-                fileMessage.innerHTML = 'Please select a file with a valid name and extension!'
-                validated = false
-                break
-            }else if(!validExtensions.includes(array.pop().toLowerCase())){
-                fileMessage.style.display = "block"
-                fileMessage.style.color = "red"
-                fileMessage.innerHTML = 'Please select image files only!'
-                validated = false
-                break
-            }else{
-                fileMessage.style.display = "none"
+    if(!id || id && replaceImg){
+        if(fileinput.files.length===0){
+            fileMessage.style.display = "block"
+            fileMessage.style.color = "red"
+            fileMessage.innerHTML = 'Please select at least 1 file!'
+            validated = false
+        }else if(fileinput.files.length>5){
+            fileMessage.style.display = "block"
+            fileMessage.style.color = "red"
+            fileMessage.innerHTML = 'Please select a maximum of 5 images!'
+            validated = false
+        } else {
+            for (let i = 0; i < fileinput.files.length; ++i) {
+                let filename = fileinput.files.item(i).name
+                let array = filename.split('.')
+                const validExtensions = ["jpg", "jpeg", "bmp", "gif", "png"]
+                if(array.length===1 || ( array[0] === "" && array.length === 2 )){
+                    fileMessage.style.display = "block"
+                    fileMessage.style.color = "red"
+                    fileMessage.innerHTML = 'Please select a file with a valid name and extension!'
+                    validated = false
+                    break
+                }else if(!validExtensions.includes(array.pop().toLowerCase())){
+                    fileMessage.style.display = "block"
+                    fileMessage.style.color = "red"
+                    fileMessage.innerHTML = 'Please select image files only!'
+                    validated = false
+                    break
+                }else{
+                    fileMessage.style.display = "none"
+                }
             }
         }
     }
@@ -120,16 +134,30 @@ function saveItem() {
     }else{
         //If there is a specified ID, update the item with that ID in the database with a PUT request
         //the rest of the process is similar to above
-        fetch('http://localhost:8080/items', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "PUT",
-            body: JSON.stringify({id:id,itemName: itemname,itemDescription: description,itemPrice: price,category: category,availability:availability,itemImage: filenames})
-        }).then(res => res.json())
-            .then(itemid => uploadImg(itemid))
-            .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
+        fetch('http://localhost:8080/items/images/'+id)
+            .then(res => res.text())
+            .then(images => {
+                if(!replaceImg){
+                    //If the Admin wants to keep old images, fetch and store the old image names so they will not get replaced with new ones
+                    filenames = images
+                }else{
+                    //If the Admin wants to upload new images, then delete all old images
+                    fetch('http://localhost:8080/deletefiles/'+id, {
+                        method: "DELETE"
+                    })
+                }
+            }).then(() => {
+            fetch('http://localhost:8080/items', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "PUT",
+                body: JSON.stringify({id:id,itemName: itemname,itemDescription: description,itemPrice: price,category: category,availability:availability,itemImage: filenames})
+            }).then(res => res.json())
+                .then(itemid => uploadImg(itemid))
+                .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
+        })
     }
 
 }
@@ -158,36 +186,46 @@ function loadInfo(){
     let itemid = params.get("id")
 
     //Check if there is an ID parameter in the URL
-    if(itemid && !isNaN(Number(itemid))){
-        let id = document.getElementById('item-input-id')
-        let name = document.getElementById('item-name')
-        let description = document.getElementById('item-description')
-        let price = document.getElementById('item-price')
-        let category = document.getElementById('item-category')
+    if(itemid){
+        document.getElementById('upload-choice').style.display = "block"
+        document.getElementById('image-upload-btn').style.display = "none"
 
-        //Get information for the item with the specified ID in the database
-        fetch('http://localhost:8080/items/'+itemid)
-            .then(res => res.json())
-            .then(json => {
-                //If the item exists and there is information to display, display it in the form for admin to edit
-                if(json){
-                    id.value = json.id
-                    name.value =  json.itemName
-                    description.value = json.itemDescription
-                    price.value = json.itemPrice
-                    category.value = json.category
-                    $("#item-category").niceSelect('update')
-                    if(json.availability){
-                        document.getElementById('available-yes').checked = true
+        if(!isNaN(Number(itemid))){
+            let id = document.getElementById('item-input-id')
+            let name = document.getElementById('item-name')
+            let description = document.getElementById('item-description')
+            let price = document.getElementById('item-price')
+            let category = document.getElementById('item-category')
+
+            //Get information for the item with the specified ID in the database
+            fetch('http://localhost:8080/items/'+itemid)
+                .then(res => res.json())
+                .then(json => {
+                    //If the item exists and there is information to display, display it in the form for admin to edit
+                    if(json){
+                        id.value = json.id
+                        name.value =  json.itemName
+                        description.value = json.itemDescription
+                        price.value = json.itemPrice
+                        category.value = json.category
+                        $("#item-category").niceSelect('update')
+                        if(json.availability){
+                            document.getElementById('available-yes').checked = true
+                        }else{
+                            document.getElementById('available-yes').checked = false
+                            document.getElementById('available-no').checked = true
+                        }
                     }else{
-                        document.getElementById('available-yes').checked = false
-                        document.getElementById('available-no').checked = true
-                    }
-                }else{
-                    //If the item with that ID cannot be found, display a message to the admin
-                    document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
+                        //If the item with that ID cannot be found, display a message to the admin
+                        document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
                     <br>Or you can proceed to add a new item <a href="/item-form" class="item-link">here</a>.</span>`
-                }
-            })
+                    }
+                })
+        }else{
+            //If the item with that ID cannot be found, display a message to the admin
+            document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
+                    <br>Or you can proceed to add a new item <a href="/item-form" class="item-link">here</a>.</span>`
+        }
+
     }
 }

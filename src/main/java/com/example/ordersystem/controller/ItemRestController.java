@@ -46,4 +46,9 @@ public class ItemRestController {
         return itemService.getItem(id);
     }
 
+    @GetMapping(path = "/items/images/{id}")
+    public ResponseEntity<String> getItemImages(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(itemService.getItemImages(id));
+    }
+
 }
