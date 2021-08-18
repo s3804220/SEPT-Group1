@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//WARNING: Running this test will delete all images in the item image folders
 @SpringBootTest
 public class FilesStorageServiceTest {
     @Autowired

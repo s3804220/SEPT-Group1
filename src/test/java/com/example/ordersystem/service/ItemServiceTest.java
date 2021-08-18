@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE"),
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE")
 })
+//WARNING: Running this test will delete all items from the items table in the database
 @SpringBootTest
 public class ItemServiceTest {
     @Autowired

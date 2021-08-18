@@ -54,7 +54,26 @@ function checkInput(){
         fileMessage.innerHTML = 'Please select a maximum of 5 images!'
         validated = false
     } else {
-        fileMessage.style.display = "none"
+        for (let i = 0; i < fileinput.files.length; ++i) {
+            let filename = fileinput.files.item(i).name
+            let array = filename.split('.')
+            const validExtensions = ["jpg", "jpeg", "bmp", "gif", "png"]
+            if(array.length===1 || ( array[0] === "" && array.length === 2 )){
+                fileMessage.style.display = "block"
+                fileMessage.style.color = "red"
+                fileMessage.innerHTML = 'Please select a file with a valid name and extension!'
+                validated = false
+                break
+            }else if(!validExtensions.includes(array.pop().toLowerCase())){
+                fileMessage.style.display = "block"
+                fileMessage.style.color = "red"
+                fileMessage.innerHTML = 'Please select image files only!'
+                validated = false
+                break
+            }else{
+                fileMessage.style.display = "none"
+            }
+        }
     }
     //If there is no problem with any inputs, call function to save the item into the database
     if(validated){
