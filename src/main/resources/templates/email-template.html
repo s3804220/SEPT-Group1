@@ -321,13 +321,21 @@
                                                         <td align="center"
                                                             style="padding-right: 0px;padding-left: 0px;">
 
-                                                            <img align="center" alt="Status image" border="0"
+                                                            <img th:unless="${orderstatus == 'has been cancelled.'}" align="center" alt="Status image" border="0"
                                                                  src="cid:status" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 85%;max-width: 100%;"
+                                                                 title="Status image"/>
+                                                            <img th:if="${orderstatus == 'has been cancelled.'}" align="center" alt="Status image" border="0"
+                                                                 src="cid:status" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 40%;max-width: 100%;"
                                                                  title="Status image"/>
                                                             <div style="line-height: 150%; text-align: center; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 150%;">
       <span style="font-size: 14px; line-height: 21px; font-family: Montserrat, sans-serif;">
-          <br><br><b>Thank you for your purchase!</b>
+          <br><br>
+          <b>
+              <span th:unless="${orderstatus == 'has been cancelled.'}">Thank you for your purchase!</span>
+              <span th:if="${orderstatus == 'has been delivered successfully.'}">We hope to see you again!</span>
+              <span th:if="${orderstatus == 'has been cancelled.'}">We hope to see you in the future!</span>
+          </b>
       </span>
                                                                 </p>
                                                             </div>
@@ -493,7 +501,7 @@
 
                                                 <div style="color: #696969; line-height: 140%; text-align: center; word-wrap: break-word;">
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 16px; line-height: 22.4px;">INVOICE NUMBER</span>
+                                                            style="font-size: 16px; line-height: 22.4px;">ORDER NUMBER</span>
                                                     </p>
                                                 </div>
 
@@ -535,7 +543,7 @@
 
                                                 <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
                                                     <p style="font-size: 14px; line-height: 140%;">
-                                                        <strong>#12345678</strong></p>
+                                                        <strong th:text="${'#'+orderNum}"></strong></p>
                                                 </div>
 
                                             </td>
@@ -608,7 +616,7 @@
                                                 style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px 20px;font-family:'Montserrat',sans-serif;">
 
                                                 <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>$130.00<br/></strong>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong th:text="${'$'+orderTotal}"><br/></strong>
                                                     </p>
                                                 </div>
 
@@ -730,7 +738,7 @@
                                                     <![endif]-->
                                                     <a href="" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #f08632; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;"
                                                        target="_blank">
-                                                        <span style="display:block;padding:15px 20px;line-height:120%;">View Invoice</span>
+                                                        <span style="display:block;padding:15px 20px;line-height:120%;">View Order</span>
                                                     </a>
                                                     <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
                                                 </div>
@@ -915,7 +923,7 @@
                                                             <tr style="vertical-align: top">
                                                                 <td align="left" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"
                                                                     valign="middle">
-                                                                    <a href="https://facebook.com/" target="_blank"
+                                                                    <a href="#" target="_blank"
                                                                        title="Facebook">
                                                                         <img alt="Facebook" src="cid:facebook"
                                                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" title="Facebook"
@@ -937,32 +945,10 @@
                                                             <tr style="vertical-align: top">
                                                                 <td align="left" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"
                                                                     valign="middle">
-                                                                    <a href="https://twitter.com/" target="_blank"
+                                                                    <a href="#" target="_blank"
                                                                        title="Twitter">
                                                                         <img alt="Twitter" src="cid:twitter"
                                                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" title="Twitter"
-                                                                             width="32">
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <!--[if (mso)|(IE)]></td><![endif]-->
-
-                                                        <!--[if (mso)|(IE)]>
-                                                        <td width="32" style="width:32px; padding-right: 15px;"
-                                                            valign="top"><![endif]-->
-                                                        <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                               height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px"
-                                                               width="32">
-                                                            <tbody>
-                                                            <tr style="vertical-align: top">
-                                                                <td align="left" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"
-                                                                    valign="middle">
-                                                                    <a href="https://linkedin.com/" target="_blank"
-                                                                       title="LinkedIn">
-                                                                        <img alt="LinkedIn" src="cid:linkedin"
-                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" title="LinkedIn"
                                                                              width="32">
                                                                     </a>
                                                                 </td>
@@ -981,7 +967,7 @@
                                                             <tr style="vertical-align: top">
                                                                 <td align="left" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"
                                                                     valign="middle">
-                                                                    <a href="https://instagram.com/" target="_blank"
+                                                                    <a href="#" target="_blank"
                                                                        title="Instagram">
                                                                         <img alt="Instagram" src="cid:instagram"
                                                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" title="Instagram"
@@ -1044,8 +1030,7 @@
 
                                                 <div style="color: #ced4d9; line-height: 150%; text-align: center; word-wrap: break-word;">
                                                     <p style="font-size: 14px; line-height: 150%;"><span
-                                                            style="font-size: 12px; line-height: 18px;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </span><span
-                                                            style="font-size: 12px; line-height: 18px;">when an unknown printer took a galley of type and scrambled fermentum, malesuada dolor&nbsp; aliquam ante eget, tristique diam&nbsp; <br/></span>
+                                                            style="font-size: 12px; line-height: 18px;">Cake - we are honored to provide you tasty pastries.<br/></span>
                                                     </p>
                                                 </div>
 

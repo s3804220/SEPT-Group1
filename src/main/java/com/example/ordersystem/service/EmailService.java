@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -48,64 +46,62 @@ public class EmailService{
 
                     resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\status1.jpg".replace("\\", File.separator)));
                     break;
-                /*case "confirmed":
+                case "confirmed":
                     //Send email to recipient when their order has been confirmed
-                    helper.setSubject("Your order has been confirmed!");
-                    String content = "<b>Dear customer</b>,<br>Your order has been confirmed and is now waiting to be processed."
-                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us."
-                            + "<br><img src='cid:status2' style='max-width: 100%;'/><br><br><b>Thank you for your purchase!</b>"
-                            +"<br><br><img src='cid:logo'/>";
-                    helper.setText(content, true);
+                    subject = "Your order has been confirmed!";
+                    thymeleafContext.setVariable("orderstatus","has been confirmed.");
+                    content = "<b>Dear customer</b>,<br><br>Your order has been confirmed and is now waiting to be processed."
+                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us.";
 
                     resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\status2.jpg".replace("\\", File.separator)));
-                    helper.addInline("status2", resource);
                     break;
                 case "processed":
                     //Send email to recipient when their order has been processed
-                    helper.setSubject("Your order has been processed!");
-                    content = "<b>Dear customer</b>,<br>Your order has been processed and is now waiting to be delivered to you."
-                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us."
-                            + "<br><img src='cid:status3' style='max-width: 100%;'/><br><br><b>Thank you for your purchase!</b>"
-                            +"<br><br><img src='cid:logo'/>";
-                    helper.setText(content, true);
+                    subject = "Your order has been processed!";
+                    thymeleafContext.setVariable("orderstatus","has been processed.");
+                    content = "<b>Dear customer</b>,<br><br>Your order has been processed and is now waiting to be delivered to you."
+                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us.";
 
                     resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\status3.jpg".replace("\\", File.separator)));
-                    helper.addInline("status3", resource);
                     break;
                 case "delivering":
                     //Send email to recipient when their order is being delivered
-                    helper.setSubject("Your order is being delivered!");
-                    content = "<b>Dear customer</b>,<br>Your order is now on its way to reach you!"
-                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us."
-                            + "<br><img src='cid:status4' style='max-width: 100%;'/><br><br><b>Thank you for your purchase!</b>"
-                            +"<br><br><img src='cid:logo'/>";
-                    helper.setText(content, true);
+                    subject = "Your order is being delivered!";
+                    thymeleafContext.setVariable("orderstatus","is being delivered.");
+                    content = "<b>Dear customer</b>,<br><br>Your order is now on its way to reach you!"
+                            +"<br>Please check your order status below.<br>When the order status has been updated, you will receive another email from us.";
 
                     resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\status4.jpg".replace("\\", File.separator)));
-                    helper.addInline("status4", resource);
                     break;
                 case "delivered":
                     //Send email to recipient when their order has been delivered
-                    helper.setSubject("Your order has been delivered successfully!");
-                    content = "<b>Dear customer</b>,<br>This email is to confirm that your order has been delivered successfully."
-                            +"<br>Please check your order status below.<br>Our system will now mark your order as complete."
-                            + "<br><img src='cid:status5' style='max-width: 100%;'/><br><br><b>Thank you for your purchase!</b>"
-                            +"<br><b>We look forward to seeing you again!</b>"
-                            +"<br><br><img src='cid:logo'/>";
-                    helper.setText(content, true);
+                    subject = "Your order has been delivered successfully!";
+                    thymeleafContext.setVariable("orderstatus","has been delivered successfully.");
+                    content = "<b>Dear customer</b>,<br><br>This email is to confirm that your order has been delivered successfully."
+                            +"<br>Please check your order status below.<br>Our system will now mark your order as complete.";
 
                     resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\status5.jpg".replace("\\", File.separator)));
-                    helper.addInline("status5", resource);
                     break;
                 case "cancelled":
                     //Send email to recipient when their order has been cancelled
-                    break;*/
+                    subject = "Your order has been cancelled.";
+                    thymeleafContext.setVariable("orderstatus","has been cancelled.");
+                    content = "<b>Dear customer</b>,<br><br>This email is to confirm that your order has been cancelled."
+                            +"<br>Please contact an Administrator if you think this is an error.<br>We apologize for any inconvenience.";
+
+                    resource = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\ordercancelled.jpg".replace("\\", File.separator)));
+                    break;
             }
 
+            //Set the subject of the email to be sent
             helper.setSubject(subject);
             thymeleafContext.setVariable("mailContent",content);
+            thymeleafContext.setVariable("orderNum",1);
+            thymeleafContext.setVariable("orderTotal",999);
+
             String mailTemplate = emailTemplateEngine.process("email-template.html",thymeleafContext);
             helper.setText(mailTemplate, true);
+
             helper.addInline("status", resource);
             FileSystemResource logo = new FileSystemResource(new File("target\\classes\\static\\img\\logo.png".replace("\\", File.separator)));
             helper.addInline("logo", logo);
@@ -113,12 +109,11 @@ public class EmailService{
             helper.addInline("facebook", logo1);
             FileSystemResource logo2 = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\twitter.png".replace("\\", File.separator)));
             helper.addInline("twitter", logo2);
-            FileSystemResource logo3 = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\linkedin.png".replace("\\", File.separator)));
-            helper.addInline("linkedin", logo3);
-            FileSystemResource logo4 = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\instagram.png".replace("\\", File.separator)));
-            helper.addInline("instagram", logo4);
+            FileSystemResource logo3 = new FileSystemResource(new File("target\\classes\\static\\img\\contact\\instagram.png".replace("\\", File.separator)));
+            helper.addInline("instagram", logo3);
             FileSystemResource footer = new FileSystemResource(new File("target\\classes\\static\\img\\hero\\hero-1.jpg".replace("\\", File.separator)));
             helper.addInline("footer", footer);
+
             mailSender.send(message);
 
         } catch (MessagingException e){
