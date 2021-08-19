@@ -83,6 +83,12 @@ function checkInput(){
                     fileMessage.innerHTML = 'Please select image files only!'
                     validated = false
                     break
+                }else if(fileinput.files.item(i).size>10485760){
+                    fileMessage.style.display = "block"
+                    fileMessage.style.color = "red"
+                    fileMessage.innerHTML = 'The max size per file is 10MB only!'
+                    validated = false
+                    break
                 }else{
                     fileMessage.style.display = "none"
                 }
