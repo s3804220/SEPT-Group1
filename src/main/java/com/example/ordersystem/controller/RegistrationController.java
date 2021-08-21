@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -117,23 +118,24 @@ public class RegistrationController {
         return "redirect:/logout";
     }
 
-    @RequestMapping(value="admin/account-management", method=RequestMethod.GET)
+    @RequestMapping(value="account-management", method=RequestMethod.GET)
     public String showAccountManagementSystem(ModelMap model){
         List<Account> accountList = accountService.getAllAccounts();
+        accountList.sort(Comparator.comparing(Account::getId)); // sort account list by id number (low to high id number)
         model.addAttribute("accountList",accountList);
         return "account_list";
     }
 
-    @RequestMapping(value="admin/account-management/make-admin/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="account-management/make-admin/{id}", method= RequestMethod.GET)
     public String makeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.ADMIN);
-        return "redirect:/admin/account-management";
+        return "redirect:/account-management";
     }
 
-    @RequestMapping(value="admin/account-management/revoke-admin/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="account-management/revoke-admin/{id}", method= RequestMethod.GET)
     public String revokeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.USER);
-        return "redirect:/admin/account-management";
+        return "redirect:/account-management";
     }
 
     @RequestMapping(value="order-history", method = RequestMethod.GET)
