@@ -2,6 +2,7 @@ package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Item;
+import com.example.ordersystem.model.Pagination;
 import com.example.ordersystem.repository.CartRepository;
 import com.example.ordersystem.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,13 +65,17 @@ public class ItemService {
         }
     }
 
+    // Get total number of items
     public int findTotal() {
         return ((Number) em.createQuery("select count(*) from Item")
                 .getSingleResult()).intValue();
     }
 
-    public List<Item> findListPaging(int startIndex, int pageSize) {
-        return em.createQuery("select b from Item b", Item.class)
+    public List<Item> findListPaging(int startIndex, int pageSize, String sortField, String sortDirection) {
+//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+//                Sort.by(sortField).descending();
+
+        return em.createQuery("select b from Item b order by b.itemName asc", Item.class)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
                 .getResultList();

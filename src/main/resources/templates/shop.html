@@ -182,16 +182,21 @@
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-5">
-                    <div class="shop__option__right">
-                        <select>
-                            <option value="">Default sorting</option>
-                            <option value="">Name</option>
-                            <option value="">Price: Low to High</option>
-                            <option value="">Price: High to Low</option>
+<!--                    <form class="shop__option__right" th:action="@{shop/sort}" th:object="${}" method="post">-->
+<!--                        <select th:field="*{sortBy}" name="">-->
+
+<!--                    th:href="@{/shopping-cart/delete/{deleteId}(deleteId=${shop.id})}"-->
+                    <form id="sortBy" name="sortBy" th:action="@{/shop}" method="get">
+<!--                        <select name="sortBy" th:onchange="'window.location.href = \'' + @{/pagination.page} +'?sortField=\'+ this.value'">-->
+                        <select name="sortField" id="sortField">
+<!--                            <option th:value="Default">Default sorting</option>-->
+                            <option value="id">Default sorting</option>
+                            <option value="name">Name</option>
+                            <option value="lowToHigh" th:href="@{'/page/' + ${pagination.page} + '?sortField=itemPrice&sortDir=' + ${reverseSortDir}}">Price: Low to High</option>
+                            <option value="highToLow" th:href="@{'/page/' + ${pagination.page} + '?sortField=itemPrice&sortDir=' + ${reverseSortDir}}">Price: High to Low</option>
                         </select>
-                        <a href="#"><i class="fa fa-list"></i></a>
-                        <a href="#"><i class="fa fa-reorder"></i></a>
-                    </div>
+                        <input type="hidden" name="sortField" value="${sortField}">
+                    </form>
                 </div>
             </div>
         </div>
@@ -232,7 +237,7 @@
                             <!--                                    </a>-->
                             <!--                                </li>-->
                             <li>
-                                <a th:href="@{page={page}(page = ${pagination.prevBlock})}">
+                                <a th:href="@{?page={page}(page = ${pagination.prevBlock}, sortField=${sortField})}">
                                     <span class="arrow_carrot-left"></span>
                                 </a>
                             </li>
@@ -240,11 +245,11 @@
                                 <li
                                         th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
-                                    <a th:href="@{page={page}(page = ${pageButton})}" th:text="${pageButton}"></a>
+                                    <a th:href="@{?page={page}(page = ${pageButton})}" th:text="${pageButton}"></a>
                                 </li>
                             </th:block>
                             <li>
-                                <a th:href="@{page={page} (page = ${pagination.nextBlock})}">
+                                <a th:href="@{?page={page} (page = ${pagination.nextBlock})}+@{?sortField={sortField} (sortField=${sortField})}+@{?sortDir={sortDir} (sortDir=${sortDir})}">
                                     <span class="arrow_carrot-right"></span>
                                 </a>
                             </li>
@@ -354,6 +359,8 @@
 <script src="../../js/owl.carousel.min.js"></script>
 <script src="../../js/jquery.nicescroll.min.js"></script>
 <script src="../../js/main.js"></script>
+<script src="../../js/sort.js"></script>
+
 </body>
 
 </html>

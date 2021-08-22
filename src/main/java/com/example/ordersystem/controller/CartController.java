@@ -60,7 +60,7 @@ public class CartController {
     }
 
     @PostMapping("/shopping-cart/add")
-    public String addItemToCart(@RequestParam("sid") Long itemId,
+    public String addItemToCart(@RequestParam("shopId") Long itemId,
                                 @RequestParam("amount") int amount) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
