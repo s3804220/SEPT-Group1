@@ -21,6 +21,7 @@ public class AccountDetailsController {
     private AccountService accountService;
     private OrderService orderService;
 
+    // Admin view specific user's account details
     @RequestMapping(value="account-management/account-details/{id}", method= RequestMethod.GET)
     public String viewUserDetails(@PathVariable Long id, ModelMap model){
         Account accountToView = accountService.getAccountById(id);
@@ -28,6 +29,7 @@ public class AccountDetailsController {
         return "account-details";
     }
 
+    // Admin view specific user's history
     @RequestMapping(value="account-management/order-history/{id}", method = RequestMethod.GET)
     public String viewUserOrderHistory(@PathVariable Long id, ModelMap model){
         List<Order> userOrdersList = orderService.getOrdersByAccountId(id);
