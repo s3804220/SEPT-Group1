@@ -71,11 +71,25 @@ public class ItemService {
                 .getSingleResult()).intValue();
     }
 
-    public List<Item> findListPaging(int startIndex, int pageSize, String sortField, String sortDirection) {
-//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-//                Sort.by(sortField).descending();
+    public List<Item> findListPaging(int startIndex, int pageSize, String sortField) {
 
-        return em.createQuery("select b from Item b order by b.itemName asc", Item.class)
+        String queryStr = "";
+        switch (sortField) {
+            case "id":
+                queryStr = "select b from Item b order by b.id asc";
+                break;
+            case "name":
+                queryStr = "select b from Item b order by b.itemName asc";
+                break;
+            case "priceLTH":
+                queryStr = "select b from Item b order by b.itemPrice asc";
+                break;
+            case "priceHTL":
+                queryStr = "select b from Item b order by b.itemPrice desc";
+                break;
+        }
+
+        return em.createQuery(queryStr, Item.class)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
                 .getResultList();

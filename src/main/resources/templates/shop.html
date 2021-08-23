@@ -182,24 +182,19 @@
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-5">
-<!--                    <form class="shop__option__right" th:action="@{shop/sort}" th:object="${}" method="post">-->
-<!--                        <select th:field="*{sortBy}" name="">-->
 
-<!--                    th:href="@{/shopping-cart/delete/{deleteId}(deleteId=${shop.id})}"-->
                     <form id="sortBy" name="sortBy" th:action="@{/shop}" method="get">
-<!--                        <select name="sortBy" th:onchange="'window.location.href = \'' + @{/pagination.page} +'?sortField=\'+ this.value'">-->
                         <select name="sortField" id="sortField">
-<!--                            <option th:value="Default">Default sorting</option>-->
                             <option value="id">Default sorting</option>
                             <option value="name">Name</option>
-                            <option value="lowToHigh" th:href="@{'/page/' + ${pagination.page} + '?sortField=itemPrice&sortDir=' + ${reverseSortDir}}">Price: Low to High</option>
-                            <option value="highToLow" th:href="@{'/page/' + ${pagination.page} + '?sortField=itemPrice&sortDir=' + ${reverseSortDir}}">Price: High to Low</option>
+                            <option value="priceLTH">Price: Low to High</option>
+                            <option value="priceHTL">Price: High to Low</option>
                         </select>
-                        <input type="hidden" name="sortField" value="${sortField}">
                     </form>
                 </div>
             </div>
         </div>
+
 
         <!-- Item List Begin -->
         <div class="row" th:if="${not #lists.isEmpty(shopList)}">
@@ -236,7 +231,7 @@
                             <!--                                        <span aria-hidden="true">First</span>-->
                             <!--                                    </a>-->
                             <!--                                </li>-->
-                            <li>
+                            <li><!--, sortField=${sortField}-->
                                 <a th:href="@{?page={page}(page = ${pagination.prevBlock}, sortField=${sortField})}">
                                     <span class="arrow_carrot-left"></span>
                                 </a>
@@ -245,11 +240,11 @@
                                 <li
                                         th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
-                                    <a th:href="@{?page={page}(page = ${pageButton})}" th:text="${pageButton}"></a>
+                                    <a th:href="@{?page={page}(page = ${pageButton}, sortField=${sortField})}" th:text="${pageButton}"></a>
                                 </li>
                             </th:block>
                             <li>
-                                <a th:href="@{?page={page} (page = ${pagination.nextBlock})}+@{?sortField={sortField} (sortField=${sortField})}+@{?sortDir={sortDir} (sortDir=${sortDir})}">
+                                <a th:href="@{?page={page} (page = ${pagination.nextBlock}, sortField=${sortField})}">
                                     <span class="arrow_carrot-right"></span>
                                 </a>
                             </li>

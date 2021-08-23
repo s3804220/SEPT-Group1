@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -30,15 +31,11 @@ public class ItemController {
     @Autowired
     private CartService cartService;
 
+
     @GetMapping("/shop")
     public String listAll(ModelMap model,
                           @RequestParam(defaultValue = "1") int page,
-                          @RequestParam(name="sortField", defaultValue = "id") String sortField
-//                          @RequestParam(defaultValue = "id", name="sortField") String sortField,
-//                          @RequestParam(defaultValue = "asc", name="sortDir") String sortDir
-    ) {
-        System.out.println("SHOPHSOHPSHOPSHPOSHPS");
-        String sortDir = "asc";
+                          @RequestParam(name="sortField", defaultValue = "id") String sortField) {
 
         // The number of total items
         int totalNum = itemService.findTotal();
@@ -50,11 +47,9 @@ public class ItemController {
         // Max num of items in a page
         int pageSize = pagination.getPageSize();
 
-        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, sortField, sortDir);
+        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, sortField);
 
         model.addAttribute("sortField", sortField);
-//        model.addAttribute("sortDirection", sortDir);
-//        model.addAttribute("reverseSortDirection", sortDir.equals("asc") ? "desc" : "asc");
 
 
         model.addAttribute("shopList", shopList);
@@ -158,18 +153,6 @@ public class ItemController {
     }
 
 
-//    @PostMapping("/sort")
-//    public String addItemToCart(Model model,
-//                                @RequestParam("shopId") Long itemId,
-//                                @RequestParam("amount") int amount) {
-//
-//        model.addAttribute("sortBy", )
-//
-//        return "redirect:/shopping-cart";
-//    }
-    @GetMapping("/shop/delete/{deleteId}")
-    public String delete(@PathVariable(name = "deleteId") Long id) {
-        cartService.deleteCart(id);
-        return "redirect:/shop";
-    }
+
+
 }
