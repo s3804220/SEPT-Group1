@@ -14,11 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Reset auto-generated ID back to 1 for accurate testing environment
+//Delete table data and reset auto-generated ID back to 1 for accurate testing environment
 @SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="ALTER TABLE items ALTER COLUMN id RESTART WITH 1"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="ALTER TABLE items ALTER COLUMN id RESTART WITH 1")
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE"),
+        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE")
 })
+//WARNING: Running this test will delete all items from the items table in the database
 @SpringBootTest
 public class ItemServiceTest {
     @Autowired
@@ -45,12 +46,14 @@ public class ItemServiceTest {
         //Test that item has been added correctly and it exists in the item list
         assertEquals(1,itemService.getAllItems().size());
         assertEquals("Hot dog", itemService.getItem(1L).get().getItemName());
+        assertEquals("Hotdog", itemService.getItem(1L).get().getCategory());
 
         //Add another item with special characters for a similar test
         Item newItem2 = new Item("Pie","Yummy pie!!!!&%%%w0w=*","food.png|image.jpg",new BigDecimal("7"),"Pie",true);
         itemService.saveItem(newItem2);
         assertEquals(2,itemService.getAllItems().size());
         assertEquals(newItem2.getItemDescription(), itemService.getItem(2L).get().getItemDescription());
+        assertEquals("Pie", itemService.getItem(2L).get().getCategory());
     }
 
     @Test
@@ -136,6 +139,23 @@ public class ItemServiceTest {
         //Test that the list is updated correctly if there is no item in the database
         itemRepository.deleteAll();
         assertEquals(0,itemService.getAllItems().size());
+    }
+
+    @Test
+    public void getItemImagesTests(){
+        //Check that the item image names can be correctly retrieved
+        assertEquals("dog.jpg",itemService.getItemImages(1L));
+    }
+
+    @Test
+    public void changeAvailabilityTests(){
+        //Test that the item availability be changed correctly
+        //Change the available status of item 1 to false
+        itemService.changeAvailability(1L);
+        assertFalse(itemService.getItem(1L).get().isAvailability());
+        //Change the available status of item 1 back to true
+        itemService.changeAvailability(1L);
+        assertTrue(itemService.getItem(1L).get().isAvailability());
     }
 
     @Test

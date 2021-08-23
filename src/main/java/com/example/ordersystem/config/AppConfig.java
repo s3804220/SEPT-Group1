@@ -63,7 +63,7 @@ public class AppConfig implements WebMvcConfigurer {
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
-        sessionFactoryBean.setPackagesToScan("com/example/OrderSystem/model");
+        sessionFactoryBean.setPackagesToScan("com.example.ordersystem.model");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");

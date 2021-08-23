@@ -213,7 +213,14 @@
                     <input type="radio" id="available-no" name="item-availability" value="false">
                     <label for="available-no">No</label><br>
                 </div>
-                <div class="checkout__input">
+                <div class="checkout__input" id="upload-choice">
+                    <p><br>Do you want to keep old images?<br>If "No" is selected, you must upload a new set of images and all old images will be replaced.</p>
+                    <input type="radio" id="upload-yes" name="image-upload" value="yes" checked>
+                    <label for="upload-yes">Yes</label><br>
+                    <input type="radio" id="upload-no" name="image-upload" value="no">
+                    <label for="upload-no">No</label><br>
+                </div>
+                <div class="checkout__input" id="image-upload-btn">
                     <p>Images<span>*</span></p>
                     <p style="display: none;" id="files-check"></p>
                     <input type="file" multiple class="item-files" id="item-images">
