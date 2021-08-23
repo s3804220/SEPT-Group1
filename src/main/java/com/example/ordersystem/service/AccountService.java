@@ -6,6 +6,8 @@ import com.example.ordersystem.exception.account.InvalidEmailFormatException;
 import com.example.ordersystem.exception.account.InvalidPhoneFormatException;
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
+import com.example.ordersystem.model.Cart;
+import com.example.ordersystem.model.Order;
 import com.example.ordersystem.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class AccountService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found"; //
     private final AccountRepository accountRepository;
+    private final CartService cartService;
+    private final OrderService orderService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder; // Password encoder
 
     // Format for valid email
@@ -72,7 +76,19 @@ public class AccountService implements UserDetailsService {
 
     public Account deleteAccount(Long id){
         Account accountToDelete = getAccountById(id);
+
+        List<Cart> cartsToDelete = cartService.getAllCarts(accountToDelete);
+        for (Cart cart : cartsToDelete){
+            cartService.deleteCart(cart.getId());
+        }
+
+        List<Order> ordersToDelete = orderService.getOrdersByAccountId(id);
+        for (Order order : ordersToDelete){
+            orderService.deleteOrderById(order.getId());
+        }
         accountRepository.delete(accountToDelete);
+
+
         return accountToDelete;
     }
 

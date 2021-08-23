@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,7 @@ public class OrderService {
     private AccountService accountService;
 
     @Autowired
-    public OrderService(CartRepository cartRepository, OrderRepository orderRepository, AccountService accountService) {
+    public OrderService(@NonNull @Lazy CartRepository cartRepository, @NonNull @Lazy OrderRepository orderRepository, @NonNull @Lazy AccountService accountService) {
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
         this.accountService = accountService;
@@ -76,4 +78,6 @@ public class OrderService {
         }
         return accountOrders;
     }
+
+    public void deleteOrderById(Long id){orderRepository.deleteById(id);}
 }
