@@ -96,7 +96,7 @@ public class OrderServiceTest {
 				target = order;
 			}
 		}
-		assertTrue(target.isConfirm());
+		assertTrue(target.getStatus() == "Confirmed");
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class OrderServiceTest {
 				target = order;
 			}
 		}
-		assertFalse(target.isConfirm());
+		assertTrue(target.getStatus() == "Cancelled");
 	}
 
 	@Test

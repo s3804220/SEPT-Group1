@@ -56,7 +56,7 @@ public class OrderService {
       Order order = new Order();
       order.setPrice(price);
       order.setAccount(user);
-      order.setConfirm(false);
+      order.setStatus("Cancelled");
       order.setItems(items);
       orderRepository.save(order);
       return price;
@@ -64,12 +64,12 @@ public class OrderService {
     
     public void confirmOrder(Account user) {
     	Order order = orderRepository.findByAccount(user);
-    	order.setConfirm(true);
+    	order.setStatus("Confirmed");
     }
     
     public void unconfirmOrder(Account user) {
     	Order order = orderRepository.findByAccount(user);
-    	order.setConfirm(false);
+    	order.setStatus("Cancelled");
     }
     
     public List<Order> getAllOrders() {

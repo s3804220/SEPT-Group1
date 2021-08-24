@@ -31,7 +31,7 @@ public class Order {
     private BigDecimal price;
     
     @Column
-    private boolean confirm;
+    private String status;
     
     public Long getId() {
         return id;
@@ -64,12 +64,13 @@ public class Order {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    
-    public boolean isConfirm() {
-		return confirm;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
     
-    public void setConfirm(boolean confirm) {
-		this.confirm = confirm;
-	}
 }
