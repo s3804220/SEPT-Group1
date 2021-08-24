@@ -1,7 +1,6 @@
 package com.example.ordersystem.service;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,17 +40,16 @@ public class OrderService {
     
     public int addOrder(Account user){
       List<Cart> carts = cartRepository.findByAccount(user);
-      ArrayList<String> items = new ArrayList<String>();
+      String items = "";
       int price = 0;
       for(Cart cart: carts) {
     	  price += cart.getSmallSum();
     	  Item item = cart.getItem();
-    	  String iteminfo = item.getId().toString();
-    	  iteminfo += ','+item.getItemPrice().toString();
-    	  iteminfo += ','+cart.getAmount();
-    	  items.add(iteminfo);
-    	  
+    	  items +=  "{"+item.getId().toString();
+    	  items += ','+item.getItemPrice().toString();
+    	  items += ','+cart.getAmount()+"},";    	  
       }
+      items = items.substring(0, items.length()-1);
       Order order = new Order();
       order.setPrice(price);
       order.setAccount(user);

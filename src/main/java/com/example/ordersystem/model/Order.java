@@ -1,7 +1,6 @@
 package com.example.ordersystem.model;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "orders")
@@ -25,7 +23,7 @@ public class Order {
     private Account account;
     
     @Column(columnDefinition="TEXT")
-    private ArrayList<String> items;
+    private String items;
     
     @Column
     private int price;
@@ -48,13 +46,12 @@ public class Order {
     public void setAccount(Account account) {
         this.account = account;
     }
-    
-    
-    public ArrayList<String> getItems() {
+
+	public String getItems() {
 		return items;
 	}
 
-	public void setItems(ArrayList<String> items) {
+	public void setItems(String items) {
 		this.items = items;
 	}
 
