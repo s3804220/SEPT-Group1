@@ -47,7 +47,8 @@ public class OrderService {
     	  Item item = cart.getItem();
     	  items +=  "{"+item.getId().toString();
     	  items += ','+item.getItemPrice().toString();
-    	  items += ','+cart.getAmount()+"},";    	  
+    	  String amount = ""+cart.getAmount();
+    	  items += ','+amount+"},";    	  
       }
       items = items.substring(0, items.length()-1);
       Order order = new Order();
