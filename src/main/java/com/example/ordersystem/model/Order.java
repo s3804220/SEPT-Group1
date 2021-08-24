@@ -21,6 +21,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference(value="account-order")
     @JoinColumn(name = "account_id")
     private Account account;
     

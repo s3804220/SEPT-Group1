@@ -5,6 +5,7 @@ import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
+import com.example.ordersystem.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -25,15 +27,17 @@ public class RegistrationController {
     private AccountService accountService;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private OrderService orderService;
     
     @Autowired
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
     }
-    // ModelMap is used to parse objects from controller to html through thymeleaf
 
+    // display registration form when path is accessed
     @RequestMapping(value="registration", method=RequestMethod.GET)
-    public String getForm(ModelMap model){
+    public String getForm(ModelMap model){    // ModelMap is used to parse objects from controller to html through thymeleaf
         model.addAttribute("account", new Account());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -43,6 +47,7 @@ public class RegistrationController {
         return "registration";
     }
 
+    // sign up new user after they fill out and submit the registration form
     @RequestMapping(value="registration", method=RequestMethod.POST)
     public String register(@ModelAttribute(value="account") Account account, Model model){
         model.addAttribute("account", account);
@@ -51,6 +56,7 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    // display default landing page after successful log in
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String getWelcomePage(ModelMap model){
         model.addAttribute("account", new Account());
@@ -75,6 +81,7 @@ public class RegistrationController {
         return "index";
     }
 
+    // display update account form when path is accessed
     @RequestMapping(value="user/update", method=RequestMethod.GET)
     public String getUpdateAccountForm(ModelMap model){
         // Get current account authorization and get that account
@@ -84,6 +91,7 @@ public class RegistrationController {
         return "update_account";
     }
 
+    // user update their account information (first name, last name, phone, email, address)
     @RequestMapping(value="user/update", method=RequestMethod.POST)
     public String update(@Valid Account account){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,6 +102,7 @@ public class RegistrationController {
         return "redirect:/logout" ;
     }
 
+    // user update their password
     @RequestMapping(value="user/update/password", method=RequestMethod.POST)
     public String updatePassword(@Valid Account account){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -105,6 +114,7 @@ public class RegistrationController {
         return "redirect:/logout";
     }
 
+    // user delete their account
     @RequestMapping(value="user/delete", method=RequestMethod.POST)
     public String deleteAccount(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -114,22 +124,47 @@ public class RegistrationController {
         return "redirect:/logout";
     }
 
-    @RequestMapping(value="admin/account-management", method=RequestMethod.GET)
+    // display account management system when path is accessed
+    @RequestMapping(value="account-management", method=RequestMethod.GET)
     public String showAccountManagementSystem(ModelMap model){
         List<Account> accountList = accountService.getAllAccounts();
+        accountList.sort(Comparator.comparing(Account::getId)); // sort account list by id number (low to high id number)
         model.addAttribute("accountList",accountList);
         return "account_list";
     }
 
-    @RequestMapping(value="admin/account-management/make-admin/{id}", method= RequestMethod.GET)
+    // admin make another user account an admin
+    @RequestMapping(value="account-management/make-admin/{id}", method= RequestMethod.GET)
     public String makeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.ADMIN);
-        return "redirect:/admin/account-management";
+        return "redirect:/account-management";
     }
 
-    @RequestMapping(value="admin/account-management/revoke-admin/{id}", method= RequestMethod.GET)
+    // admin revoke another admin's admin rights
+    @RequestMapping(value="account-management/revoke-admin/{id}", method= RequestMethod.GET)
     public String revokeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.USER);
-        return "redirect:/admin/account-management";
+        return "redirect:/account-management";
+    }
+
+    // user view their order history
+    @RequestMapping(value="order-history", method = RequestMethod.GET)
+    public String getOrderHistory(ModelMap model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        Long userId = loggedInAcc.getId();
+        float cartSum = 0;
+        int cartQty = 0;
+        Account user = accountService.getAccountById(userId);
+        List<Cart> cartList = cartService.getAllCarts(user);
+
+        cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
+        model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
+        return "order_history";
     }
 }

@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
-<body onload="loadInfo()">
+<body>
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -68,8 +68,11 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span
+                    class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href=""
+                                                                             sec:authentication="principal.firstName"></a>
+                <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -96,12 +99,18 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log
+                                    in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a
+                                        sec:authentication="principal.firstName"></a> <span
+                                        class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
-                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update
+                                            Account</a></li>
                                         <li><a class="order-history" href="/order-history" style="color:white">Order History</a>
-                                        <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+                                        </li>
+                                        <li><a class="logout" href="/logout" style="color:white"
+                                               target="_blank">Logout</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -136,7 +145,7 @@
                         <li><a href="/shop">Shop</a></li>
                         <li><a href="/shopping-cart">Cart</a></li>
                         <li><a href="/contact">Contact</a></li>
-                        <li class="active"><a href="/admin-panel">Admin Panel</a></li>
+                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -151,13 +160,13 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__text">
-                    <h2>Admin Panel</h2>
+                    <h2>Order History</h2>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
                     <a href="./">Home</a>
-                    <span>Admin panel</span>
+                    <span>Order History</span>
                 </div>
             </div>
         </div>
@@ -168,18 +177,20 @@
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
     <div class="container">
-        <div class="checkout__form">
-            <div class="checkout__order" id="admin-panel">
-                <p style="font-size: 1.5em">Please choose an action to proceed:</p>
-                <br>
-                <a href="/item-form"><button class="site-btn admin-btn">ADD AN ITEM</button></a>
-                <a href="/item-list"><button class="site-btn admin-btn">VIEW ITEM LIST</button></a>
-                <hr>
-                <a href="/account-management"><button class="site-btn admin-btn">ACCOUNT MANAGEMENT</button></a>
-                <hr>
-                <a href="/orderlist"><button class="site-btn admin-btn">VIEW ORDER LIST</button></a>
-            </div>
-        </div>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+            <th>Order ID</th>
+            <th>Total Price</th>
+            <th>Is Confirmed</th>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orderList}">
+                    <td th:text="${order.getId()}"></td>
+                    <td th:text="${order.getPrice()}"></td>
+                    <td th:text="${order.isConfirm()}"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </section>
 <!-- Checkout Section End -->
@@ -229,8 +240,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
-                    <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <p class="copyright__text text-white">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
+                        by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>

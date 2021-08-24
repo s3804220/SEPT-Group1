@@ -149,4 +149,29 @@ public class OrderServiceTest {
         assertTrue(orders.contains(target2));
 	}
 
+	@Test
+	public void testGetOrderByAccountId(){
+		// create mock user
+		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
+		accountService.signUpAccount(testUser1);
+
+		// create mock items
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
+		itemService.saveItem(testItem1);
+		Item testItem2 = new Item("testCake2", "Second test", "product-2.jpg", new BigDecimal("12.00"),"Cake",true);
+		itemService.saveItem(testItem2);
+
+		// add item1 with quantity of 2 (total price = 11*2 = 22) to cart and check out first order
+		cartService.addItem(testItem1.getId(), 2, testUser1);
+		orderService.addOrder(testUser1);
+
+		// add item2 with quantity of 3 (total price = 12*3 = 36) to cart and check out second order
+		cartService.addItem(testItem2.getId(), 3, testUser1);
+		orderService.addOrder(testUser1);
+
+		List<Order> testUser1OrderList = orderService.getOrdersByAccountId(testUser1.getId());
+		for (Order order : testUser1OrderList){
+			assertEquals(order.getAccount(), testUser1); // check if each order in testUser1OrderList is made by testUser1
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package com.example.ordersystem.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,11 +33,13 @@ public class OrderService {
 	@NonNull
 	@Lazy
     private OrderRepository orderRepository;
-    
+    private AccountService accountService;
+
     @Autowired
-    public OrderService(CartRepository cartRepository, OrderRepository orderRepository) {
+    public OrderService(@NonNull @Lazy CartRepository cartRepository, @NonNull @Lazy OrderRepository orderRepository, @NonNull @Lazy AccountService accountService) {
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
+        this.accountService = accountService;
     }
     
     public BigDecimal addOrder(Account user){
@@ -74,5 +77,15 @@ public class OrderService {
     
     public List<Order> getAllOrders() {
     	return orderRepository.findAll();
+    }
+
+    public List<Order> getOrdersByAccountId(Long id){
+        List<Order> accountOrders = new ArrayList<>();
+        for(Order order : getAllOrders()){
+            if (order.getAccount().getId().equals(id)){
+                accountOrders.add(order);
+            }
+        }
+        return accountOrders;
     }
 }

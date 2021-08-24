@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin-panel").hasAuthority("ADMIN")
                 .antMatchers("/item-form").hasAuthority("ADMIN")
                 .antMatchers("/item-list").hasAuthority("ADMIN")
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/account-management/**").hasAuthority("ADMIN")
                 .antMatchers("/orderlist").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
