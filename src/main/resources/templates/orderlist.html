@@ -22,10 +22,10 @@
             <tr th:each="order : ${orderList}">
                 <td th:text="${order.getPrice()}"></td>
                 <td th:text="${order.getAccount().getId()}"></td>
-                <td th:text="${order.isConfirm()}"></td>
+                <td th:text="${order.getStatus()}"></td>
                 <td>
                     <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getAccount().getId()})}">Confirm Order</a>
-                    <a th:href="@{/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}">Unconfirm Order</a>
+                    <a th:href="@{/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}">Cancel Order</a>
                 </td>
             </tr>
         </tbody>

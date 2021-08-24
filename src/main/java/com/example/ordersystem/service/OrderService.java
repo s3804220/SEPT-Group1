@@ -1,5 +1,6 @@
 package com.example.ordersystem.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
+import com.example.ordersystem.model.Item;
 import com.example.ordersystem.model.Order;
 import com.example.ordersystem.repository.CartRepository;
 import com.example.ordersystem.repository.OrderRepository;
@@ -24,8 +26,12 @@ public class OrderService {
 	
 	@PersistenceContext
     private EntityManager em;
-
+	
+	@NonNull
+	@Lazy
     private CartRepository cartRepository;
+	@NonNull
+	@Lazy
     private OrderRepository orderRepository;
     private AccountService accountService;
 
@@ -36,33 +42,37 @@ public class OrderService {
         this.accountService = accountService;
     }
     
-    public int addOrder(Account user){
+    public BigDecimal addOrder(Account user){
       List<Cart> carts = cartRepository.findByAccount(user);
-      Order order = orderRepository.findByAccount(user);
-      int price = 0;
+      String items = "";
+      float tmp = 0;
       for(Cart cart: carts) {
-    	  price += cart.getSmallSum();
-      }
-      if(order != null) {
-          order.setPrice(price);
-      } else {
-          order = new Order();
-          order.setPrice(price);
-          order.setAccount(user);
-          order.setConfirm(false);
-      }
+    	  tmp += cart.getSmallSum();
+    	  Item item = cart.getItem();
+    	  items +=  "{"+item.getId().toString();
+    	  items += ','+item.getItemPrice().toString();
+    	  String amount = ""+cart.getAmount();
+    	  items += ','+amount+"},";    	  
+      }      
+      BigDecimal price = new BigDecimal(Float.toString(tmp));
+      items = items.substring(0, items.length()-1);
+      Order order = new Order();
+      order.setPrice(price);
+      order.setAccount(user);
+      order.setStatus("Unconfirmed");
+      order.setItems(items);
       orderRepository.save(order);
       return price;
   }
     
     public void confirmOrder(Account user) {
     	Order order = orderRepository.findByAccount(user);
-    	order.setConfirm(true);
+    	order.setStatus("Confirmed");
     }
     
     public void unconfirmOrder(Account user) {
     	Order order = orderRepository.findByAccount(user);
-    	order.setConfirm(false);
+    	order.setStatus("Cancelled");
     }
     
     public List<Order> getAllOrders() {
