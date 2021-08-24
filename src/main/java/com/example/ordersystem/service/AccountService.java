@@ -6,11 +6,8 @@ import com.example.ordersystem.exception.account.InvalidEmailFormatException;
 import com.example.ordersystem.exception.account.InvalidPhoneFormatException;
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Order;
 import com.example.ordersystem.repository.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,22 +43,25 @@ public class AccountService implements UserDetailsService {
     // Register an account and encrypt the password when email criteria are met
     public Account signUpAccount(Account account){
         boolean accountExists = accountRepository.findByEmail(account.getEmail()).isPresent();
+        // if account with provided email already exist then throw exception
         if (accountExists){
             throw new EmailAlreadyTakenException(account.getEmail());
         }
         Matcher emailMatcher = VALID_EMAIL_ADDRESS_REGEX.matcher(account.getEmail());
+        // if provided email has an invalid format then throw exception
         if (!emailMatcher.find()){
             throw new InvalidEmailFormatException(account.getEmail());
         }
 
         Matcher phoneMatcher = VALID_PHONE_NUMBER_REGEX.matcher(account.getPhone());
+        // if provided phone number has an invalid format then throw exception
         if (!phoneMatcher.find()){
             throw new InvalidPhoneFormatException(account.getPhone());
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(account.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(account.getPassword()); // has user-provided password for security
         account.setPassword(encodedPassword);
-        accountRepository.save(account);
-        accountRepository.enableAccount(account.getEmail());
+        accountRepository.save(account); // system save account
+        accountRepository.enableAccount(account.getEmail()); // spring security enable registered account
         return account;
     }
 
@@ -70,6 +70,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getAccountById(Long id){
+        // find user with provided id or throw exception
         return accountRepository.findById(id).orElseThrow(() ->
                 new AccountNotFoundException(id));
     }
@@ -85,19 +86,23 @@ public class AccountService implements UserDetailsService {
         Account accountToUpdate = getAccountById(id);
 
         boolean accountExists = accountRepository.findByEmail(account.getEmail()).isPresent();
+        // if account with provided email already exist then throw exception
         if (accountExists && !accountRepository.findByEmail(account.getEmail()).equals(Optional.of(accountToUpdate))){
             throw new EmailAlreadyTakenException(account.getEmail());
         }
 
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(account.getEmail());
+        // if provided email has an invalid format then throw exception
         if (!matcher.find()){
             throw new InvalidEmailFormatException(account.getEmail());
         }
 
         Matcher phoneMatcher = VALID_PHONE_NUMBER_REGEX.matcher(account.getPhone());
+        // if provided phone number has an invalid format then throw exception
         if (!phoneMatcher.find()){
             throw new InvalidPhoneFormatException(account.getPhone());
         }
+        // update account fields with newly provided information
         accountToUpdate.setFirstName(account.getFirstName());
         accountToUpdate.setLastName(account.getLastName());
         accountToUpdate.setAccAddress(account.getAccAddress());
@@ -110,9 +115,9 @@ public class AccountService implements UserDetailsService {
 
     public Account changePassword(Long id, String password){
         Account accountToUpdate = getAccountById(id);
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        String encodedPassword = bCryptPasswordEncoder.encode(password); // hash new provided password
         accountToUpdate.setPassword(encodedPassword);
-        accountRepository.save(accountToUpdate);
+        accountRepository.save(accountToUpdate); // update new password
         return accountToUpdate;
     }
 

@@ -99,8 +99,8 @@ public class AccountServiceTest {
 
         accountService.signUpAccount(testUser1);
 
-        assertEquals(testUser1, accountService.deleteAccount(testUser1.getId()));
-        assertThrows(AccountNotFoundException.class, () -> accountService.getAccountById(testUser1.getId())); // User is deleted
+        assertEquals(testUser1, accountService.deleteAccount(testUser1.getId())); // accounService.deleteAccount will return deleted account after deletion
+        assertThrows(AccountNotFoundException.class, () -> accountService.getAccountById(testUser1.getId())); // if account is non-existent, AccountNotFoundException will be thrown
     }
 
     @Test
@@ -112,6 +112,7 @@ public class AccountServiceTest {
         accountService.signUpAccount(testUser1);
         updatedTestUser1.setId(testUser1.getId()); //id will be automatically fetched and set in RegistrationController
 
+        // update account detail fields
         assertEquals(updatedTestUser1.getFirstName(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getFirstName());
         assertEquals(updatedTestUser1.getLastName(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getLastName());
         assertEquals(updatedTestUser1.getAccAddress(), accountService.updateAccount(testUser1.getId(), updatedTestUser1).getAccAddress());
@@ -142,10 +143,10 @@ public class AccountServiceTest {
 
         accountService.signUpAccount(testUser1);
         String oldPasswordHash = testUser1.getPassword();
-        updatedTestUser1.setId(testUser1.getId()); //id will be automatically fetched and set in RegistrationController
+        updatedTestUser1.setId(testUser1.getId()); // set updatedTestUser1's id to be the same as testUser1 for testing
 
-        accountService.changePassword(testUser1.getId(), updatedTestUser1.getPassword());
-        assertNotEquals(oldPasswordHash, testUser1.getPassword());
+        accountService.changePassword(testUser1.getId(), updatedTestUser1.getPassword()); // change testUser1's password into updatedTestUser1's password
+        assertNotEquals(oldPasswordHash, testUser1.getPassword()); // check that old password is not the same as new password
 
 
     }
