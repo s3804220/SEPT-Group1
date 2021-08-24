@@ -1,5 +1,7 @@
 package com.example.ordersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
