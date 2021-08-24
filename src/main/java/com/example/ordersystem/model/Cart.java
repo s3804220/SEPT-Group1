@@ -29,7 +29,6 @@ public class Cart {
 
     private int amount;
 
-
     @Transient
     public float getSmallSum() {
         return  this.item.getItemPrice().floatValue() * amount;
