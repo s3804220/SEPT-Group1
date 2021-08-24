@@ -75,9 +75,9 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
-		int price = orderService.addOrder(testUser1);
+		BigDecimal price = orderService.addOrder(testUser1);
 		
-		assertTrue(price == 55);
+		assertTrue(price.floatValue() == 55.00f);
 	}
 
 	@Test
