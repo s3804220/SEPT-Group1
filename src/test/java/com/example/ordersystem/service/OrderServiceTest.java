@@ -149,4 +149,25 @@ public class OrderServiceTest {
         assertTrue(orders.contains(target2));
 	}
 
+	@Test
+	public void testGetOrderByAccountId(){
+		Account testUser1 = new Account("Mike", "Dean", "123 Testing Lane", "0903682439", "test@gmail.com", "password", AccountRole.USER);
+		accountService.signUpAccount(testUser1);
+
+		Item testItem1 = new Item("testCake1", "First test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
+		itemService.saveItem(testItem1);
+
+		// testUser 1 add testItem1 to cart with quantity 5
+		cartService.addItem(testItem1.getId(), 5, testUser1);
+
+		// testUser 1 check out cart
+		orderService.addOrder(testUser1);
+
+		// get all orders from testUser 1
+		List<Order> testUser1OrderList = orderService.getOrdersByAccountId(testUser1.getId());
+
+		for (Order order : testUser1OrderList){
+			assertEquals(order.getAccount(), testUser1);
+		}
+	}
 }

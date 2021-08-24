@@ -1,4 +1,4 @@
-package com.example.ordersystem;
+package com.example.ordersystem.service;
 
 import com.example.ordersystem.exception.account.AccountNotFoundException;
 import com.example.ordersystem.exception.account.EmailAlreadyTakenException;

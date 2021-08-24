@@ -76,19 +76,7 @@ public class AccountService implements UserDetailsService {
 
     public Account deleteAccount(Long id){
         Account accountToDelete = getAccountById(id);
-
-        List<Cart> cartsToDelete = cartService.getAllCarts(accountToDelete);
-        for (Cart cart : cartsToDelete){
-            cartService.deleteCart(cart.getId());
-        }
-
-        List<Order> ordersToDelete = orderService.getOrdersByAccountId(id);
-        for (Order order : ordersToDelete){
-            orderService.deleteOrderById(order.getId());
-        }
         accountRepository.delete(accountToDelete);
-
-
         return accountToDelete;
     }
 

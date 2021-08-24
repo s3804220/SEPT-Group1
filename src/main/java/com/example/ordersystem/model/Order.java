@@ -1,5 +1,7 @@
 package com.example.ordersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference(value="account-order")
     @JoinColumn(name = "account_id")
     private Account account;
     
