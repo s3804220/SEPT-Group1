@@ -56,7 +56,7 @@ public class OrderService {
       Order order = new Order();
       order.setPrice(price);
       order.setAccount(user);
-      order.setStatus("Cancelled");
+      order.setStatus("Unconfirmed");
       order.setItems(items);
       orderRepository.save(order);
       return price;
