@@ -1,5 +1,6 @@
 package com.example.ordersystem.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -38,18 +39,19 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
     
-    public int addOrder(Account user){
+    public BigDecimal addOrder(Account user){
       List<Cart> carts = cartRepository.findByAccount(user);
       String items = "";
-      int price = 0;
+      float tmp = 0;
       for(Cart cart: carts) {
-    	  price += cart.getSmallSum();
+    	  tmp += cart.getSmallSum();
     	  Item item = cart.getItem();
     	  items +=  "{"+item.getId().toString();
     	  items += ','+item.getItemPrice().toString();
     	  String amount = ""+cart.getAmount();
     	  items += ','+amount+"},";    	  
-      }
+      }      
+      BigDecimal price = new BigDecimal(Float.toString(tmp));
       items = items.substring(0, items.length()-1);
       Order order = new Order();
       order.setPrice(price);

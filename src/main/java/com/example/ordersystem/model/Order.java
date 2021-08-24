@@ -1,5 +1,7 @@
 package com.example.ordersystem.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +28,7 @@ public class Order {
     private String items;
     
     @Column
-    private int price;
+    private BigDecimal price;
     
     @Column
     private boolean confirm;
@@ -55,11 +57,11 @@ public class Order {
 		this.items = items;
 	}
 
-	public int getPrice() {
+	public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
     
