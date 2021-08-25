@@ -2,6 +2,7 @@ package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
+import com.example.ordersystem.model.Item;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
 import com.example.ordersystem.service.ItemService;
@@ -68,9 +69,13 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
-        int addedAmount = cartService.addItem(itemId, amount, user);
-
-        return "redirect:/shopping-cart";
+        Item itemToAdd = itemService.getItem(itemId).get();
+        if(itemToAdd.isAvailability()){
+            int addedAmount = cartService.addItem(itemId, amount, user);
+            return "redirect:/shopping-cart";
+        }else{
+            return "redirect:/shop-details?id="+itemId;
+        }
     }
 
     @GetMapping("/shopping-cart/delete/{deleteId}")
@@ -80,9 +85,9 @@ public class CartController {
     }
 
 // Update amount of an item in cart
-    @PostMapping("/shopping-cart/update") ///{sid}/{amount}
+    @PostMapping("/shopping-cart/update")
     public String update(@RequestParam(name = "shopId") Long itemId,
-                         @RequestParam(name = "amount") int amount, HttpSession session) {
+                         @RequestParam(name = "amount") int amount) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
