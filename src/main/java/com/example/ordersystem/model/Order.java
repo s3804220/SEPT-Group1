@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Order {
 	@Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
