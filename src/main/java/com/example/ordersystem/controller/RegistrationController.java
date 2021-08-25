@@ -6,6 +6,7 @@ import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
 import com.example.ordersystem.service.OrderService;
+import com.example.ordersystem.service.UnifiedService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class RegistrationController {
     private CartService cartService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UnifiedService unifiedService;
     
     @Autowired
     public void setAccountService(AccountService accountService) {
@@ -60,24 +63,7 @@ public class RegistrationController {
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String getWelcomePage(ModelMap model){
         model.addAttribute("account", new Account());
-        float cartSum = 0;
-        int cartQty = 0;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, update their top-right cart info
-            Account loggedInAcc = (Account)auth.getPrincipal();
-            Long userId = loggedInAcc.getId();
-
-            Account user = accountService.getAccountById(userId);
-            List<Cart> cartList = cartService.getAllCarts(user);
-
-            cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
-            }
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
+        unifiedService.getCartInfo(model);
         return "index";
     }
 
@@ -153,18 +139,8 @@ public class RegistrationController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
-        float cartSum = 0;
-        int cartQty = 0;
-        Account user = accountService.getAccountById(userId);
-        List<Cart> cartList = cartService.getAllCarts(user);
-
-        cartQty = cartList.size();
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
         model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
+        unifiedService.getCartInfo(model);
         return "order_history";
     }
 }

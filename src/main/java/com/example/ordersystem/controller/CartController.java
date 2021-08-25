@@ -41,7 +41,7 @@ public class CartController {
 
 // List items in shopping cart
     @GetMapping("/shopping-cart")
-    public String readDetail(ModelMap model) throws Exception {
+    public String readDetail(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
