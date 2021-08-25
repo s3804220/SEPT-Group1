@@ -27,10 +27,10 @@ public class ErrorHandlerController implements ErrorController {
                 return "redirect:/not-found";
             }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "error500";
+                return "redirect:/internal-server-error";
             }
             else if(statusCode == HttpStatus.BAD_REQUEST.value()){
-                return "error400";
+                return "redirect:/bad-request";
             }
         }
         return "error";
@@ -40,5 +40,17 @@ public class ErrorHandlerController implements ErrorController {
     public String notFoundPage(ModelMap model){
         unifiedService.getCartInfo(model);
         return "not-found";
+    }
+
+    @RequestMapping("/internal-server-error")
+    public String InternalErrorPage(ModelMap model){
+        unifiedService.getCartInfo(model);
+        return "internal-server-error";
+    }
+
+    @RequestMapping("/bad-request")
+    public String badRequestPage(ModelMap model){
+        unifiedService.getCartInfo(model);
+        return "bad-request";
     }
 }
