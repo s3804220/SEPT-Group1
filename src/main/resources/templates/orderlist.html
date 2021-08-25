@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-security5"
-    sec:authorize="hasAuthority('ADMIN')">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-security5">
 <head>
     <meta charset="UTF-8">
     <title>Order List</title>
@@ -23,10 +22,10 @@
             <tr th:each="order : ${orderList}">
                 <td th:text="${order.getPrice()}"></td>
                 <td th:text="${order.getAccount().getId()}"></td>
-                <td th:text="${order.isConfirm()}"></td>
+                <td th:text="${order.getStatus()}"></td>
                 <td>
-                    <a th:href="@{/checkout/orderlist/confirm-order/{id}(id=${order.getAccount().getId()})}">Confirm Order</a>
-                    <a th:href="@{/checkout/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}">Unconfirm Order</a>
+                    <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getAccount().getId()})}">Confirm Order</a>
+                    <a th:href="@{/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}">Cancel Order</a>
                 </td>
             </tr>
         </tbody>

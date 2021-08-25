@@ -1,9 +1,6 @@
 package com.example.ordersystem.service;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Shop;
-import com.example.ordersystem.model.Student;
+import com.example.ordersystem.model.*;
 import com.example.ordersystem.repository.*;
 import com.example.ordersystem.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +19,21 @@ import java.util.Optional;
 @Service
 public class CartService implements CustomCartRepository {
 
-    @PersistenceContext
-    private EntityManager em;
-
-    private CartRepository cartRepository;
-    private ShopRepository shopRepository;
-
-
     @Autowired
-    public CartService(CartRepository cartRepository, ShopRepository shopRepository) {
-        this.cartRepository = cartRepository;
-        this.shopRepository = shopRepository;
-    }
-
+    private CartRepository cartRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     // Update/Create cart and return the amount of items in the cart
-    public int addShop(
+    public int addItem(
 //            Cart cart
-            Long shopId, int amount, Account user
+            Long itemId, int amount, Account user
     ){
 //        Cart newCart = cartRepository.save(cart);
 
         int addedAmount = amount;
-        Shop shop = shopRepository.findById(shopId).get();
-        Cart cart = cartRepository.findByAccountAndShop(user, shop);
+        Item item = itemRepository.findById(itemId).get();
+        Cart cart = cartRepository.findByAccountAndItem(user, item);
 
         if(cart != null) {
             addedAmount = cart.getAmount() + addedAmount;
@@ -54,7 +42,7 @@ public class CartService implements CustomCartRepository {
             cart = new Cart();
             cart.setAmount(amount);
             cart.setAccount(user);
-            cart.setShop(shop);
+            cart.setItem(item);
         }
 
         cartRepository.save(cart);
@@ -62,11 +50,9 @@ public class CartService implements CustomCartRepository {
 
     }
 
-
     public Cart getCart(Long id){
         return cartRepository.getById(id);
     }
-
 
     public List<Cart> getAllCarts(Account account){
         return cartRepository.findByAccount(account);
@@ -76,23 +62,17 @@ public class CartService implements CustomCartRepository {
         cartRepository.delete(getCart(id));
     }
 
-
-
 //    @Override
     public Cart findCartById(Long id) {
         return cartRepository.findById(id).orElse(new Cart());
     }
 
-
-
-
-
     // Update the amount of a cart item
-    public int updateAmount(int amount, Long shopId, Account user) {
+    public int updateAmount(int amount, Long itemId, Account user) {
 
-        cartRepository.updateAmount(amount, shopId, user.getId());
-        Shop shop = shopRepository.findShopById(shopId);
+        cartRepository.updateAmount(amount, itemId, user.getId());
+        Item item = itemRepository.findById(itemId).get();
 
-        return (shop.getPrice().intValue() * amount); // Pass new amount * 'the number of items'
+        return (item.getItemPrice().intValue() * amount); // Pass new amount * 'the number of items'
     }
 }

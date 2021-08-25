@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-security5">
 
 <head>
     <meta charset="UTF-8">
@@ -30,7 +31,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
-<body onload="getItemList()">
+<body onload="loadInfo()">
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -45,12 +46,12 @@
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="cart__price">Cart: <span>$0.00</span></div>
+            <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        <a href="./"><img src="img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
@@ -67,7 +68,8 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -94,11 +96,19 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                    <ul style="width: 180px;">
+                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a>
+                                        <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./"><img src="img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
@@ -106,8 +116,8 @@
                                 <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                                <div class="cart__price">Cart: <span>$0.00</span></div>
+                                <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -121,21 +131,12 @@
             <div class="col-lg-12">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./index.html">Home</a></li>
-                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./">Home</a></li>
+                        <li><a href="/about">About</a></li>
                         <li><a href="/shop">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="/shoping-cart">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./wisslist.html">Wisslist</a></li>
-                                <li><a href="./Class.html">Class</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                        <li class="active"><a href="#">Admin Panel</a></li>
+                        <li><a href="/shopping-cart">Cart</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li class="active"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -150,13 +151,13 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__text">
-                    <h2>Item List</h2>
+                    <h2>Admin Panel</h2>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="./index.html">Home</a>
-                    <span>Item list</span>
+                    <a href="./">Home</a>
+                    <span>Admin panel</span>
                 </div>
             </div>
         </div>
@@ -164,31 +165,24 @@
 </div>
 <!-- Breadcrumb End -->
 
-<!-- Wishlist Section Begin -->
-<section class="wishlist spad">
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="wishlist__cart__table">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Unit Price</th>
-                            <th>Stock</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody id="item-list-rows">
-                        </tbody>
-                    </table>
-                </div>
+        <div class="checkout__form">
+            <div class="checkout__order" id="admin-panel">
+                <p style="font-size: 1.5em">Please choose an action to proceed:</p>
+                <br>
+                <a href="/item-form"><button class="site-btn admin-btn">ADD AN ITEM</button></a>
+                <a href="/item-list"><button class="site-btn admin-btn">VIEW ITEM LIST</button></a>
+                <hr>
+                <a href="/account-management"><button class="site-btn admin-btn">ACCOUNT MANAGEMENT</button></a>
+                <hr>
+                <a href="/orderlist"><button class="site-btn admin-btn">VIEW ORDER LIST</button></a>
             </div>
         </div>
     </div>
 </section>
-<!-- Wishlist Section End -->
+<!-- Checkout Section End -->
 
 <!-- Footer Section Begin -->
 <footer class="footer set-bg" data-setbg="img/footer-bg.jpg">

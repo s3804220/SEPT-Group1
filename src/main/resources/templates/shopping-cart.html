@@ -16,16 +16,16 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/flaticon.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/barfiller.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/elegant-icons.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/nice-select.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="../../css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="../../css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/style.css" type="text/css">
 </head>
 
 <body>
@@ -39,16 +39,16 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__cart">
         <div class="offcanvas__cart__links">
-            <a href="#" class="search-switch"><img src="../static/img/icon/search.png" alt=""></a>
-            <a href="#"><img src="../static/img/icon/heart.png" alt=""></a>
+            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+            <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="../static/img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="cart__price">Cart: <span>$0.00</span></div>
+            <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="../static/index.html"><img src="../static/img/logo.png" alt=""></a>
+        <a href="./"><img src="img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
@@ -65,7 +65,8 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -92,29 +93,28 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li><a sec:authentication="principal.firstName"></a> <span
-                                        class="arrow_carrot-down"></span>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
-                                        <li><a class="update" href="localhost:8080/user/update"
-                                               style="color:white; display:block">Update Account</a></li>
-                                        <li><a class="logout" href="localhost:8080/logout" style="color:white"
-                                               onclick="window.open('localhost:8080/logout', '_blank')">Logout</a>
+                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a>
+                                        <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="../static/index.html"><img src="../static/img/logo.png" alt=""></a>
+                            <a href="./"><img src="img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="../static/img/icon/search.png" alt=""></a>
-                                <a href="#"><img src="../static/img/icon/heart.png" alt=""></a>
+                                <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+                                <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="../static/img/icon/cart.png" alt=""> <span>0</span></a>
-                                <div class="cart__price">Cart: <span>$0.00</span></div>
+                                <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -128,20 +128,12 @@
             <div class="col-lg-12">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="../static/index.html">Home</a></li>
-                        <li><a href="../static/about.html">About</a></li>
-                        <li class="active"><a href="/shop">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="shoping-cart">Shoping Cart</a></li>
-                                <li><a href="../static/checkout.html">Check Out</a></li>
-                                <li><a href="../static/wisslist.html">Wisslist</a></li>
-                                <li><a href="./Class.html">Class</a></li>
-                                <li><a href="../static/blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="../static/blog.html">Blog</a></li>
-                        <li><a href="../static/contact.html">Contact</a></li>
+                        <li><a href="./">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li class="active"><a href="/shopping-cart">Cart</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -161,7 +153,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="../static/index.html">Home</a>
+                    <a href="./">Home</a>
                     <span>Shopping cart</span>
                 </div>
             </div>
@@ -191,39 +183,39 @@
 
                             <!--Iteration Begin-->
 
-                            <tr th:each="item : ${cartItems}">
-                                <form method="post" th:action="@{/shoping-cart/update}">
+                            <tr th:each="shop : ${cartItems}">
+                                <form method="post" class="cart-form" th:action="@{/shopping-cart/update}">
                                 <!--                                        <div th:with="var=${item.shopPrice * item.amount}">-->
-                                <div th:with="product = ${item.shop}">
+                                <div th:with="product = ${shop.item}">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img th:src="@{${product.image}}" alt="" width="80" height="80">
+                                            <img th:src="@{${'img/upload/item'+product.id+'/'+#strings.arraySplit(product.itemImage, '|')[0]}}" alt="" width="80" height="80">
                                         </div>
                                         <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
-                                        <div class="product__cart__item__text" style="padding-top: 30px">
-                                            <h6 th:text="${product.name}"></h6>
-                                            <span>price: </span><span th:text="${product.price}"></span>
+                                        <div class="product__cart__item__text" style="padding-top: 16px">
+                                            <h6 th:text="${product.itemName}"></h6>
+                                            <span>price: </span><span th:text="${product.itemPrice}"></span>
                                         </div>
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty">
 
-                                                <input type="text" name="amount" th:value="${item.amount}">
+                                                <input type="text" name="amount" th:value="${shop.amount}">
 
                                             </div>
                                         </div>
                                         <input type="hidden" name="shopId" th:value="${product.id}">
                                     </td>
-                                    <td class="cart__price itemSmallSum" th:text="${item.getSmallSum}"></td>
+                                    <td class="cart__price itemSmallSum" th:text="${shop.getSmallSum}"></td>
                                     <td class="cart__close">
-                                        <a th:href="@{/shoping-cart/delete/{deleteId}(deleteId=${item.id})}">
+                                        <a th:href="@{/shopping-cart/delete/{deleteId}(deleteId=${shop.id})}">
                                             <span class="icon_close"></span>
                                         </a>
                                     </td>
                                     <td>
-                                        <button class="cart__close" type="submit" style="width: 56px; height: 46px">
-                                            <span class="icon_archive"></span>
+                                        <button class="site-btn" type="submit" style="margin-left: 10px;border-radius: 90px;">
+                                            <i class="fa fa-repeat"></i>
                                             <!-- /${item.shopId}/${item.amount}-->
                                         </button>
                                     </td>
@@ -235,7 +227,13 @@
                     </table>
                 </div>
                 <!--                    product list end-->
-
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="/shop">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-4">
                 <div class="cart__total">
@@ -268,7 +266,7 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="../static/img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="img/footer-logo.png" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore dolore magna aliqua.</p>
@@ -331,26 +329,17 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/jquery.nice-select.min.js}"></script>
-<script th:src="@{/js/jquery.barfiller.js}"></script>
-<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-<script th:src="@{/js/jquery.slicknav.js}"></script>
-<script th:src="@{/js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/jquery.nicescroll.min.js}"></script>
-<script th:src="@{/js/main.js}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        total = 0.0;
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/jquery.nice-select.min.js"></script>
+<script src="../../js/jquery.barfiller.js"></script>
+<script src="../../js/jquery.magnific-popup.min.js"></script>
+<script src="../../js/jquery.slicknav.js"></script>
+<script src="../../js/owl.carousel.min.js"></script>
+<script src="../../js/jquery.nicescroll.min.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/cart.js"></script>
 
-        $(".itemSmallSum").each(function(index, element) {
-            total = total + parseFloat(element.innerHTML);
-        });
-        $("#totalSum").text("$" + total);
-    });
-
-</script>
 </body>
 
 </html>

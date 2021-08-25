@@ -1,7 +1,5 @@
 package com.example.ordersystem;
 
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Shop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

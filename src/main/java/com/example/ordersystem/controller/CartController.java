@@ -2,23 +2,16 @@ package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Pagination;
-import com.example.ordersystem.model.Shop;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
-import com.example.ordersystem.service.ShopService;
-import javassist.NotFoundException;
+import com.example.ordersystem.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,9 +20,8 @@ import java.util.List;
 public class CartController {
 
     private CartService cartService;
-    private ShopService shopService;
+    private ItemService itemService;
     private AccountService accountService;
-
 
     @Autowired
     public void setCartService(CartService cartService) {
@@ -37,8 +29,8 @@ public class CartController {
     }
 
     @Autowired
-    public void setShopService(ShopService shopService) {
-        this.shopService = shopService;
+    public void setItemService(ItemService itemService) {
+        this.itemService = itemService;
     }
 
     @Autowired
@@ -46,10 +38,8 @@ public class CartController {
         this.accountService = accountService;
     }
 
-
-
-// List items in shoping cart
-    @GetMapping("/shoping-cart")
+// List items in shopping cart
+    @GetMapping("/shopping-cart")
     public String readDetail(ModelMap model) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
@@ -57,13 +47,20 @@ public class CartController {
 
         Account user = accountService.getAccountById(userId);
         List<Cart> cartList = cartService.getAllCarts(user);
+        float cartSum = 0;
+        int cartQty = cartList.size();
+        for (Cart cart : cartList) {
+            cartSum += cart.getSmallSum();
+        }
+        model.addAttribute("cartSum",cartSum);
+        model.addAttribute("cartQty",cartQty);
         model.addAttribute("cartItems", cartList);
 
-        return "shoping-cart";
+        return "shopping-cart";
     }
 
-    @PostMapping("/shoping-cart/add")
-    public String addShopToCart(@RequestParam("sid") Long shopId,
+    @PostMapping("/shopping-cart/add")
+    public String addItemToCart(@RequestParam("sid") Long itemId,
                                 @RequestParam("amount") int amount) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,23 +68,20 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
+        int addedAmount = cartService.addItem(itemId, amount, user);
 
-        int addedAmount = cartService.addShop(shopId, amount, user);
-
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 
-
-    @GetMapping("/shoping-cart/delete/{deleteId}")
+    @GetMapping("/shopping-cart/delete/{deleteId}")
     public String delete(@PathVariable(name = "deleteId") Long id) {
         cartService.deleteCart(id);
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 
-
 // Update amount of an item in cart
-    @PostMapping("/shoping-cart/update") ///{sid}/{amount}
-    public String update(@RequestParam(name = "shopId") Long shopId,
+    @PostMapping("/shopping-cart/update") ///{sid}/{amount}
+    public String update(@RequestParam(name = "shopId") Long itemId,
                          @RequestParam(name = "amount") int amount, HttpSession session) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -95,9 +89,8 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
+        int smallSum = cartService.updateAmount(amount, itemId, user);
 
-        int smallSum = cartService.updateAmount(amount, shopId, user);
-
-        return "redirect:/shoping-cart";
+        return "redirect:/shopping-cart";
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @AllArgsConstructor
@@ -28,16 +29,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/registration/**").permitAll()
+                .antMatchers("/registration/**","/login").permitAll()
                 .antMatchers("/shop/**").permitAll()
                 .antMatchers("/shop-details/**").permitAll()
-                .antMatchers("/item-form.html").hasAuthority("ADMIN")
-                .antMatchers("/item-list.html").hasAuthority("ADMIN")
+                .antMatchers("/about").permitAll()
+                .antMatchers("/contact").permitAll()
+                .antMatchers("/admin-panel").hasAuthority("ADMIN")
+                .antMatchers("/item-form").hasAuthority("ADMIN")
+                .antMatchers("/item-list").hasAuthority("ADMIN")
+                .antMatchers("/account-management/**").hasAuthority("ADMIN")
+                .antMatchers("/orderlist").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
-                .defaultSuccessUrl("/user", true)
+                .loginPage("/login")
+                .successHandler(successHandler())
+                .failureUrl("/login?error=true")
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied")
         ;
+        http
+                .headers()
+                .xssProtection()
+                .and()
+                .contentSecurityPolicy("script-src 'self'");
     }
 
     // configure authentication provider
@@ -53,6 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(accountService);
         return provider;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new MyCustomLoginSuccessHandler("/");
     }
 
     @Override

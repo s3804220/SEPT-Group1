@@ -1,5 +1,9 @@
 package com.example.ordersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "orders")
@@ -18,11 +23,18 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference(value="account-order")
     @JoinColumn(name = "account_id")
     private Account account;
     
-    private int price;
-    private boolean confirm;
+    @Column(columnDefinition="TEXT")
+    private String items;
+    
+    @Column
+    private BigDecimal price;
+    
+    @Column
+    private String status;
     
     public Long getId() {
         return id;
@@ -40,19 +52,28 @@ public class Order {
         this.account = account;
     }
 
-    public int getPrice() {
+	public String getItems() {
+		return items;
+	}
+
+	public void setItems(String items) {
+		this.items = items;
+	}
+
+	public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    
-    public boolean isConfirm() {
-		return confirm;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
     
-    public void setConfirm(boolean confirm) {
-		this.confirm = confirm;
-	}
 }

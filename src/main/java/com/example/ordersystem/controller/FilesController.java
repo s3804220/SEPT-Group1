@@ -40,11 +40,6 @@ public class FilesController {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("File array is NULL!");
     }
 
-    @PostMapping("/uploadshop")
-    public void uploadShopFile(@RequestParam HashMap<String, MultipartFile> file){
-        storageService.save(file.get("imgshop"));
-    }
-
     @DeleteMapping("/deletefiles/{id}")
     //Delete all image files in the folder corresponding with the item's ID
     public void deleteFiles(@PathVariable Long id){
