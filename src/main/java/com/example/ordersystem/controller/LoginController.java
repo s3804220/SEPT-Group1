@@ -1,10 +1,5 @@
 package com.example.ordersystem.controller;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.service.AccountService;
-import com.example.ordersystem.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,14 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Controller
 public class LoginController {
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private CartService cartService;
 
     @GetMapping("/login")
     public String login(HttpServletRequest request, ModelMap model){
