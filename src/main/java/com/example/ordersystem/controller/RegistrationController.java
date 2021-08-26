@@ -53,12 +53,12 @@ public class RegistrationController {
     // sign up new user after they fill out and submit the registration form
     @RequestMapping(value="registration", method=RequestMethod.POST)
     public String register(@ModelAttribute(value="account") Account account, Model model){
-        try{
+        try{ // try signing up account
             model.addAttribute("account", account);
             account.setAccountRole(AccountRole.USER);
             accountService.signUpAccount(account);
         }
-        catch(Exception e){
+        catch(Exception e){ // if any exceptions are thrown, then show it in frontend
             model.addAttribute("errorMessage", e.getMessage());
             return"registration";
         }
@@ -86,14 +86,14 @@ public class RegistrationController {
     // user update their account information (first name, last name, phone, email, address)
     @RequestMapping(value="user/update", method=RequestMethod.POST)
     public String update(@Valid Account account, Model model){
-        try{
+        try{ // try updating account
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
             account.setId(userId);
             accountService.updateAccount(userId, account);
         }
-        catch(Exception e){
+        catch(Exception e){ // if any exceptions are thrown, then show it in fronted
             model.addAttribute("errorMessage", e.getMessage());
             return"update_account";
         }
