@@ -15,22 +15,29 @@
                                 <h2 class="form-signin-heading">Please register</h2>
 
                                 <div class="form-group">
+                                        <label for="firstName">First Name:</label>
                                         <input class="form-control" type="text" th:field="*{firstName}" id="firstName" placeholder="First Name" required>
                                 </div>
 <!--                                <br/><br/>-->
                                 <div class="form-group">
+                                        <label for="lastName">Last Name:</label>
                                         <input class="form-control" type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
                                 </div>
                                 <div class="form-group">
+                                        <label for="accAddress">Address:</label>
                                         <input class="form-control" type="text" th:field="*{accAddress}" id="accAddress" placeholder="Address" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="*{phone}" id="phone" placeholder="Phone Number" required>
+                                        <label for="phone">Phone Number:</label>
+                                        <input class="form-control" type="text" th:field="*{phone}" id="phone" placeholder="Phone Number" pattern="(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}" title="Please enter a valid Vietnamese phone number" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="*{email}" id="email" placeholder="Email" required>
+                                        <label for="email">Email:</label>
+                                        <span th:if="${errorMessage}"  th:text="${errorMessage}" style="color: red">Error</span>
+                                        <input class="form-control" type="text" th:field="*{email}" id="email" placeholder="Email" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" title="Please enter a valid email" required>
                                 </div>
                                 <div class="form-group">
+                                        <label for="password">Password:</label>
                                         <input class="form-control" type="text" th:field="*{password}" id="password" placeholder="Password" required>
                                 </div>
                                 <button type="submit" class="btn btn-lg btn-primary btn-block">Sign Up</button>
