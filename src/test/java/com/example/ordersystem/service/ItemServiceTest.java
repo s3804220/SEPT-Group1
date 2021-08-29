@@ -138,20 +138,20 @@ public class ItemServiceTest {
         assertEquals(0,itemService.getAllItems().size());
     }
 
-    @Test
-    public void findTotalTests() {
-        Item testItem1 = new Item("testCake1", "Frist test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
-        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"),"Cake",true);
-
-        itemService.saveItem(testItem1);
-        itemService.saveItem(testItem2);
-
-        int amount = 2;
-        int num = itemService.findTotal();
-
-        assertTrue(amount <= itemService.findTotal());
-        assertEquals(num, itemService.findTotal());
-    }
+//    @Test
+//    public void findTotalTests() {
+//        Item testItem1 = new Item("testCake1", "Frist test", "product-1.jpg", new BigDecimal("11.00"),"Cake",true);
+//        Item testItem2 = new Item("testCake2","Last test", "product-2.jpg", new BigDecimal("8.00"),"Cake",true);
+//
+//        itemService.saveItem(testItem1);
+//        itemService.saveItem(testItem2);
+//
+//        int amount = 2;
+//        int num = itemService.findTotal();
+//
+//        assertTrue(amount <= itemService.findTotal());
+//        assertEquals(num, itemService.findTotal());
+//    }
 
 //    @Test
 //    public void findListPaging() {

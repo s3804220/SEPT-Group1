@@ -74,7 +74,24 @@ public class DbInitializer implements CommandLineRunner {
         Item item21 = new Item("2Lemon Flower Sandwich Biscuits","Two biscuits sandwiched together. The buttery flavor and zingy taste of lemon await you","biscuit-1.jpg",new BigDecimal("10.00"),"Biscuit",true);
         Item item22 = new Item("2Fall Leaves Sugar Biscuits","Colorful biscuits with a sprinkle of sugar to sweeten the season","biscuit-2.jpg",new BigDecimal("15.50"),"Biscuit",true);
         Item item23 = new Item("2Pink Strawberry Donut","A fluffy and pink donut with colorful sprinkles. Yummy","donut-1.jpeg",new BigDecimal("15.00"),"Donut",true);
-        Item item24 = new Item("2Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item24 = new Item("24Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item25 = new Item("25Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item26 = new Item("26Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item27 = new Item("27Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item28 = new Item("28Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item29 = new Item("29Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item30 = new Item("30Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item31 = new Item("31Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item32 = new Item("32Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item33 = new Item("33Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item34 = new Item("34Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item35 = new Item("35Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item36 = new Item("36Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item37 = new Item("37Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item38 = new Item("38Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item39 = new Item("39Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item40 = new Item("40Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
+        Item item41 = new Item("41Smiley Face Donut","Look how happy that donut is. Doesn't it put a smile on your face?","donut-2.jpg|donut-2-2.jpg|donut-2-3.jpg|donut-2-4.png",new BigDecimal("17.00"),"Donut",true);
 
         itemService.saveItem(item1);
         itemService.saveItem(item2);
@@ -100,6 +117,25 @@ public class DbInitializer implements CommandLineRunner {
         itemService.saveItem(item22);
         itemService.saveItem(item23);
         itemService.saveItem(item24);
+
+        itemService.saveItem(item25);
+        itemService.saveItem(item26);
+        itemService.saveItem(item27);
+        itemService.saveItem(item28);
+        itemService.saveItem(item29);
+        itemService.saveItem(item30);
+        itemService.saveItem(item31);
+        itemService.saveItem(item32);
+        itemService.saveItem(item33);
+        itemService.saveItem(item34);
+        itemService.saveItem(item35);
+        itemService.saveItem(item36);
+        itemService.saveItem(item37);
+        itemService.saveItem(item38);
+        itemService.saveItem(item39);
+        itemService.saveItem(item40);
+        itemService.saveItem(item41);
+
 
         List<Item> itemList = itemService.getAllItems();
 

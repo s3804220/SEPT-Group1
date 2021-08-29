@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ItemController {
@@ -35,10 +35,13 @@ public class ItemController {
     @GetMapping("/shop")
     public String listAll(ModelMap model,
                           @RequestParam(defaultValue = "1") int page,
-                          @RequestParam(name="sortField", defaultValue = "id") String sortField) {
+                          @RequestParam(name="sortField", defaultValue = "id") String sortField,
+                          @RequestParam(name="filterField", defaultValue = "All") String filterField ) {
+
+
 
         // The number of total items
-        int totalNum = itemService.findTotal();
+        int totalNum = itemService.getAllItems().size();
 
         Pagination pagination = new Pagination(totalNum, page);
 
@@ -47,12 +50,45 @@ public class ItemController {
         // Max num of items in a page
         int pageSize = pagination.getPageSize();
 
-        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, sortField);
+        // Check if value of sortFild is valid
+        String[] validSort = new String[]{"id","name","priceHTL","priceLTH"};
+        if(!Arrays.asList(validSort).contains(sortField)){
+            sortField = "id";
+        }
 
+
+        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, filterField, sortField);
+        List<Item> tempList = new ArrayList<>();
+        List<Item> fullItemList = itemService.getAllItems();
+
+        // Get pagination when Filter is used
+//        pagination.setTotalPages(totalNum % pageSize + 1);
+//        pagination.setTotalBlocks(pagination.getTotalPages());
+        pagination = new Pagination(itemService.findNumOfFilteredItems(filterField)+1, page);
+        System.out.println("@@@@@@ itemService.findNumOfFilteredItems(filterField): "+itemService.findNumOfFilteredItems(filterField));
+        System.out.println("@@@@@@ pagination.getTotalPages: "+pagination.getTotalPages());
+
+        // Get a list of categories of items
+        List<String> categoryListwithDuplicates = new ArrayList<>();
+        categoryListwithDuplicates.add("All");
+
+
+        for (Item item : fullItemList) {
+            categoryListwithDuplicates.add(item.getCategory());
+        }
+
+        List<String> categoryList = new ArrayList<String>(new LinkedHashSet<>(categoryListwithDuplicates));
+
+        // Check if value of filterFild is valid
+        if(!categoryList.contains(filterField)){
+            filterField = "id";
+        }
+
+
+        model.addAttribute("filterField", filterField);
         model.addAttribute("sortField", sortField);
-
-
         model.addAttribute("shopList", shopList);
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("pagination", pagination);
 
         float cartSum = 0;

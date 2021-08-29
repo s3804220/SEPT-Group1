@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,29 +66,33 @@ public class ItemService {
         }
     }
 
-    // Get total number of items
-    public int findTotal() {
-        return ((Number) em.createQuery("select count(*) from Item")
-                .getSingleResult()).intValue();
+    // Get the number of items of a category (filtered)
+    public int findNumOfFilteredItems(String filterField) {
+        if(!filterField.equals("All")) {
+            return ((Number) em.createQuery("select count(b) from Item b where b.category like '" + filterField + "'")
+                    .getSingleResult()).intValue();
+        } else
+            System.out.println("@@@@@@@It's All");
+            return ((Number) em.createQuery("select count(*) from Item")
+                    .getSingleResult()).intValue();
+
     }
 
-    public List<Item> findListPaging(int startIndex, int pageSize, String sortField) {
+    // Get a list of filtered, sorted items for a page
+    public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField) {
 
-        String queryStr = "";
-        switch (sortField) {
-            case "id":
-                queryStr = "select b from Item b order by b.id asc";
-                break;
-            case "name":
-                queryStr = "select b from Item b order by b.itemName asc";
-                break;
-            case "priceLTH":
-                queryStr = "select b from Item b order by b.itemPrice asc";
-                break;
-            case "priceHTL":
-                queryStr = "select b from Item b order by b.itemPrice desc";
-                break;
+        String queryStr = "select b from Item b ";
+
+        if(!filterField.equals("All"))
+            queryStr += "where b.category like '"+filterField+"' ";
+//                ")\nselect a from cte ";
+
+        if (sortField.equals("priceHTL")) {
+            queryStr += "order by b." + sortField + " desc";
+        } else {
+            queryStr += "order by b." + sortField + " asc";
         }
+        System.out.println("@@@@@@@@@@@@@@ queryStr: \n"+queryStr);
 
         return em.createQuery(queryStr, Item.class)
                 .setFirstResult(startIndex)
