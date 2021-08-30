@@ -29,7 +29,7 @@ import java.util.Properties;
 //@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
 @ComponentScan(basePackages = {"com.example.ordersystem"})
-@EntityScan("com.example.ordersystem.*")
+@EntityScan("com.example.ordersystem.model")
 public class AppConfig implements WebMvcConfigurer {
     @Bean
     public Student student(){
