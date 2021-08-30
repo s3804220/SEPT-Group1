@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.example.ordersystem.OrderSystemApplication
+web: java -jar target/OrderSystem-0.01-SNAPSHOT.jar
