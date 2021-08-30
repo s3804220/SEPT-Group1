@@ -5,6 +5,7 @@ import com.example.ordersystem.model.Student;
 import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +29,7 @@ import java.util.Properties;
 //@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
 @ComponentScan(basePackages = {"com.example.ordersystem"})
+@EntityScan("com.example.ordersystem.*")
 public class AppConfig implements WebMvcConfigurer {
     @Bean
     public Student student(){
