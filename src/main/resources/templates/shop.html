@@ -201,7 +201,9 @@
         <div class="row" th:if="${not #lists.isEmpty(shopList)}">
             <div class="col-lg-3 col-md-6 col-sm-6" th:each="shop : ${shopList}">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" th:attr="data-setbg=${'img/upload/item'+shop.id+'/'+#strings.arraySplit(shop.itemImage, '|')[0]}">
+
+                        <div class="product__item__pic set-bg" th:attr="data-setbg=@{/itemimage/{image_id}(image_id=${shop.itemimages[0].id})}">
+
                         <!--"@{${'/img/shop/' + shop.image}}"-->
                         <div class="product__label">
                             <span th:text="${shop.category}"></span>

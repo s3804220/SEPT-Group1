@@ -31,6 +31,9 @@ public class DbInitializer implements CommandLineRunner {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemImageService itemImageService;
+
     @Override
     public void run(String... args){
 //        List<Account> accountList = accountService.getAllAccounts();
@@ -87,7 +90,7 @@ public class DbInitializer implements CommandLineRunner {
                 try{
                     byte[] byteArray = Files.readAllBytes(Paths.get(("src\\main\\resources\\static\\img\\shop\\"+imgname).replace("\\", File.separator)));
                     MockMultipartFile file = new MockMultipartFile("file", imgname, "multipart/form-data", byteArray);
-                    filesStorageService.save(file, item.getId().toString());
+                    itemImageService.saveItemImage(item.getId(),file);
                 }
                 catch(IOException e){
                     e.printStackTrace();

@@ -85,7 +85,7 @@ function saveItem() {
 
     //If there is no specified ID, add a new item with a POST request
     if(!id){
-        fetch('http://localhost:8080/items', {
+        fetch('/items', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ function saveItem() {
     }else{
         //If there is a specified ID, update the item with that ID in the database with a PUT request
         //the rest of the process is similar to above
-        fetch('http://localhost:8080/items', {
+        fetch('/items', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ function uploadImg(id){
     }
 
     //Upload all images to the server with a POST request
-    fetch('http://localhost:8080/upload', {
+    fetch('/item/'+id+'/image', {
         method: "POST",
         body: imgData
     })
