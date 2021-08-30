@@ -1,1 +1,1 @@
-web: java -jar target/OrderSystem-0.01-SNAPSHOT.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/*.jar
