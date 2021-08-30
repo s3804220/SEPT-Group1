@@ -59,5 +59,4 @@ public class WebController {
         unifiedService.getCartInfo(model);
         return "access-denied";
     }
-
 }
