@@ -58,7 +58,7 @@ public class AppConfig implements WebMvcConfigurer {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
 
-        // Project's database credentials
+        // Heroku's database credentials
         dataSource.setUrl("jdbc:postgresql://ec2-44-197-40-76.compute-1.amazonaws.com:5432/dfh63mee24494k");
         dataSource.setUsername("renfdjhmcquulb");
         dataSource.setPassword("4e9deeb856b3dd2fd6ce9d26ff442a36298163355cb85354a4f9f499a68520b4");
