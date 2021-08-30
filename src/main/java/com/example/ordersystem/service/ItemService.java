@@ -47,6 +47,12 @@ public class ItemService {
         return itemRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
+    //Get string of an item's image file names
+    public String getItemImages(Long id){
+        Item itemToGet = getItem(id).get();
+        return itemToGet.getItemImage();
+    }
+
     //Delete an item by ID
     public void deleteItem(Long id){
         itemRepository.deleteById(id);

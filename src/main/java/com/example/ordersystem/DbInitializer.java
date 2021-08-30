@@ -36,33 +36,16 @@ public class DbInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args){
-//        List<Account> accountList = accountService.getAllAccounts();
-//        List<Item> itemList1 = itemService.getAllItems();
-//
-//        for (Account temp : accountList){
-//            if (temp.getEmail().equals("admin@gmail.com") || temp.getEmail().equals("user@gmail.com")){
-//                accountService.deleteAccount(temp.getId());
-//            }
-//        }
-//
-//        for (Item item : itemList1){
-//            if(item.getItemName().equals("Cream cupcake")||item.getItemName().equals("Chocolate cupcake")||item.getItemName().equals("Unicorn Cake") || item.getItemName().equals("Chocolate & Raspberry Cake")
-//                    || item.getItemName().equals("Lemon Flower Sandwich Biscuits") || item.getItemName().equals("Fall Leaves Sugar Biscuits") || item.getItemName().equals("Pink Strawberry Donut")
-//                    || item.getItemName().equals("Smiley Face Donut")){
-//                itemService.deleteItem(item.getId());
-//            }
-//        }
 
         //Initialize admin account
         Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
+
         accountService.signUpAccount(admin);
         accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
 
         //Initialize user account
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
         accountService.signUpAccount(user1);
-
-//        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
         Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("21.00"), "Cupcake",true);
         Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("22.00"),"Cupcake",true);
