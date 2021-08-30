@@ -13,12 +13,9 @@ function deleteItem(id){
 
     //If okay is selected, send a DELETE request to delete the item with the specified ID from the database
     if(confirmation){
-        fetch('http://localhost:8080/items/'+id, {
+        fetch('/items/'+id, {
             method: "DELETE"
-        }) //Also delete all image files of the specified item from the server
-            .then(() => fetch('http://localhost:8080/deletefiles/'+id, {
-                method: "DELETE"
-            })) //Then reload the page to show the updated list
-            .then(() => window.location = '/item-list')
+        }) //Then reload the page to show the updated list
+         .then(() => window.location = '/item-list')
     }
 }

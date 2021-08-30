@@ -147,7 +147,7 @@ function loadInfo(){
         let category = document.getElementById('item-category')
 
         //Get information for the item with the specified ID in the database
-        fetch('http://localhost:8080/items/'+itemid)
+        fetch('/items/'+itemid)
             .then(res => res.json())
             .then(json => {
                 //If the item exists and there is information to display, display it in the form for admin to edit
