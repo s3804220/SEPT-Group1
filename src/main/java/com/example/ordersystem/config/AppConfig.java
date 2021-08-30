@@ -1,8 +1,6 @@
 package com.example.ordersystem.config;
 
 import com.example.ordersystem.model.Item;
-import com.example.ordersystem.model.Student;
-import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -31,16 +29,6 @@ import java.util.Properties;
 @ComponentScan(basePackages = {"com.example.ordersystem"})
 @EntityScan("com.example.ordersystem.model")
 public class AppConfig implements WebMvcConfigurer {
-    @Bean
-    public Student student(){
-        return new Student();
-    }
-
-    @Bean
-    public Teacher teacher(){
-        return new Teacher();
-    }
-
     @Bean
     public Item item() {
         return new Item();
