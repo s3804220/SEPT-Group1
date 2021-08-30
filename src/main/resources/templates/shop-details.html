@@ -173,15 +173,15 @@
             <div class="col-lg-6">
                 <div class="product__details__img">
                     <div class="product__details__big__img">
-                        <img class="big_img" th:src="@{${'img/upload/item'+shopDetail.id+'/'+#strings.arraySplit(shopDetail.itemImage, '|')[0]}}" alt=""><!--"@{${'/img/shop/'+shopDetail.image}}"-->
+                        <img class="big_img" th:src="@{/itemimage/{image_id}(image_id=${shopDetail.itemimages[0].id})}" alt="">
 
                     </div>
-                    <div th:with="imgArray=${#strings.arraySplit(shopDetail.itemImage, '|')}">
+                    <div th:with="imgArray=${shopDetail.itemimages}">
                         <div th:if="${#arrays.length(imgArray)>1}">
                             <div class="product__details__thumb" th:each="image : ${imgArray}">
                                 <div class="pt__item" th:classappend="${imageStat.index==0} ? active">
-                                    <img th:attr="data-imgbigurl=${'img/upload/item'+shopDetail.id+'/'+image}"
-                                         th:src="@{${'img/upload/item'+shopDetail.id+'/'+image}}" alt="">
+                                    <img th:attr="data-imgbigurl=@{/itemimage/{image_id}(image_id=${image.id})}"
+                                         th:src="@{/itemimage/{image_id}(image_id=${image.id})}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
 
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" id="amount" name="amount" value="1" min="1">
+                                <input type="number" id="amount" name="amount" value="1" min="1" class="quantity-input-field">
 
                             </div>
                         </div>

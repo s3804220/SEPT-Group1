@@ -24,11 +24,11 @@ public class Cart {
     private Item item;
 
     @ManyToOne
+    @JsonBackReference(value="account-cart")
     @JoinColumn(name = "account_id")
     private Account account;
 
     private int amount;
-
 
     @Transient
     public float getSmallSum() {

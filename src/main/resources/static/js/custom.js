@@ -124,7 +124,7 @@ function saveItem() {
 
     //If there is no specified ID, add a new item with a POST request
     if(!id){
-        fetch('http://localhost:8080/items', {
+        fetch('/items', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ function saveItem() {
     }else{
         //If there is a specified ID, update the item with that ID in the database with a PUT request
         //the rest of the process is similar to above
-        fetch('http://localhost:8080/items/images/'+id)
+        fetch('/items/images/'+id)
             .then(res => res.text())
             .then(images => {
                 if(!replaceImg){
@@ -148,12 +148,12 @@ function saveItem() {
                     filenames = images
                 }else{
                     //If the Admin wants to upload new images, then delete all old images
-                    fetch('http://localhost:8080/deletefiles/'+id, {
+                    fetch('/item/'+id+'/image', {
                         method: "DELETE"
                     })
                 }
             }).then(() => {
-            fetch('http://localhost:8080/items', {
+            fetch('/items', {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -181,7 +181,7 @@ function uploadImg(id){
     }
 
     //Upload all images to the server with a POST request
-    fetch('http://localhost:8080/upload', {
+    fetch('/item/'+id+'/image', {
         method: "POST",
         body: imgData
     })
@@ -204,7 +204,7 @@ function loadInfo(){
             let category = document.getElementById('item-category')
 
             //Get information for the item with the specified ID in the database
-            fetch('http://localhost:8080/items/'+itemid)
+            fetch('/items/'+itemid)
                 .then(res => res.json())
                 .then(json => {
                     //If the item exists and there is information to display, display it in the form for admin to edit

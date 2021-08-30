@@ -1,5 +1,6 @@
 package com.example.ordersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -46,6 +48,14 @@ public class Account implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private AccountRole accountRole;
+
+    @JsonManagedReference(value = "account-cart")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account",cascade = CascadeType.REMOVE)
+    private Set<Cart> carts;
+
+    @JsonManagedReference(value = "account-order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account",cascade = CascadeType.REMOVE)
+    private Set<Order> orders;
 
     private Boolean locked = false;
     private Boolean enabled = false;

@@ -93,3 +93,15 @@
 .unavailable-button {
     background-color: #a20e0e;
 }
+/*Style number input field*/
+/* Chrome, Safari, Edge, Opera */
+.quantity-input-field::-webkit-outer-spin-button,
+.quantity-input-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number].quantity-input-field {
+    -moz-appearance: textfield;
+}

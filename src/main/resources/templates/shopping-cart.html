@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="../../css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../../css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../../css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../css/custom.css" type="text/css">
 </head>
 
 <body>
@@ -97,6 +98,7 @@
                                 <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
                                         <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a>
                                         <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
                                         </li>
                                     </ul>
@@ -200,7 +202,7 @@
                                         <div class="quantity">
                                             <div class="pro-qty">
 
-                                                <input type="text" name="amount" th:value="${shop.amount}">
+                                                <input type="number" name="amount" th:value="${shop.amount}" min="1" class="quantity-input-field" id="cart-amount">
 
                                             </div>
                                         </div>

@@ -1,13 +1,12 @@
 package com.example.ordersystem.controller;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Item;
-import com.example.ordersystem.model.Pagination;
-import com.example.ordersystem.service.AccountService;
-import com.example.ordersystem.service.CartService;
-import com.example.ordersystem.service.ItemService;
+import com.example.ordersystem.model.*;
+import com.example.ordersystem.service.*;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -25,9 +28,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
     @Autowired
-    private AccountService accountService;
+    private ItemImageService itemImageService;
     @Autowired
-    private CartService cartService;
+    private UnifiedService unifiedService;
 
     @GetMapping("/shop")
     public String listAll(ModelMap model, @RequestParam(defaultValue = "1") int page) {
@@ -47,72 +50,24 @@ public class ItemController {
         model.addAttribute("shopList", shopList);
         model.addAttribute("pagination", pagination);
 
-        float cartSum = 0;
-        int cartQty = 0;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, update their top-right cart info
-            Account loggedInAcc = (Account)auth.getPrincipal();
-            Long userId = loggedInAcc.getId();
-
-            Account user = accountService.getAccountById(userId);
-            List<Cart> cartList = cartService.getAllCarts(user);
-
-            cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
-            }
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
+        unifiedService.getCartInfo(model);
 
         return "shop";
     }
 
     @GetMapping("/shop-details")
-    public String readDetail(ModelMap model, @RequestParam("id") Long id) throws Exception {
+    public String readDetail(ModelMap model, @RequestParam("id") Long id) {
 
         model.addAttribute("shopDetail", itemService.getItem(id).get());
 
-        float cartSum = 0;
-        int cartQty = 0;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, update their top-right cart info
-            Account loggedInAcc = (Account)auth.getPrincipal();
-            Long userId = loggedInAcc.getId();
-
-            Account user = accountService.getAccountById(userId);
-            List<Cart> cartList = cartService.getAllCarts(user);
-
-            cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
-            }
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
+        unifiedService.getCartInfo(model);
 
         return "shop-details";
     }
 
     @GetMapping(path = "/item-form")
     public String itemForm(ModelMap model){
-        float cartSum = 0;
-        int cartQty = 0;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account loggedInAcc = (Account)auth.getPrincipal();
-        Long userId = loggedInAcc.getId();
-
-        Account user = accountService.getAccountById(userId);
-        List<Cart> cartList = cartService.getAllCarts(user);
-
-        cartQty = cartList.size();
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
+        unifiedService.getCartInfo(model);
         return "item-form";
     }
 
@@ -120,21 +75,7 @@ public class ItemController {
     public String itemList(ModelMap model){
         List<Item> itemList = itemService.getAllItemsSortedId();
         model.addAttribute("itemList",itemList);
-        float cartSum = 0;
-        int cartQty = 0;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account loggedInAcc = (Account)auth.getPrincipal();
-        Long userId = loggedInAcc.getId();
-
-        Account user = accountService.getAccountById(userId);
-        List<Cart> cartList = cartService.getAllCarts(user);
-
-        cartQty = cartList.size();
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
-        }
-        model.addAttribute("cartSum",cartSum);
-        model.addAttribute("cartQty",cartQty);
+        unifiedService.getCartInfo(model);
         return "item-list";
     }
 
@@ -142,5 +83,11 @@ public class ItemController {
     public String changeAvailability(@PathVariable Long id){
         itemService.changeAvailability(id);
         return "redirect:/item-list";
+    }
+
+    @GetMapping(value = "/itemimage/{image_id}")
+    public void getImage(@PathVariable("image_id") Long imageId, HttpServletResponse response) throws IOException {
+        InputStream is = new ByteArrayInputStream(itemImageService.getItemImageById(imageId).getImage());
+        IOUtils.copy(is, response.getOutputStream());
     }
 }

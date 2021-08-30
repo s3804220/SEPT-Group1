@@ -192,7 +192,7 @@
                         <tr>
                             <td class="product__cart__item">
                                 <div class="product__cart__item__pic">
-                                    <img th:src="@{img/upload/item{id}/{name}(id=${item.id},name=${#strings.arraySplit(item.itemImage, '|')[0]})}"
+                                    <img th:src="@{/itemimage/{image_id}(image_id=${item.itemimages[0].id})}"
                                          alt="" style="width: 100px;height: 100px">
                                 </div>
                                 <div class="product__cart__item__text item-name-text-column">
