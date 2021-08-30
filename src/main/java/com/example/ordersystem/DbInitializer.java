@@ -31,30 +31,24 @@ public class DbInitializer implements CommandLineRunner {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ItemRepository itemRepository;
-
     @Override
     public void run(String... args){
-        List<Account> accountList = accountService.getAllAccounts();
-        List<Item> itemList1 = itemService.getAllItems();
-
-        for (Account temp : accountList){
-            if (temp.getEmail().equals("admin@gmail.com") || temp.getEmail().equals("user@gmail.com")){
-                accountService.deleteAccount(temp.getId());
-            }
-        }
-
-        for (Item item : itemList1){
-            if(item.getItemName().equals("Cream cupcake")||item.getItemName().equals("Chocolate cupcake")||item.getItemName().equals("Unicorn Cake") || item.getItemName().equals("Chocolate & Raspberry Cake")
-                    || item.getItemName().equals("Lemon Flower Sandwich Biscuits") || item.getItemName().equals("Fall Leaves Sugar Biscuits") || item.getItemName().equals("Pink Strawberry Donut")
-                    || item.getItemName().equals("Smiley Face Donut")){
-                itemService.deleteItem(item.getId());
-            }
-        }
+//        List<Account> accountList = accountService.getAllAccounts();
+//        List<Item> itemList1 = itemService.getAllItems();
+//
+//        for (Account temp : accountList){
+//            if (temp.getEmail().equals("admin@gmail.com") || temp.getEmail().equals("user@gmail.com")){
+//                accountService.deleteAccount(temp.getId());
+//            }
+//        }
+//
+//        for (Item item : itemList1){
+//            if(item.getItemName().equals("Cream cupcake")||item.getItemName().equals("Chocolate cupcake")||item.getItemName().equals("Unicorn Cake") || item.getItemName().equals("Chocolate & Raspberry Cake")
+//                    || item.getItemName().equals("Lemon Flower Sandwich Biscuits") || item.getItemName().equals("Fall Leaves Sugar Biscuits") || item.getItemName().equals("Pink Strawberry Donut")
+//                    || item.getItemName().equals("Smiley Face Donut")){
+//                itemService.deleteItem(item.getId());
+//            }
+//        }
 
         //Initialize admin account
         Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
