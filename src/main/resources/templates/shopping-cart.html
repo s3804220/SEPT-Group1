@@ -190,9 +190,9 @@
                                 <div th:with="product = ${shop.item}">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img th:src="@{${'img/upload/item'+product.id+'/'+#strings.arraySplit(product.itemImage, '|')[0]}}" alt="" width="80" height="80">
+                                            <img th:src="@{/itemimage/{image_id}(image_id=${product.itemimages[0].id})}" alt="" width="80" height="80">
                                         </div>
-                                        <!--                                        src="../static/img/shop/cart/cart-1.jpg"-->
+
                                         <div class="product__cart__item__text" style="padding-top: 16px">
                                             <h6 th:text="${product.itemName}"></h6>
                                             <span>price: </span><span th:text="${product.itemPrice}"></span>
