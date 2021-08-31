@@ -3,11 +3,14 @@ package com.example.ordersystem.service;
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.ItemRepository;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE")
 })
 //WARNING: Running this test will delete all items from the items table in the database
+@ExtendWith(SpringExtension.class)
+@Transactional
 @SpringBootTest
 public class ItemServiceTest {
     @Autowired
@@ -132,7 +137,7 @@ public class ItemServiceTest {
         assertEquals("Pie",itemService.getAllItems().get(0).getItemName());
         assertEquals("Yummy pie",itemService.getAllItems().get(0).getItemDescription());
         assertEquals("food.png|image.jpg",itemService.getAllItems().get(0).getItemImage());
-        assertEquals(new BigDecimal("7.00"),itemService.getAllItems().get(0).getItemPrice());
+        assertEquals(new BigDecimal("7"),itemService.getAllItems().get(0).getItemPrice());
         assertEquals("Pie",itemService.getAllItems().get(0).getCategory());
         assertTrue(itemService.getAllItems().get(0).isAvailability());
 

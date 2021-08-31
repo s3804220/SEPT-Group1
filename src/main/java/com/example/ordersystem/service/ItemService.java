@@ -66,7 +66,9 @@ public class ItemService {
             //If the item becomes unavailable, delete it from all users' carts
             //so the users cannot check out any cart with that item
             Set<Cart> itemCarts = item.getCarts();
-            cartRepository.deleteAll(itemCarts);
+            if(itemCarts!=null){
+                cartRepository.deleteAll(itemCarts);
+            }
         }
     }
 
