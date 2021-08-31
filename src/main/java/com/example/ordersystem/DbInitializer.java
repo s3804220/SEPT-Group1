@@ -1,6 +1,8 @@
 package com.example.ordersystem;
 
 import com.example.ordersystem.model.*;
+import com.example.ordersystem.repository.AccountRepository;
+import com.example.ordersystem.repository.ItemRepository;
 import com.example.ordersystem.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +31,21 @@ public class DbInitializer implements CommandLineRunner {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemImageService itemImageService;
+
     @Override
     public void run(String... args){
-        List<Account> accountList = accountService.getAllAccounts();
-
-//        for (Account temp : accountList){
-//            accountService.deleteAccount(temp.getId());
-//        }
-//        this.accountRepository.deleteAll();
 
         //Initialize admin account
         Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
+
         accountService.signUpAccount(admin);
         accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
 
         //Initialize user account
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
         accountService.signUpAccount(user1);
-
-//        Account user1 = accountService.getAccountById((long) 2); // id=2 : Jeffrey
 
         Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("21.00"), "Cupcake",true);
         Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("22.00"),"Cupcake",true);
@@ -75,7 +73,7 @@ public class DbInitializer implements CommandLineRunner {
                 try{
                     byte[] byteArray = Files.readAllBytes(Paths.get(("src\\main\\resources\\static\\img\\shop\\"+imgname).replace("\\", File.separator)));
                     MockMultipartFile file = new MockMultipartFile("file", imgname, "multipart/form-data", byteArray);
-                    filesStorageService.save(file, item.getId().toString());
+                    itemImageService.saveItemImage(item.getId(),file);
                 }
                 catch(IOException e){
                     e.printStackTrace();

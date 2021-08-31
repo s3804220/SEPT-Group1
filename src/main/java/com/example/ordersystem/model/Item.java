@@ -36,6 +36,10 @@ public class Item {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item",cascade = CascadeType.REMOVE)
     private Set<Cart> carts;
 
+    @JsonManagedReference(value = "image-item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item",cascade = CascadeType.REMOVE)
+    private Set<ItemImage> itemimages;
+
     public Item(){}
 
     public Item(String itemName, String itemDescription, String itemImage, BigDecimal itemPrice, String category, boolean availability){
@@ -110,5 +114,13 @@ public class Item {
 
     public void setCarts(Set<Cart> carts) {
         this.carts = carts;
+    }
+
+    public Set<ItemImage> getItemimages() {
+        return itemimages;
+    }
+
+    public void setItemimages(Set<ItemImage> itemimages) {
+        this.itemimages = itemimages;
     }
 }

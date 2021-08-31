@@ -1,10 +1,9 @@
 package com.example.ordersystem.config;
 
 import com.example.ordersystem.model.Item;
-import com.example.ordersystem.model.Student;
-import com.example.ordersystem.model.Teacher;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,17 +27,8 @@ import java.util.Properties;
 //@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
 @ComponentScan(basePackages = {"com.example.ordersystem"})
+@EntityScan("com.example.ordersystem.model")
 public class AppConfig implements WebMvcConfigurer {
-    @Bean
-    public Student student(){
-        return new Student();
-    }
-
-    @Bean
-    public Teacher teacher(){
-        return new Teacher();
-    }
-
     @Bean
     public Item item() {
         return new Item();
@@ -63,21 +53,20 @@ public class AppConfig implements WebMvcConfigurer {
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
-        sessionFactoryBean.setPackagesToScan("com/example/OrderSystem/model");
+        sessionFactoryBean.setPackagesToScan("com.example.ordersystem.model");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
 
-        // Project's database credentials
+        // Heroku's database credentials
+//        dataSource.setUrl("jdbc:postgresql://ec2-44-197-40-76.compute-1.amazonaws.com:5432/dfh63mee24494k");
+//        dataSource.setUsername("renfdjhmcquulb");
+//        dataSource.setPassword("4e9deeb856b3dd2fd6ce9d26ff442a36298163355cb85354a4f9f499a68520b4");
+
+        // Local database credentials
         dataSource.setUrl("jdbc:postgresql://localhost:5432/cosc2101");
         dataSource.setUsername("postgres");
         dataSource.setPassword("super123");
-
-        // Di's database credentials
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
-//        dataSource.setUsername("pg");
-//        dataSource.setPassword("1234");
-
 
 
         sessionFactoryBean.setDataSource(dataSource);

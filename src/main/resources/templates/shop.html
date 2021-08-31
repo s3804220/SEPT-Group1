@@ -177,7 +177,7 @@
                                 <option value="Biscuit">Biscuit</option>
                                 <option value="Donut">Donut</option>
                             </select>
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Search" id="search-input">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -199,9 +199,11 @@
 
         <!-- Item List Begin -->
         <div class="row" th:if="${not #lists.isEmpty(shopList)}">
-            <div class="col-lg-3 col-md-6 col-sm-6" th:each="shop : ${shopList}">
+            <div class="col-lg-3 col-md-6 col-sm-6 product-item-card" th:each="shop : ${shopList}">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" th:attr="data-setbg=${'img/upload/item'+shop.id+'/'+#strings.arraySplit(shop.itemImage, '|')[0]}">
+
+                        <div class="product__item__pic set-bg" th:attr="data-setbg=@{/itemimage/{image_id}(image_id=${shop.itemimages[0].id})}">
+
                         <!--"@{${'/img/shop/' + shop.image}}"-->
                         <div class="product__label">
                             <span th:text="${shop.category}"></span>
@@ -210,7 +212,7 @@
                     <div class="product__item__text">
                         <h6>
                             <!--                                href="/shop-details" http://localhost:8080/shop?page=1#-->
-                            <a th:href="@{/shop-details(id=${shop.id})}" th:text="${shop.itemName}"></a></h6>
+                            <a th:href="@{/shop-details(id=${shop.id})}" th:text="${shop.itemName}" id="product-item-name"></a></h6>
                         <div class="product__item__price" th:text="${'$'+shop.itemPrice}"></div>
                         <div class="cart_add">
                             <a th:href="@{/shop-details(id=${shop.id})}">Check details</a>
@@ -339,7 +341,7 @@
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
         <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
+            <input type="text" id="search-input-field" placeholder="Search here.....">
         </form>
     </div>
 </div>
@@ -355,6 +357,7 @@
 <script src="../../js/owl.carousel.min.js"></script>
 <script src="../../js/jquery.nicescroll.min.js"></script>
 <script src="../../js/main.js"></script>
+<script src="../../js/search.js"></script>
 </body>
 
 </html>

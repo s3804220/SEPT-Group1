@@ -1,14 +1,12 @@
 package com.example.ordersystem.controller;
 
-import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.model.Item;
-import com.example.ordersystem.model.Pagination;
-import com.example.ordersystem.service.AccountService;
-import com.example.ordersystem.service.CartService;
-import com.example.ordersystem.service.ItemService;
-import com.example.ordersystem.service.UnifiedService;
+import com.example.ordersystem.model.*;
+import com.example.ordersystem.service.*;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -26,9 +28,7 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private CartService cartService;
+    private ItemImageService itemImageService;
     @Autowired
     private UnifiedService unifiedService;
 
@@ -83,5 +83,11 @@ public class ItemController {
     public String changeAvailability(@PathVariable Long id){
         itemService.changeAvailability(id);
         return "redirect:/item-list";
+    }
+
+    @GetMapping(value = "/itemimage/{image_id}")
+    public void getImage(@PathVariable("image_id") Long imageId, HttpServletResponse response) throws IOException {
+        InputStream is = new ByteArrayInputStream(itemImageService.getItemImageById(imageId).getImage());
+        IOUtils.copy(is, response.getOutputStream());
     }
 }
