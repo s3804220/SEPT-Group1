@@ -9,3 +9,21 @@ $(document).ready(function() {
     });
     $("#totalSum").text("$" + total);
 });
+
+var qtyValue = 1
+var cartValue = $('#cart-amount').val()
+
+$('#amount').on('change blur', function() {
+    if(this.value.trim()){
+        qtyValue = this.value.trim()
+    }else{
+        this.value = qtyValue
+    }
+});
+$('#cart-amount').on('change blur', function() {
+    if(this.value.trim()){
+        cartValue = this.value.trim()
+    }else{
+        this.value = cartValue
+    }
+});
