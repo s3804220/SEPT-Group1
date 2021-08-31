@@ -3,11 +3,13 @@ package com.example.ordersystem.service;
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.ItemRepository;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 //WARNING: Running this test will delete all items from the items table in the database
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class ItemServiceTest {
     @Autowired
     private ItemRepository itemRepository;
