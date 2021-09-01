@@ -58,7 +58,11 @@ public class ItemController {
     @GetMapping("/shop-details")
     public String readDetail(ModelMap model, @RequestParam("id") Long id) {
 
-        model.addAttribute("shopDetail", itemService.getItem(id).get());
+        if(itemService.getItem(id).isPresent()){
+            model.addAttribute("shopDetail", itemService.getItem(id).get());
+        }else{
+            model.addAttribute("shopDetail",null);
+        }
 
         unifiedService.getCartInfo(model);
 

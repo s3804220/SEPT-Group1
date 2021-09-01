@@ -156,7 +156,7 @@
                 <div class="breadcrumb__links">
                     <a href="./">Home</a>
                     <a href="/shop">Shop</a>
-                    <span th:text="${shopDetail.itemName}"></span>
+                    <span th:unless="${shopDetail==null}" th:text="${shopDetail.itemName}"></span>
                 </div>
             </div>
         </div>
@@ -168,7 +168,8 @@
 <!-- Shop Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
-        <form class="row" th:object="${shopDetail}" th:action="@{/shopping-cart/add}" method="post">
+        <div th:if="${shopDetail==null}">No such item exists.</div>
+        <form class="row" th:object="${shopDetail}" th:action="@{/shopping-cart/add}" method="post" th:unless="${shopDetail==null}">
             <!-- Connect to shopping-cart/insert -->
             <!--'shopDetail' took from ItemController-->
             <div class="col-lg-6">
@@ -216,7 +217,7 @@
 
         </form>
 
-        <div class="product__details__tab">
+        <div class="product__details__tab" th:unless="${shopDetail==null}">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
