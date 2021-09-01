@@ -13,7 +13,7 @@ public class EmailController {
 
     @GetMapping(value = "/sendmail/{status}")
     public String sendEmail(@PathVariable String status) {
-        emailService.sendEmail("savol38219@kembung.com",status);
+        emailService.sendEmail("jinesew933@mi166.com",status);
         return "Email sent successfully!";
     }
 }
