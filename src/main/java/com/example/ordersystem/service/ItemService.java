@@ -79,20 +79,30 @@ public class ItemService {
     }
 
     // Get a list of filtered, sorted items for a page
-    public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField) {
+    public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField, String searchField) {
 
-        String queryStr = "select b from Item b ";
+        String queryStr = "select b from Item b";
 
-        if(!filterField.equals("All"))
-            queryStr += "where b.category like '"+filterField+"' ";
-//                ")\nselect a from cte ";
-
-        if (sortField.equals("priceHTL")) {
-            queryStr += "order by b." + sortField + " desc";
-        } else {
-            queryStr += "order by b." + sortField + " asc";
+//         Filter Field
+        if(!filterField.equals("All")) {
+            queryStr += " where b.category like '" + filterField + "'";
+            if(!searchField.equals(""))
+                queryStr +=" and ";
         }
-        System.out.println("@@@@@@@@@@@@@@ queryStr: \n"+queryStr);
+
+        // Search Field
+        if(!searchField.equals("")) {
+            if(filterField.equals("All")) queryStr += " where";
+            queryStr += " lower(b.itemName) like lower('%" + searchField + "%')";
+        }
+
+        // Sort Field
+        if (sortField.equals("priceHTL")) {
+            queryStr += " order by " + sortField + " desc";
+        } else {
+            queryStr += " order by " + sortField + " asc";
+        }
+        System.out.println("@@@@@@@@@@@@@@ queryStr: "+queryStr);
 
         return em.createQuery(queryStr, Item.class)
                 .setFirstResult(startIndex)

@@ -2,8 +2,10 @@ $(function() {
     let params = new URLSearchParams(document.location.search.substring(1));
 
     let filterField = document.getElementById('filterField');
+    let searchField = document.getElementById('search-input');
     let sortField = document.getElementById('sortField');
 
+// Filter
     let filterValue = params.get('filterField');
     if (filterValue == null) filterValue = "All";
     let validFilter = $("#filterField").data("categories");
@@ -18,6 +20,16 @@ $(function() {
         $("#filterField").niceSelect('update');
     }
 
+// Search
+    let searchValue = params.get('search-input');
+    console.log("@@@@@@@@@@@@ 1st search value: " + searchField.value);
+
+    if (searchValue) {
+        searchField.value = searchValue;
+    }
+    console.log("@@@@@@@@@@@@ 1st search value: " + searchField.value);
+    
+
     function searchBoard() {
 
         let parentForm1 = $(this).closest("form");
@@ -26,8 +38,7 @@ $(function() {
 
     }
 
-    // Sorting
-
+// Sorting
     //Get the sort value from the URL parameter
     let sortValue = params.get("sortField");
     let validSort = ["id","name","priceHTL","priceLTH"];

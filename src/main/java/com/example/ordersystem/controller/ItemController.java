@@ -36,9 +36,9 @@ public class ItemController {
     public String listAll(ModelMap model,
                           @RequestParam(defaultValue = "1") int page,
                           @RequestParam(name="sortField", defaultValue = "id") String sortField,
-                          @RequestParam(name="filterField", defaultValue = "All") String filterField ) {
-
-
+                          @RequestParam(name="filterField", defaultValue = "All") String filterField ,
+                          @RequestParam(name="search-input", defaultValue = "") String searchField
+    ) {
 
         // The number of total items
         int totalNum = itemService.getAllItems().size();
@@ -57,13 +57,10 @@ public class ItemController {
         }
 
 
-        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, filterField, sortField);
-        List<Item> tempList = new ArrayList<>();
+        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, filterField, sortField, searchField);
         List<Item> fullItemList = itemService.getAllItems();
 
         // Get pagination when Filter is used
-//        pagination.setTotalPages(totalNum % pageSize + 1);
-//        pagination.setTotalBlocks(pagination.getTotalPages());
         pagination = new Pagination(itemService.findNumOfFilteredItems(filterField)+1, page);
         System.out.println("@@@@@@ itemService.findNumOfFilteredItems(filterField): "+itemService.findNumOfFilteredItems(filterField));
         System.out.println("@@@@@@ pagination.getTotalPages: "+pagination.getTotalPages());
