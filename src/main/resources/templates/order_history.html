@@ -182,12 +182,14 @@
             <th>Order ID</th>
             <th>Total Price</th>
             <th>Status</th>
+            <th>Details</th>
             </thead>
             <tbody>
                 <tr th:each="order : ${orderList}">
                     <td th:text="${order.getId()}"></td>
                     <td th:text="${order.getPrice()}"></td>
                     <td th:text="${order.getStatus()}"></td>
+                    <td><a href="">View Details</a></td>
                 </tr>
             </tbody>
         </table>
