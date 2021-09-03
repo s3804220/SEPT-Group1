@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
-    <h1 th:text="Customer: ${order.getAccount().getFirstName()} ${order.getAccount().getLastName()"></h1>
+<div class="container" th:each="order : ${order}">
+    <h2 th:text="${'Customer: '+order.getAccount().getFirstName()+' '+order.getAccount().getLastName()}"></h2>
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
             <tr>
@@ -26,7 +26,8 @@
             </tr>
         </tbody>        
     </table>
-    <h2 th:text="Total: ${order.getPrice()}"></h2>
+    <h4 th:text="${'Total: '+order.getPrice()}"></h4>
+    <h4 th:text="${'Status: '+order.getStatus()}"></h4>
 </div>
 
 </body>

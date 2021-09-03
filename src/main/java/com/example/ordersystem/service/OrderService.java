@@ -3,6 +3,7 @@ package com.example.ordersystem.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -79,7 +80,7 @@ public class OrderService {
     	return orderRepository.findAll();
     }
     
-    public Order getOrderById(int id) {
+    public Optional<Order> getOrderById(Long id) {
     	return orderRepository.findById(id);
     }
     
