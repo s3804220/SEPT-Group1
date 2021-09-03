@@ -1,5 +1,8 @@
 package com.example.ordersystem.service;
 
+import com.example.ordersystem.exception.item.InvalidItemDescriptionException;
+import com.example.ordersystem.exception.item.InvalidItemNameException;
+import com.example.ordersystem.exception.item.InvalidItemPriceException;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.CartRepository;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +32,15 @@ public class ItemService {
 
     //Save an item in the database and return its ID (for usages if needed)
     public Long saveItem(Item item){
+        if(item.getItemName().equals("")){
+            throw new InvalidItemNameException(item.getItemName());
+        }
+        if(item.getItemDescription().equals("")){
+            throw new InvalidItemDescriptionException(item.getItemDescription());
+        }
+        if(item.getItemPrice().signum()<=0 ){
+            throw new InvalidItemPriceException(item.getItemPrice().toString());
+        }
         Item newItem = itemRepository.save(item);
         return newItem.getId();
     }

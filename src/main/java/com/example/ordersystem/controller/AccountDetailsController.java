@@ -21,20 +21,14 @@ public class AccountDetailsController {
     private AccountService accountService;
     private OrderService orderService;
 
-    // Admin view specific user's account details
+    // Admin view specific user's account details and user's order history
     @RequestMapping(value="account-management/account-details/{id}", method= RequestMethod.GET)
     public String viewUserDetails(@PathVariable Long id, ModelMap model){
         Account accountToView = accountService.getAccountById(id);
         model.addAttribute("account", accountToView);
-        return "account-details";
-    }
-
-    // Admin view specific user's history
-    @RequestMapping(value="account-management/order-history/{id}", method = RequestMethod.GET)
-    public String viewUserOrderHistory(@PathVariable Long id, ModelMap model){
         List<Order> userOrdersList = orderService.getOrdersByAccountId(id);
         userOrdersList.sort(Comparator.comparing(Order::getId)); // sort order by id number(low to high id number)
         model.addAttribute("orderList", userOrdersList);
-        return "admin-user-order-history";
+        return "account-details";
     }
 }

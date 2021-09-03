@@ -185,21 +185,21 @@
                 <div class="checkout__input">
                     <p>Item name<span>*</span></p>
                     <p style="display: none;" id="name-check"></p>
-                    <input type="text" id="item-name">
+                    <input type="text" id="item-name" required>
                 </div>
                 <div class="checkout__input">
                     <p>Description<span>*</span></p>
                     <p style="display: none;" id="description-check"></p>
-                    <textarea id="item-description"></textarea>
+                    <textarea id="item-description" required></textarea>
                 </div>
                 <div class="checkout__input">
                     <p>Price<span>*</span></p>
                     <p style="display: none;" id="price-check"></p>
-                    <input type="text" id="item-price">
+                    <input type="text" id="item-price" required>
                 </div>
                 <div class="checkout__input">
                     <p>Category<span>*</span></p>
-                    <select name="item-category" id="item-category">
+                    <select name="item-category" id="item-category" required>
                         <option value="Cupcake">Cupcake</option>
                         <option value="Cake">Cake</option>
                         <option value="Biscuit">Biscuit</option>
@@ -224,7 +224,7 @@
                 <div class="checkout__input" id="image-upload-btn">
                     <p>Images<span>*</span></p>
                     <p style="display: none;" id="files-check"></p>
-                    <input type="file" multiple class="item-files" id="item-images">
+                    <input type="file" multiple class="item-files" id="item-images" required>
                 </div>
                 <button class="site-btn" id="save-button">SAVE ITEM</button>
             </div>
