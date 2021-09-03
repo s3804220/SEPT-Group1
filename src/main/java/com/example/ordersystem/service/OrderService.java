@@ -78,7 +78,11 @@ public class OrderService {
     public List<Order> getAllOrders() {
     	return orderRepository.findAll();
     }
-
+    
+    public Order getOrderById(int id) {
+    	return orderRepository.findById(id);
+    }
+    
     public List<Order> getOrdersByAccountId(Long id){
         List<Order> accountOrders = new ArrayList<>();
         for(Order order : getAllOrders()){
