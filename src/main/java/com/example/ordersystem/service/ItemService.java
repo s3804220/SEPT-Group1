@@ -67,21 +67,47 @@ public class ItemService {
     }
 
     // Get the number of items of a category (filtered)
-    public int findNumOfFilteredItems(String filterField) {
-        if(!filterField.equals("All")) {
-            return ((Number) em.createQuery("select count(b) from Item b where b.category like '" + filterField + "'")
-                    .getSingleResult()).intValue();
-        } else
-            System.out.println("@@@@@@@It's All");
-            return ((Number) em.createQuery("select count(*) from Item")
-                    .getSingleResult()).intValue();
+    public int findNumOfSearchedItems(String filterField, String searchField) {
+        String queryStr = "";
 
+        if(!filterField.equals("All")) {
+            queryStr = "select count(b) from Item b";
+
+        } else {
+            queryStr = "select count(*) from Item b";
+
+        }
+        queryStr += getQueryString(filterField, searchField);
+
+        return ((Number) em.createQuery(queryStr).getSingleResult()).intValue();
     }
 
     // Get a list of filtered, sorted items for a page
     public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField, String searchField) {
 
-        String queryStr = "select b from Item b";
+        String direction = "";
+
+        String queryStr = "select b from Item b" + getQueryString(filterField, searchField);
+        // Sort Field
+        if (sortField.equals("name")) sortField = "itemName";
+        if (sortField.equals("priceHTL")) {
+            sortField = "itemPrice";
+            direction = " desc";
+        } else if(sortField.equals("priceLTH")) {
+            sortField = "itemPrice";
+            direction = " asc";
+        }
+        queryStr += " order by b." + sortField + direction;
+
+        return em.createQuery(queryStr, Item.class)
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+
+    public String getQueryString(String filterField, String searchField) {
+        String queryStr = "";
 
 //         Filter Field
         if(!filterField.equals("All")) {
@@ -96,17 +122,6 @@ public class ItemService {
             queryStr += " lower(b.itemName) like lower('%" + searchField + "%')";
         }
 
-        // Sort Field
-        if (sortField.equals("priceHTL")) {
-            queryStr += " order by " + sortField + " desc";
-        } else {
-            queryStr += " order by " + sortField + " asc";
-        }
-        System.out.println("@@@@@@@@@@@@@@ queryStr: "+queryStr);
-
-        return em.createQuery(queryStr, Item.class)
-                .setFirstResult(startIndex)
-                .setMaxResults(pageSize)
-                .getResultList();
+        return queryStr;
     }
 }

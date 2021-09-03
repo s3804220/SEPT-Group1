@@ -184,23 +184,29 @@
                                 <option th:each="category : ${categoryList}"
                                         th:value="${category}" th:text="${category}"></option>
                             </select>
-                            <input type="text" placeholder="Search" name="search-input" id="search-input">
-                            <!-- hidden input -->
-                            <!--                            <input type="hidden" name="currentPageNo" value="1"/>-->
-                            <!--                            <input type="hidden" name="recordsPerPage" th:value="${}"/>-->
-                            <!--                            <input type="hidden" name="pageSize" th:value="${}"/>-->
+                            <input type="text" placeholder="Search" th:value="${searchField}" name="search-input" id="search-input">
+
+                            <!-- Hidden input -->
+                            <input type="hidden" name="sorField" th:value="${sortField}">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
+
                 </div>
                 <div class="col-lg-5 col-md-5">
 
                     <form id="sortBy" name="sortBy" th:action="@{/shop}" method="get">
+
+                        <!-- Hidden input -->
+                        <input type="hidden" name="filterField" th:value="${filterField}">
+                        <input type="hidden" name="search-input" th:value="${searchField}">
+
                         <select name="sortField" id="sortField">
                             <option value="id">Default sorting</option>
                             <option value="name">Name</option>
                             <option value="priceLTH">Price: Low to High</option>
                             <option value="priceHTL">Price: High to Low</option>
+
                         </select>
                     </form>
                 </div>
@@ -214,14 +220,12 @@
                 <div class="product__item">
                     <div class="product__item__pic set-bg"
                          th:attr="data-setbg=${'img/upload/item'+shop.id+'/'+#strings.arraySplit(shop.itemImage, '|')[0]}">
-                        <!--"@{${'/img/shop/' + shop.image}}"-->
                         <div class="product__label">
                             <span th:text="${shop.category}"></span>
                         </div>
                     </div>
                     <div class="product__item__text">
                         <h6>
-                            <!--                                href="/shop-details" http://localhost:8080/shop?page=1#-->
                             <a th:href="@{/shop-details(id=${shop.id})}" th:text="${shop.itemName}"
                                id="product-item-name"></a></h6>
                         <div class="product__item__price" th:text="${'$'+shop.itemPrice}"></div>
@@ -240,14 +244,9 @@
                     <!-- Pagination -->
                     <nav class="shop__pagination">
                         <ul class="pagination">
-                            <!--                                <li class="page-item">-->
-                            <!--                                    <a class="page-link" th:href="@{/?page=1}">-->
-                            <!--                                        <span aria-hidden="true">First</span>-->
-                            <!--                                    </a>-->
-                            <!--                                </li>-->
-                            <li><!--, sortField=${sortField}-->
                                 <a th:href="@{?page={page}(
-                                    page = ${pagination.prevBlock}, filterField = ${filterField}, sortField=${sortField}
+                                    page = ${pagination.prevBlock}, filterField = ${filterField}
+                                    , searchField = ${searchField}, sortField=${sortField}
                                     )}">
                                     <span class="arrow_carrot-left"></span>
                                 </a>
@@ -257,13 +256,15 @@
                                         th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
                                     <a th:href="@{?page={page}(
-                                    page = ${pageButton}, filterField = ${filterField}, sortField=${sortField}
+                                    page = ${pageButton}, filterField = ${filterField}
+                                    , searchField = ${searchField}, sortField=${sortField}
                                     )}" th:text="${pageButton}"></a>
                                 </li>
                             </th:block>
                             <li>
                                 <a th:href="@{?page={page} (
-                                page = ${pagination.nextBlock}, filterField = ${filterField}, sortField=${sortField}
+                                page = ${pagination.nextBlock}, filterField = ${filterField}
+                                , searchField = ${searchField}, sortField=${sortField}
                                 )}">
                                     <span class="arrow_carrot-right"></span>
                                 </a>
@@ -364,16 +365,6 @@
 </div>
 <!-- Search End -->
 
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-
-<!--    var validFilter = [[${categoryList}]];-->
-<!--    console.log("valudFilter: ");-->
-<!--    console.log(validFilter);-->
-
-
-<!--    /*]]>*/-->
-<!--</script>-->
 
 <!-- Js Plugins -->
 <script src="../../js/jquery-3.3.1.min.js"></script>

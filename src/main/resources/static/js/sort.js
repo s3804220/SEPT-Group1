@@ -30,15 +30,9 @@ $(function() {
     console.log("@@@@@@@@@@@@ 1st search value: " + searchField.value);
     
 
-    function searchBoard() {
-
-        let parentForm1 = $(this).closest("form");
-        if (parentForm1 && parentForm1.length > 0)
-            parentForm1.submit();
-
-    }
 
 // Sorting
+
     //Get the sort value from the URL parameter
     let sortValue = params.get("sortField");
     let validSort = ["id","name","priceHTL","priceLTH"];
@@ -52,23 +46,16 @@ $(function() {
         $("#sortField").niceSelect('update');
     }
     $('#sortField').on('change', function() {
-
         let parentForm = $(this).closest("form");
         if (parentForm && parentForm.length > 0)
             parentForm.submit();
-    })
+    });
 
+    function searchBoard() {
+        let parentForm = $(this).closest("form");
+        if (parentForm && parentForm.length > 0)
+            parentForm.submit();
 
-    // if (localStorage.getItem('selectedOption')) {
-    //
-    //     sortField.value = $("#sortField option").eq(localStorage.getItem('selectedOption')).val();
-    //     $("#sortField").niceSelect('update');
-    //
-    // }
-    // $('#sortField').on('change', function() {
-    //     localStorage.setItem('selectedOption', $('option:selected', this).index());
-    //     var parentForm = $(this).closest("form");
-    //     if (parentForm && parentForm.length > 0)
-    //         parentForm.submit();
-    // });
+    }
+
 });

@@ -14,11 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.naming.directory.SearchResult;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -40,6 +38,7 @@ public class ItemController {
                           @RequestParam(name="search-input", defaultValue = "") String searchField
     ) {
 
+
         // The number of total items
         int totalNum = itemService.getAllItems().size();
 
@@ -56,33 +55,38 @@ public class ItemController {
             sortField = "id";
         }
 
-
-        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, filterField, sortField, searchField);
+        // Get all items
         List<Item> fullItemList = itemService.getAllItems();
 
-        // Get pagination when Filter is used
-        pagination = new Pagination(itemService.findNumOfFilteredItems(filterField)+1, page);
-        System.out.println("@@@@@@ itemService.findNumOfFilteredItems(filterField): "+itemService.findNumOfFilteredItems(filterField));
-        System.out.println("@@@@@@ pagination.getTotalPages: "+pagination.getTotalPages());
 
         // Get a list of categories of items
         List<String> categoryListwithDuplicates = new ArrayList<>();
         categoryListwithDuplicates.add("All");
-
-
         for (Item item : fullItemList) {
             categoryListwithDuplicates.add(item.getCategory());
         }
-
         List<String> categoryList = new ArrayList<String>(new LinkedHashSet<>(categoryListwithDuplicates));
+
 
         // Check if value of filterFild is valid
         if(!categoryList.contains(filterField)){
-            filterField = "id";
+            filterField = "All";
         }
+
+        // Pagination
+        List<Item> shopList = itemService.findListPaging(beginIndex, pageSize, filterField, sortField, searchField);
+
+
+        // Get pagination when Filter is used
+        pagination = new Pagination(itemService.findNumOfSearchedItems(filterField, searchField)+1, page);
+//        System.out.println("@@@@@@ itemService.findNumOfFilteredItems(filterField): "
+//                +itemService.findNumOfSearchedItems(filterField, searchField));
+//        System.out.println("@@@@@@ pagination.getTotalPages: "+pagination.getTotalPages());
+//        System.out.println("@@@@@@ searchField : " +searchField);
 
 
         model.addAttribute("filterField", filterField);
+        model.addAttribute("searchField", searchField);
         model.addAttribute("sortField", sortField);
         model.addAttribute("shopList", shopList);
         model.addAttribute("categoryList", categoryList);
