@@ -3,10 +3,8 @@ package com.example.ordersystem.controller;
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.model.Cart;
-import com.example.ordersystem.service.AccountService;
-import com.example.ordersystem.service.CartService;
-import com.example.ordersystem.service.OrderService;
-import com.example.ordersystem.service.UnifiedService;
+import com.example.ordersystem.model.Order;
+import com.example.ordersystem.service.*;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,6 +31,8 @@ public class RegistrationController {
     private OrderService orderService;
     @Autowired
     private UnifiedService unifiedService;
+    @Autowired
+    private ItemService itemService;
     
     @Autowired
     public void setAccountService(AccountService accountService) {
@@ -154,5 +155,30 @@ public class RegistrationController {
         model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
         unifiedService.getCartInfo(model);
         return "order_history";
+    }
+
+    // user view their order's details from order history
+    @RequestMapping(value="order-history/order-details/{id}", method = RequestMethod.GET)
+    public String viewOrderDetailsFromOrderHistory(@PathVariable Long id, ModelMap model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInAcc = (Account)auth.getPrincipal();
+        List<Order> accOrders = orderService.getOrdersByAccountId(loggedInAcc.getId());
+        for (Order order : accOrders){
+            if (order.getId().equals(id)){
+                String itemString = order.getItems();
+                itemString = itemString.substring(1, itemString.length() - 1);
+                String[] items = itemString.split("\\Q},{\\E");
+                ArrayList<String[]> itemInfo = new ArrayList<>();
+                for(String item: items) {
+                    String[] iteminfo = item.split(",");
+                    iteminfo[0] = itemService.getItem(Long.valueOf(iteminfo[0])).get().getItemName();
+                    itemInfo.add(iteminfo);
+                }
+                model.addAttribute("itemInfo",itemInfo);
+                model.addAttribute("order", order);
+                return "order_history_view_order_details";
+            }
+        }
+        return "access-denied";
     }
 }

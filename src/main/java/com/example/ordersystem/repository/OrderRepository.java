@@ -11,5 +11,4 @@ import com.example.ordersystem.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
 	Order findByAccount(Account account);
-	Order findById(int id);
 }
