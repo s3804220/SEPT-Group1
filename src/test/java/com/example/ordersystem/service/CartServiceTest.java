@@ -47,16 +47,15 @@ public class CartServiceTest {
     private AccountRepository accountRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         cartRepository.deleteAll();
         itemRepository.deleteAll();
         accountRepository.deleteAll();
-        FileSystemUtils.deleteRecursively(Paths.get("target\\classes\\static\\img\\upload".replace("\\", File.separator)).toFile());
     }
 
     @Test

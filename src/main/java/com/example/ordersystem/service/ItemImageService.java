@@ -52,10 +52,6 @@ public class ItemImageService {
         return itemImageRepository.findAll();
     }
 
-    public List<ItemImage> getAllImagesByItem(Item item){
-        return itemImageRepository.findByItem(item);
-    }
-
     public void deleteItemImage(ItemImage itemImage){
         itemImageRepository.delete(itemImage);
     }
