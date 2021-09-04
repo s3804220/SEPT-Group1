@@ -93,7 +93,7 @@ public class OrderController {
         return "orderlist";
     }
     
-    @RequestMapping(value="/order-details/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="orderlist/order-details/{id}", method=RequestMethod.GET)
     public String showOrderDetail(ModelMap model, @PathVariable Long id){
         Order order = orderService.getOrderById(id).get();
         String itemString = order.getItems();
