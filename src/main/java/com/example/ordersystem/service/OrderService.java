@@ -43,7 +43,7 @@ public class OrderService {
         this.accountService = accountService;
     }
     
-    public BigDecimal addOrder(Account user){
+    public Order addOrder(Account user){
       List<Cart> carts = cartRepository.findByAccount(user);
       String items = "";
       float tmp = 0;
@@ -63,17 +63,32 @@ public class OrderService {
       order.setStatus("Unconfirmed");
       order.setItems(items);
       orderRepository.save(order);
-      return price;
+      return order;
   }
     
-    public void confirmOrder(Account user) {
-    	Order order = orderRepository.findByAccount(user);
+    public void confirmOrder(Long id) {
+    	Order order = orderRepository.findById(id).get();
     	order.setStatus("Confirmed");
     }
     
-    public void unconfirmOrder(Account user) {
-    	Order order = orderRepository.findByAccount(user);
+    public void cancelOrder(Long id) {
+    	Order order = orderRepository.findById(id).get();
     	order.setStatus("Cancelled");
+    }
+    
+    public void processedOrder(Long id) {
+    	Order order = orderRepository.findById(id).get();
+    	order.setStatus("Processed");
+    }
+    
+    public void beingDeliveredOrder(Long id) {
+    	Order order = orderRepository.findById(id).get();
+    	order.setStatus("In Delivery");
+    }
+    
+    public void deliveredOrder(Long id) {
+    	Order order = orderRepository.findById(id).get();
+    	order.setStatus("Delivered");
     }
     
     public List<Order> getAllOrders() {
