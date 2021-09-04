@@ -1,6 +1,7 @@
 package com.example.ordersystem.controller;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import com.example.ordersystem.model.Order;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.CartService;
 import com.example.ordersystem.service.OrderService;
+import com.example.ordersystem.service.ItemService;
 
 @Controller
 public class OrderController {
@@ -28,6 +30,7 @@ public class OrderController {
 	private OrderService orderService;
 	private AccountService accountService;
 	private CartService cartService;
+	private ItemService itemService;
 	
 	@Autowired
     public void setOrderService(OrderService orderService) {
@@ -42,6 +45,11 @@ public class OrderController {
     @Autowired
     public void setCartService(CartService cartService) {
         this.cartService = cartService;
+    }
+    
+    @Autowired
+    public void setItemService(ItemService itemService) {
+        this.itemService = itemService;
     }
     
     @GetMapping("/checkout")
@@ -85,6 +93,23 @@ public class OrderController {
         return "orderlist";
     }
     
+    @RequestMapping(value="orderlist/order-details/{id}", method=RequestMethod.GET)
+    public String showOrderDetail(ModelMap model, @PathVariable Long id){
+        Order order = orderService.getOrderById(id).get();
+        String itemString = order.getItems();
+        itemString = itemString.substring(1, itemString.length() - 1);
+        String[] items = itemString.split("\\Q},{\\E");
+        ArrayList<String[]> itemInfo = new ArrayList<>();
+        for(String item: items) {
+        	String[] iteminfo = item.split(",");
+        	iteminfo[0] = itemService.getItem(Long.valueOf(iteminfo[0])).get().getItemName();
+        	itemInfo.add(iteminfo);
+        }
+        model.addAttribute("itemInfo",itemInfo);
+        model.addAttribute("order", order);
+        return "order-details";
+    }
+    	
     @RequestMapping(value="orderlist/confirm-order/{id}", method= RequestMethod.GET)
     public String confirmorder(@PathVariable Long id){
     	Account user = accountService.getAccountById(id);
