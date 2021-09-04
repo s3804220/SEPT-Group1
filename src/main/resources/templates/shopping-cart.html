@@ -179,6 +179,11 @@
                             <th></th>
                         </tr>
                         </thead>
+                        <tr th:if="${param.empty}" th:unless="${not #lists.isEmpty(cartItems)}">
+                            <td style="color: red; margin-bottom: 10px; margin-top: 5px;">
+                                You cannot checkout an empty cart!
+                            </td>
+                        </tr>
                         <tbody th:if="${not #lists.isEmpty(cartItems)}">
 
 
