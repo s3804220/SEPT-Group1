@@ -26,9 +26,6 @@ public class DbInitializer implements CommandLineRunner {
     private AccountService accountService;
 
     @Autowired
-    private FilesStorageService filesStorageService;
-
-    @Autowired
     private ItemService itemService;
 
     @Autowired
@@ -43,10 +40,14 @@ public class DbInitializer implements CommandLineRunner {
         accountService.signUpAccount(admin);
         accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
 
-        //Initialize user account
+        //Initialize user accounts
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
         accountService.signUpAccount(user1);
+        Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
+        accountService.signUpAccount(user2);
+        accountService.setAccountRole(user2.getId(), AccountRole.ADMIN);
 
+        //Populate sample items in the shop
         Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("21.00"), "Cupcake",true);
         Item item2 = new Item("Chocolate cupcake","A delicious cupcake with chocolate toppings to sweeten your day", "product-2.jpg", new BigDecimal("22.00"),"Cupcake",true);
         Item item3 = new Item("Unicorn Cake","A colorfully decorated cake. Brings some magical vanilla and cream to your life","cake-1.jpg",new BigDecimal("40.00"),"Cake",true);
@@ -67,6 +68,7 @@ public class DbInitializer implements CommandLineRunner {
 
         List<Item> itemList = itemService.getAllItems();
 
+        //Run a for loop to save each sample item's images in the database
         for(Item item: itemList){
             String[] strings = item.getItemImage().split("[|]");
             for(String imgname: strings){

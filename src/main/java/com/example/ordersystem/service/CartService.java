@@ -7,17 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 
 @Transactional
 @Service
-public class CartService implements CustomCartRepository {
+public class CartService {
 
     @Autowired
     private CartRepository cartRepository;

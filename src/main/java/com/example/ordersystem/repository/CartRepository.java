@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long>, CustomCartRepository {
+public interface CartRepository extends JpaRepository<Cart, Long> {
 
 //    int sumPrice(String userId);
     List<Cart> findByAccount(Account account);

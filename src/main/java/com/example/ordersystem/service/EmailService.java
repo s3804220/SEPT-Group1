@@ -2,8 +2,8 @@ package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Email;
 import com.example.ordersystem.model.EmailFactory;
+import com.example.ordersystem.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 
 @Transactional
 @Service
@@ -23,7 +22,7 @@ public class EmailService{
     @Autowired
     private TemplateEngine emailTemplateEngine;
 
-    public void sendEmail(String receiver, String status){
+    public void sendEmail(String status, Order order){
         String sender = "sept.system1@gmail.com";
 
         try{
@@ -31,7 +30,7 @@ public class EmailService{
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
             helper.setFrom(sender);
-            helper.setTo(receiver);
+            helper.setTo(order.getAccount().getEmail());
 
             Context thymeleafContext = new Context();
 
@@ -41,8 +40,8 @@ public class EmailService{
             helper.setSubject(newEmail.getSubject());
             thymeleafContext.setVariable("orderstatus",newEmail.getOrderStatus());
             thymeleafContext.setVariable("mailContent",newEmail.getEmailContent());
-            thymeleafContext.setVariable("orderNum",1);
-            thymeleafContext.setVariable("orderTotal",999);
+            thymeleafContext.setVariable("orderID",order.getId());
+            thymeleafContext.setVariable("orderTotal",order.getPrice());
 
             String mailTemplate = emailTemplateEngine.process("email-template.html",thymeleafContext);
             helper.setText(mailTemplate, true);
@@ -57,7 +56,7 @@ public class EmailService{
             mailSender.send(message);
 
         } catch (MessagingException e){
-            System.out.println("Cannot send email to "+receiver);
+            System.out.println("There was an error when sending the email!");
         }
 
     }
