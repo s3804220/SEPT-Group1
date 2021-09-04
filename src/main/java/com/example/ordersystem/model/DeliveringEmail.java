@@ -5,6 +5,10 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * This class inherits from the abstract Email class
+ * It is used to create an email with subject and content specific to the being delivered order status
+ */
 public class DeliveringEmail extends Email{
     @Override
     public String getSubject() {

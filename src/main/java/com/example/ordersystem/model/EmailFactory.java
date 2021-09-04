@@ -1,5 +1,9 @@
 package com.example.ordersystem.model;
 
+/**
+ * This class is an email factory with a static method to return different types of emails
+ * based on the order status that is passed to it
+ */
 public class EmailFactory {
     public static Email writeEmail(String status){
         switch (status) {

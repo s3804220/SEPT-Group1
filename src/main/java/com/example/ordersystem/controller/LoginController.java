@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This class is used for routing handlers for the login and logout pages.
+ */
 @Controller
 public class LoginController {
 
+    //Map the path for the login page and return the correct template
     @GetMapping("/login")
     public String login(HttpServletRequest request, ModelMap model){
         String referrer = request.getHeader("Referer");
@@ -22,7 +26,7 @@ public class LoginController {
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, redirect to home page
+            //If the user is already logged in, redirect to the home page instead
             return "redirect:/";
         }
         model.addAttribute("cartSum",cartSum);
@@ -30,10 +34,11 @@ public class LoginController {
         return "login";
     }
 
+    //Map the path for the logout request
     @GetMapping(value="/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //Logout if user is currently logged in
+        //Logout of the session if the user is currently logged in
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }

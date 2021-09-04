@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
+/**
+ * This class is used for storing images of Items
+ * They are linked to the Item table by ID and will be removed if the item they are linked to gets removed.
+ */
 @Entity
 @Table(name="itemimages")
 public class ItemImage {

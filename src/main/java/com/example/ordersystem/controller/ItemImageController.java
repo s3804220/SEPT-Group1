@@ -11,19 +11,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
+/**
+ * This class is used for routing RESTful endpoints to perform CRUD on item images.
+ */
 @RestController
 public class ItemImageController {
     @Autowired
     private ItemImageService itemImageService;
 
+    //Map the endpoint to let Admins upload new images of a specific item by ID
     @PostMapping("/item/{id}/image")
     public ResponseEntity<String> handleImagePost(@PathVariable String id, @RequestParam HashMap<String, MultipartFile> files){
         String message = "";
         if(files != null){
             //Get the item's ID and image files from the request
-            // and run a loop to save each image into the folder with that item's ID
+            // and run a loop to save each image into the database with the item's ID
             for(String key:files.keySet()){
                 MultipartFile file = files.get(key);
                 try {
@@ -34,17 +38,18 @@ public class ItemImageController {
                     return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
                 }
             }
-            //Return the status as a response to the website
+            //Return the status as a response to the client website
             return ResponseEntity.status(HttpStatus.OK).body(message);
         }
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("File array is NULL!");
     }
 
+    //Map the endpoint to let Admins delete all images of a specific item from the database
     @DeleteMapping("/item/{id}/image")
     public void deleteItemImage(@PathVariable String id){
         List<ItemImage> itemImageList = itemImageService.getAllItemImages();
         for (ItemImage itemImage: itemImageList){
-            if(itemImage.getItem().getId()==Long.valueOf(id)){
+            if(Objects.equals(itemImage.getItem().getId(), Long.valueOf(id))){
                 itemImageService.deleteItemImage(itemImage);
             }
         }
