@@ -83,7 +83,10 @@ public class OrderController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
         orderService.addOrder(user);
-
+        List<Cart> cartList = cartService.getAllCarts(user);
+        for (Cart cart : cartList){
+            cartService.deleteCart(cart.getId());
+        }
         return "redirect:/shopping-cart";
     }
     
