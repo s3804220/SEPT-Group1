@@ -117,15 +117,31 @@ public class OrderController {
     	
     @RequestMapping(value="orderlist/confirm-order/{id}", method= RequestMethod.GET)
     public String confirmorder(@PathVariable Long id){
-    	Account user = accountService.getAccountById(id);
-        orderService.confirmOrder(user);
+        orderService.confirmOrder(id);
         return "redirect:/orderlist";
     }
 
-    @RequestMapping(value="orderlist/unconfirm-order/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="orderlist/cancel-order/{id}", method= RequestMethod.GET)
     public String unconfirmOrder(@PathVariable Long id){
-    	Account user = accountService.getAccountById(id);
-        orderService.unconfirmOrder(user);
+        orderService.cancelOrder(id);
+        return "redirect:/orderlist";
+    }
+    
+    @RequestMapping(value="orderlist/process-order/{id}", method= RequestMethod.GET)
+    public String processedOrder(@PathVariable Long id){
+        orderService.processedOrder(id);
+        return "redirect:/orderlist";
+    }
+    
+    @RequestMapping(value="orderlist/beingDelivered-order/{id}", method= RequestMethod.GET)
+    public String beingDeliveredOrder(@PathVariable Long id){
+        orderService.beingDeliveredOrder(id);
+        return "redirect:/orderlist";
+    }
+    
+    @RequestMapping(value="orderlist/deliver-order/{id}", method= RequestMethod.GET)
+    public String deliveredOrder(@PathVariable Long id){
+        orderService.deliveredOrder(id);
         return "redirect:/orderlist";
     }
 }

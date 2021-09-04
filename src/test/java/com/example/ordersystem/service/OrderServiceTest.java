@@ -75,9 +75,9 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
-		BigDecimal price = orderService.addOrder(testUser1);
+		Order order = orderService.addOrder(testUser1);
 		
-		assertTrue(price.floatValue() == 55.00f);
+		assertTrue(order.getPrice().floatValue() == 55.00f);
 	}
 
 	@Test
@@ -87,8 +87,8 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
-		orderService.addOrder(testUser1);
-		orderService.confirmOrder(testUser1);
+		Order order1 = orderService.addOrder(testUser1);
+		orderService.confirmOrder(order1.getId());
 		List<Order> orders = orderService.getAllOrders();
 		Order target = null;
 		for(Order order: orders) {
@@ -106,9 +106,9 @@ public class OrderServiceTest {
 		accountService.signUpAccount(testUser1);
 		itemService.saveItem(testItem1);
         cartService.addItem(testItem1.getId(), 5, testUser1);
-		orderService.addOrder(testUser1);
-		orderService.confirmOrder(testUser1);
-		orderService.unconfirmOrder(testUser1);
+		Order order1 = orderService.addOrder(testUser1);
+		orderService.confirmOrder(order1.getId());
+		orderService.cancelOrder(order1.getId());
 		List<Order> orders = orderService.getAllOrders();
 		Order target = null;
 		for(Order order: orders) {
