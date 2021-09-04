@@ -16,6 +16,7 @@
                 <th>Price</th>
                 <th>User</th>
                 <th>Status</th>
+                <th>Functionalities</th>
             </tr>
         </thead>
         <tbody>
@@ -24,9 +25,9 @@
                 <td th:text="${order.getAccount().getId()}"></td>
                 <td th:text="${order.getStatus()}"></td>
                 <td>
-                    <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getAccount().getId()})}">Confirm Order</a>
-                    <a th:href="@{/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}">Cancel Order</a>
-                    <a th:href="@{/orderlist/order-details/{id}(id=${order.getId()})}">View Details</a>
+                    <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getAccount().getId()})}" th:style="'padding-right:10px;'">Confirm Order</a>
+                    <a th:href="@{/orderlist/unconfirm-order/{id}(id=${order.getAccount().getId()})}" th:style="'padding-right:10px;'">Cancel Order</a>
+                    <a th:href="@{/orderlist/order-details/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">View Details</a>
                 </td>
             </tr>
         </tbody>

@@ -100,13 +100,18 @@ public class OrderController {
         itemString = itemString.substring(1, itemString.length() - 1);
         String[] items = itemString.split("\\Q},{\\E");
         ArrayList<String[]> itemInfo = new ArrayList<>();
+        Account accountOfOrder = order.getAccount();
+        int totalQuantity = 0;
         for(String item: items) {
         	String[] iteminfo = item.split(",");
         	iteminfo[0] = itemService.getItem(Long.valueOf(iteminfo[0])).get().getItemName();
         	itemInfo.add(iteminfo);
+            totalQuantity += Integer.parseInt(iteminfo[2]);
         }
         model.addAttribute("itemInfo",itemInfo);
+        model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("order", order);
+        model.addAttribute("account", accountOfOrder);
         return "order-details";
     }
     	
