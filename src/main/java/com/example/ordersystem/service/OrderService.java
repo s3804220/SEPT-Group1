@@ -83,7 +83,7 @@ public class OrderService {
     
     public void beingDeliveredOrder(Long id) {
     	Order order = orderRepository.findById(id).get();
-    	order.setStatus("Being Delivered");
+    	order.setStatus("In Delivery");
     }
     
     public void deliveredOrder(Long id) {

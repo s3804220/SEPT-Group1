@@ -1,5 +1,6 @@
 package com.example.ordersystem.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -89,6 +90,7 @@ public class OrderController {
     @RequestMapping(value="/orderlist", method=RequestMethod.GET)
     public String showOrderList(ModelMap model){
         List<Order> orderList = orderService.getAllOrders();
+        orderList.sort(Comparator.comparing(Order::getId)); // sort order list by id number (low to high id number)
         model.addAttribute("orderList",orderList);
         return "orderlist";
     }

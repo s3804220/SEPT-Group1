@@ -13,20 +13,25 @@
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
             <tr>
+                <th>Order ID</th>
+                <th>Customer ID</th>
                 <th>Price</th>
-                <th>User</th>
                 <th>Status</th>
                 <th>Functionalities</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="order : ${orderList}">
-                <td th:text="${order.getPrice()}"></td>
+                <td th:text="${order.getId()}"></td>
                 <td th:text="${order.getAccount().getId()}"></td>
+                <td th:text="${order.getPrice()}"></td>
                 <td th:text="${order.getStatus()}"></td>
                 <td>
-                    <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Confirm Order</a>
-                    <a th:href="@{/orderlist/cancel-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Cancel Order</a>
+                    <a th:href="@{/orderlist/confirm-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Confirm</a>
+                    <a th:href="@{/orderlist/cancel-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Cancel</a>
+                    <a th:href="@{/orderlist/process-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Process</a>
+                    <a th:href="@{/orderlist/beingDelivered-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">In Delivery</a>
+                    <a th:href="@{/orderlist/deliver-order/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">Delivered</a>
                     <a th:href="@{/orderlist/order-details/{id}(id=${order.getId()})}" th:style="'padding-right:10px;'">View Details</a>
                 </td>
             </tr>
