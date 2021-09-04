@@ -56,7 +56,8 @@ public class EmailService{
             mailSender.send(message);
 
         } catch (MessagingException e){
-            System.out.println("There was an error when sending the email!");
+            System.out.println("There was an error when sending the email!\n");
+            e.printStackTrace();
         }
 
     }
