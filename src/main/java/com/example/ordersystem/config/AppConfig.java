@@ -24,7 +24,6 @@ import java.util.Properties;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @Configuration
 @EnableTransactionManagement
-//@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
 @ComponentScan(basePackages = {"com.example.ordersystem"})
 @EntityScan("com.example.ordersystem.model")
@@ -33,12 +32,6 @@ public class AppConfig implements WebMvcConfigurer {
     public Item item() {
         return new Item();
     }
-
-    /*@Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("/WEB-INF/classes/static/");
-    }*/
 
     @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory(){

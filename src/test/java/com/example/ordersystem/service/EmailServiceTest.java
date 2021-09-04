@@ -1,5 +1,8 @@
 package com.example.ordersystem.service;
 
+import com.example.ordersystem.model.Account;
+import com.example.ordersystem.model.AccountRole;
+import com.example.ordersystem.model.Order;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.Test;
@@ -23,11 +26,17 @@ public class EmailServiceTest {
     public void sendEmailTest() {
         //Create new Greenmail instance to test the email service
         GreenMail greenMail = new GreenMail(ServerSetupTest.SMTP_IMAP);
+
+        //Create new account to place order
+        Account testAcc = new Account("John", "Doe", "123 Tech Street", "0708563876", "test.user@gmail.com", "123456", AccountRole.USER);
+        //Create new order
+        Order order = new Order();
+        order.setAccount(testAcc);
         try {
             greenMail.start();
             //Call email service to send an email for order status confirmation
-            emailService.sendEmail("example@example.com","created");
-            emailService.sendEmail("example2@example.com","confirmed");
+            emailService.sendEmail("confirmed",order);
+            emailService.sendEmail("cancelled",order);
             assertTrue(greenMail.waitForIncomingEmail(5000, 2));
             //Retrieve emails using GreenMail API
             Message[] messages = greenMail.getReceivedMessages();
@@ -36,11 +45,11 @@ public class EmailServiceTest {
             //Assert that two emails were sent
             assertEquals(2, messages.length);
             //Assert that the subjects match what is expected
-            assertEquals("Your order has been created!", subject1);
-            assertEquals("Your order has been confirmed!", subject2);
+            assertEquals("Your order has been confirmed!", subject1);
+            assertEquals("Your order has been cancelled.", subject2);
             //Assert that the recipients of the emails are correct
-            assertEquals("example@example.com", messages[0].getAllRecipients()[0].toString());
-            assertEquals("example2@example.com", messages[1].getAllRecipients()[0].toString());
+            assertEquals("test.user@gmail.com", messages[0].getAllRecipients()[0].toString());
+            assertEquals("test.user@gmail.com", messages[1].getAllRecipients()[0].toString());
             //Assert that the sender address is correct
             assertEquals("sept.system1@gmail.com",messages[0].getFrom()[0].toString());
         } catch (Exception e) {
