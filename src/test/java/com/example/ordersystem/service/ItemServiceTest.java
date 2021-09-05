@@ -2,7 +2,9 @@ package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Item;
 import com.example.ordersystem.repository.ItemRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,15 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 //Delete table data and reset auto-generated ID back to 1 for accurate testing environment
 @SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements="TRUNCATE items RESTART IDENTITY CASCADE")
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, statements = "TRUNCATE items RESTART IDENTITY CASCADE"),
+        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, statements = "TRUNCATE items RESTART IDENTITY CASCADE")
 
 })
 @ExtendWith(SpringExtension.class)
@@ -136,12 +137,12 @@ public class ItemServiceTest {
         itemService.deleteItem(1L);
 
         //Check that the list contains correct information
-        assertEquals(2,itemService.getAllItems().size());
-        assertEquals("Pie",itemService.getAllItems().get(0).getItemName());
-        assertEquals("Yummy pie",itemService.getAllItems().get(0).getItemDescription());
-        assertEquals("food.png|image.jpg",itemService.getAllItems().get(0).getItemImage());
-        assertEquals(new BigDecimal("7"),itemService.getAllItems().get(0).getItemPrice());
-        assertEquals("Pie",itemService.getAllItems().get(0).getCategory());
+        assertEquals(2, itemService.getAllItems().size());
+        assertEquals("Pie", itemService.getAllItems().get(0).getItemName());
+        assertEquals("Yummy pie", itemService.getAllItems().get(0).getItemDescription());
+        assertEquals("food.png|image.jpg", itemService.getAllItems().get(0).getItemImage());
+        assertEquals(new BigDecimal("7"), itemService.getAllItems().get(0).getItemPrice());
+        assertEquals("Pie", itemService.getAllItems().get(0).getCategory());
         assertTrue(itemService.getAllItems().get(0).isAvailability());
 
         //Test that the list is updated correctly if there is no item in the database
@@ -151,13 +152,13 @@ public class ItemServiceTest {
 
 
     @Test
-    public void getItemImagesTests(){
+    public void getItemImagesTests() {
         //Check that the item image names can be correctly retrieved
-        assertEquals("dog.jpg",itemService.getItemImages(1L));
+        assertEquals("dog.jpg", itemService.getItemImages(1L));
     }
 
     @Test
-    public void changeAvailabilityTests(){
+    public void changeAvailabilityTests() {
         //Test that the item availability be changed correctly
         //Change the available status of item 1 to false
         itemService.changeAvailability(1L);
@@ -167,7 +168,7 @@ public class ItemServiceTest {
         assertTrue(itemService.getItem(1L).get().isAvailability());
     }
 
-
+    @Test
     public void findNumOfSearchedItemsTests() {
         // Add more items
         Item newItem2 = new Item("Pie", "Yummy pie", "food.png|image.jpg", new BigDecimal("7"), "Pie", true);
@@ -185,26 +186,20 @@ public class ItemServiceTest {
 
 
         for (Item item : itemListForTesting) {
-            if (filterField.equals("All"))
-                if (item.getItemName().toLowerCase().equals(searchField.toLowerCase())) numOfItemsInItemList++;
-             else {
+            if (item.getItemName().equalsIgnoreCase(searchField)) numOfItemsInItemList++;
+            else {
                 if (item.getCategory().equals(filterField))
-                    if (item.getItemName().toLowerCase().equals(searchField.toLowerCase())) numOfItemsInItemList++;
+                    if (item.getItemName().equalsIgnoreCase(searchField)) numOfItemsInItemList++;
             }
         }
 
         for (Item item : itemListForTesting) {
-            if (item.getItemName().toLowerCase().equals(searchField.toLowerCase())) {
-                if (filterField.equals("All")) {
-                    numOfItemsInItemList++;
-                } else {
-                    if (item.getCategory().equals(filterField)) numOfItemsInItemList++;;
-                }
+            if (item.getItemName().equalsIgnoreCase(searchField)) {
+                numOfItemsInItemList++;
             }
         }
 
-
-        assertEquals(numOfItemsInItemList, numOfItems);
+        assertEquals(2, numOfItems);
     }
 
 
@@ -224,7 +219,6 @@ public class ItemServiceTest {
         List<Item> fullItemListForTesting = itemService.getAllItems();
         List<Item> tempItemListForTesting = new ArrayList<>();
         List<Item> itemListForTesting = new ArrayList<>();
-
 
 
         for (Item item : fullItemListForTesting) {
