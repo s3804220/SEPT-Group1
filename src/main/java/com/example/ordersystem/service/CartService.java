@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * This class is the service layer for performing CRUD operations on Cart
+ */
 
 @Transactional
 @Service
@@ -21,10 +24,9 @@ public class CartService {
 
     // Update/Create cart and return the amount of items in the cart
     public int addItem(
-//            Cart cart
+
             Long itemId, int amount, Account user
     ){
-//        Cart newCart = cartRepository.save(cart);
 
         int addedAmount = amount;
         Item item = itemRepository.findById(itemId).get();
@@ -57,7 +59,6 @@ public class CartService {
         cartRepository.delete(getCart(id));
     }
 
-//    @Override
     public Cart findCartById(Long id) {
         return cartRepository.findById(id).orElse(new Cart());
     }

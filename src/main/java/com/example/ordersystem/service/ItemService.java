@@ -90,7 +90,7 @@ public class ItemService {
     }
 
 
-    // Get the number of items of a category (filtered)
+    // Get the number of items of a category satisfy the conditions
     public int findNumOfSearchedItems(String filterField, String searchField) {
         String queryStr = "";
 
@@ -105,9 +105,9 @@ public class ItemService {
 
         return ((Number) em.createQuery(queryStr).getSingleResult()).intValue();
     }
-    
 
-    // Get a list of filtered, sorted items for a page
+
+    // Get a list of filtered, searched by keyword and sorted items for a page
     public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField, String searchField) {
 
         String direction = "";
@@ -130,11 +130,11 @@ public class ItemService {
                 .getResultList();
     }
 
-
+    // Get a string of query
     public String getQueryString(String filterField, String searchField) {
         String queryStr = "";
 
-//         Filter Field
+        // Filter Field
         if(!filterField.equals("All")) {
             queryStr += " where b.category like '" + filterField + "'";
             if(!searchField.equals(""))

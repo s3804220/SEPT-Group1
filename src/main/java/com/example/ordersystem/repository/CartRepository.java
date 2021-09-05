@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * This class is the repository of Cart which uses the JPARepository interface
+ * It provides basic CRUD methods and queries for the Cart entity
+ */
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
