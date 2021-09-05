@@ -2,11 +2,9 @@ package com.example.ordersystem.controller;
 
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.AccountRole;
-import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Order;
 import com.example.ordersystem.service.*;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,16 +20,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This class is used for routing RESTful endpoints to perform CRUD on accounts and other account functionalities such as
- * user view their order history and admin account management system
+ * This class is used for routing endpoints to perform CRUD on accounts and other account functionalities,
+ * such as user view their order history and admin account management system
  */
 
 @Controller
 @AllArgsConstructor
 public class RegistrationController {
     private AccountService accountService;
-    @Autowired
-    private CartService cartService;
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -44,9 +40,13 @@ public class RegistrationController {
         this.accountService = accountService;
     }
 
-    // display registration form when path is accessed
+    /**
+     * Mapping to display registration form when path is accessed
+     * @param model - The ModelMap is used to parse objects from controller to HTML using Thymeleaf
+     * @return A String which is the HTML registration form template
+     */
     @RequestMapping(value="registration", method=RequestMethod.GET)
-    public String getForm(ModelMap model){    // ModelMap is used to parse objects from controller to html through thymeleaf
+    public String getForm(ModelMap model){
         model.addAttribute("account", new Account());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -56,10 +56,15 @@ public class RegistrationController {
         return "registration";
     }
 
-    // sign up new user after they fill out and submit the registration form
+    /**
+     * Mapping to sign up new user after they fill out and submit the registration form
+     * @param account - The new Account object to be signed up
+     * @param model - The model which contains the error message (if any) to be shown in frontend via Thymeleaf
+     * @return On success, show the login form for user to login after registration. On failure, stay on registration page and show error.
+     */
     @RequestMapping(value="registration", method=RequestMethod.POST)
     public String register(@ModelAttribute(value="account") Account account, Model model){
-        try{ // try signing up account
+        try{ // try signing up a new account
             model.addAttribute("account", account);
             account.setAccountRole(AccountRole.USER);
             accountService.signUpAccount(account);
@@ -71,7 +76,11 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
-    // display default landing page after successful log in
+    /**
+     * Mapping to display default landing page (which is the homepage)
+     * @param model - The ModelMap that contains user information to be displayed on frontend via Thymeleaf
+     * @return The homepage
+     */
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String getWelcomePage(ModelMap model){
         model.addAttribute("account", new Account());
@@ -79,7 +88,11 @@ public class RegistrationController {
         return "index";
     }
 
-    // display update account form when path is accessed
+    /**
+     * Mapping to display the update account form when path is accessed
+     * @param model - The ModelMap is used to parse objects from controller to HTML using Thymeleaf
+     * @return The update account form
+     */
     @RequestMapping(value="user/update", method=RequestMethod.GET)
     public String getUpdateAccountForm(ModelMap model){
         // Get current account authorization and get that account
@@ -89,7 +102,12 @@ public class RegistrationController {
         return "update_account";
     }
 
-    // user update their account information (first name, last name, phone, email, address)
+    /**
+     * Mapping to send the user's updated account information (first name, last name, phone, email, address) to backend
+     * @param account - The user Account to be updated
+     * @param model - The model which contains the error message (if any) to be shown in frontend via Thymeleaf
+     * @return On success, log the user out and show the login form. On failure, stay on the update account page and show error.
+     */
     @RequestMapping(value="user/update", method=RequestMethod.POST)
     public String update(@Valid Account account, Model model){
         try{ // try updating account
@@ -106,7 +124,11 @@ public class RegistrationController {
         return "redirect:/logout" ;
     }
 
-    // user update their password
+    /**
+     * Mapping to let user update their password
+     * @param account - The user Account to be updated
+     * @return Log the user out and show the login form
+     */
     @RequestMapping(value="user/update/password", method=RequestMethod.POST)
     public String updatePassword(@Valid Account account){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -118,17 +140,26 @@ public class RegistrationController {
         return "redirect:/logout";
     }
 
-    // user delete their account
+    /**
+     * Mapping to let users delete their account
+     * @return Log out and redirect the user to the login page
+     */
     @RequestMapping(value="user/delete", method=RequestMethod.POST)
     public String deleteAccount(){
+        //Get the user's currently logged in account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
+        //Delete that account
         accountService.deleteAccount(userId);
         return "redirect:/logout";
     }
 
-    // display account management system when path is accessed
+    /**
+     * Mapping to display account management page for Admins when path is accessed
+     * @param model - The ModelMap which contains account information to be sent to the frontend template via Thymeleaf
+     * @return The list of all accounts in the system
+     */
     @RequestMapping(value="account-management", method=RequestMethod.GET)
     public String showAccountManagementSystem(ModelMap model){
         List<Account> accountList = accountService.getAllAccounts();
@@ -137,36 +168,57 @@ public class RegistrationController {
         return "account_list";
     }
 
-    // admin make another user account an admin
+    /**
+     * Mapping for endpoint to let Admins make another user account an Admin
+     * @param id - The ID of the user account to be promoted to Admin
+     * @return Redirect to the account management page
+     */
     @RequestMapping(value="account-management/make-admin/{id}", method= RequestMethod.GET)
     public String makeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.ADMIN);
         return "redirect:/account-management";
     }
 
-    // admin revoke another admin's admin rights
+    /**
+     * Mapping for endpoint to let Admins revoke another Admin's admin rights
+     * @param id - The ID of the admin account to be revoked admin rights
+     * @return Redirect to the account management page
+     */
     @RequestMapping(value="account-management/revoke-admin/{id}", method= RequestMethod.GET)
     public String revokeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.USER);
         return "redirect:/account-management";
     }
 
-    // user view their order history
+    /**
+     * Mapping to let users view their own order history
+     * @param model - The ModelMap which contains the user order information to send to frontend via Thymeleaf
+     * @return The user's order history page
+     */
     @RequestMapping(value="order-history", method = RequestMethod.GET)
     public String getOrderHistory(ModelMap model){
+        //Get the currently logged in user's account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
+        //Get that user's order list and send it to frontend
         model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
         unifiedService.getCartInfo(model);
         return "order_history";
     }
 
-    // user view their order's details from order history
+    /**
+     * Mapping to let users view their specific order details from the order history
+     * @param id - The ID of the order to view
+     * @param model - The ModelMap which contains the order detailed information to be sent to frontend via Thymeleaf
+     * @return The order details page
+     */
     @RequestMapping(value="order-history/order-details/{id}", method = RequestMethod.GET)
     public String viewOrderDetailsFromOrderHistory(@PathVariable Long id, ModelMap model){
+        //Get the currently logged in user's account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
+        //Get a list of all orders for that specific account
         List<Order> accOrders = orderService.getOrdersByAccountId(loggedInAcc.getId());
         for (Order order : accOrders){
             if (order.getId().equals(id)){

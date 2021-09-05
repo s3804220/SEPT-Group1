@@ -65,8 +65,11 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span
+                    class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href=""
+                                                                             sec:authentication="principal.firstName"></a>
+                <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -93,12 +96,16 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log
+                                    in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a
+                                        sec:authentication="principal.firstName"></a> <span
+                                        class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
                                         <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
                                         <li><a class="order-history" href="/order-history" style="color:white">Order History</a></li>
                                         <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+
                                         </li>
                                     </ul>
                                 </li>
@@ -132,7 +139,8 @@
                         <li><a href="/shop">Shop</a></li>
                         <li class="active"><a href="/shopping-cart">Cart</a></li>
                         <li><a href="/contact">Contact</a></li>
-                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
+                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin
+                            Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -185,19 +193,30 @@
                         <tbody th:if="${not #lists.isEmpty(cartItems)}">
 
 
-                            <!--Iteration Begin-->
+                        <!--Iteration Begin-->
 
-                            <tr th:each="shop : ${cartItems}">
-                                <form method="post" class="cart-form" th:action="@{/shopping-cart/update}">
+                        <tr th:each="shop : ${cartItems}">
+                            <form method="post" class="cart-form" th:action="@{/shopping-cart/update}">
                                 <!--                                        <div th:with="var=${item.shopPrice * item.amount}">-->
                                 <div th:with="product = ${shop.item}">
                                     <td class="product__cart__item">
+<!--<<<<<<< HEAD-->
                                         <div class="product__cart__item__pic">
                                             <img th:src="@{/itemimage/{image_id}(image_id=${product.itemimages[0].id})}" alt="" width="80" height="80">
                                         </div>
 
+<!--=======-->
+<!--                                        <a th:href="@{/shop-details(id=${shop.item.id})}"-->
+<!--                                           class="product__cart__item__pic">-->
+<!--                                            <img th:src="@{${'img/upload/item'+product.id+'/'+#strings.arraySplit(product.itemImage, '|')[0]}}"-->
+<!--                                                 alt="" width="80" height="80">-->
+<!--                                        </a>-->
+<!--                                        &lt;!&ndash;                                        src="../static/img/shop/cart/cart-1.jpg"&ndash;&gt;-->
+<!--&gt;>>>>>> sort&filter-->
                                         <div class="product__cart__item__text" style="padding-top: 16px">
-                                            <h6 th:text="${product.itemName}"></h6>
+                                            <a th:href="@{/shop-details(id=${shop.item.id})}">
+                                                <h6 th:text="${product.itemName}"></h6>
+                                            </a>
                                             <span>price: </span><span th:text="${product.itemPrice}"></span>
                                         </div>
                                     </td>
@@ -218,14 +237,15 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <button class="site-btn" type="submit" style="margin-left: 10px;border-radius: 90px;">
+                                        <button class="site-btn" type="submit"
+                                                style="margin-left: 10px;border-radius: 90px;">
                                             <i class="fa fa-repeat"></i>
                                             <!-- /${item.shopId}/${item.amount}-->
                                         </button>
                                     </td>
                                 </div>
-                                </form>
-                            </tr>
+                            </form>
+                        </tr>
 
                         </tbody>
                     </table>

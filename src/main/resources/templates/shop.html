@@ -64,8 +64,11 @@
                     <li>ENG</li>
                 </ul>
             </li>
-            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span
+                    class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href=""
+                                                                             sec:authentication="principal.firstName"></a>
+                <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -92,11 +95,14 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log
+                                    in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a
+                                        sec:authentication="principal.firstName"></a> <span
+                                        class="arrow_carrot-down"></span>
                                     <ul style="width: 180px;">
                                         <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
-                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a>
+                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a></li>
                                         <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
                                         </li>
                                     </ul>
@@ -131,7 +137,8 @@
                         <li class="active"><a href="/shop">Shop</a></li>
                         <li><a href="/shopping-cart">Cart</a></li>
                         <li><a href="/contact">Contact</a></li>
-                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
+                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin
+                            Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -166,34 +173,44 @@
         <div class="shop__option">
             <div class="row">
                 <div class="col-lg-7 col-md-7">
-                    <div class="shop__option__search">
-                        <form action="#">
-                            <select>
-                                <option value="All">All</option>
-                                <option value="Cupcake">Cupcake</option>
-                                <option value="Cake">Cake</option>
-                                <option value="Biscuit">Biscuit</option>
-                                <option value="Donut">Donut</option>
+                    <div class="shop__option__search" th:if="${shopList != null and not #lists.isEmpty(shopList)}">
+
+                        <form id="filterBy" name="filterBy" th:action="@{/shop}" method="get"
+                              th:onsubmit="return searchBoard()">
+                            <select name="filterField" id="filterField" th:data-categories="${categoryList}">
+                                <option th:each="category : ${categoryList}"
+                                        th:value="${category}" th:text="${category}"></option>
                             </select>
-                            <input type="text" placeholder="Search" id="search-input">
+                            <input type="text" placeholder="Search" th:value="${searchField}" name="search-input" id="search-input">
+
+                            <!-- Hidden input -->
+                            <input type="hidden" name="sorField" th:value="${sortField}">
+
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
+
                 </div>
                 <div class="col-lg-5 col-md-5">
-                    <div class="shop__option__right">
-                        <select>
-                            <option value="">Default sorting</option>
-                            <option value="">Name</option>
-                            <option value="">Price: Low to High</option>
-                            <option value="">Price: High to Low</option>
+
+                    <form id="sortBy" name="sortBy" th:action="@{/shop}" method="get">
+
+                        <!-- Hidden input -->
+                        <input type="hidden" name="filterField" th:value="${filterField}">
+                        <input type="hidden" name="search-input" th:value="${searchField}">
+
+                        <select name="sortField" id="sortField">
+                            <option value="id">Default sorting</option>
+                            <option value="name">Name</option>
+                            <option value="priceLTH">Price: Low to High</option>
+                            <option value="priceHTL">Price: High to Low</option>
+
                         </select>
-                        <a href="#"><i class="fa fa-list"></i></a>
-                        <a href="#"><i class="fa fa-reorder"></i></a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+
 
         <!-- Item List Begin -->
         <div class="row" th:if="${not #lists.isEmpty(shopList)}">
@@ -202,7 +219,6 @@
 
                         <div class="product__item__pic set-bg" th:attr="data-setbg=@{/itemimage/{image_id}(image_id=${shop.itemimages[0].id})}">
 
-                        <!--"@{${'/img/shop/' + shop.image}}"-->
                         <div class="product__label">
                             <span th:text="${shop.category}"></span>
                         </div>
@@ -210,7 +226,9 @@
                     <div class="product__item__text">
                         <h6>
                             <!--                                href="/shop-details" http://localhost:8080/shop?page=1#-->
-                            <a th:href="@{/shop-details(id=${shop.id})}" th:text="${shop.itemName}" id="product-item-name"></a></h6>
+                            <a th:href="@{/shop-details(id=${shop.id})}" th:text="${shop.itemName}" id="product-item-name"></a>
+                        </h6>
+
                         <div class="product__item__price" th:text="${'$'+shop.itemPrice}"></div>
                         <div class="cart_add">
                             <a th:href="@{/shop-details(id=${shop.id})}">Check details</a>
@@ -227,13 +245,10 @@
                     <!-- Pagination -->
                     <nav class="shop__pagination">
                         <ul class="pagination">
-                            <!--                                <li class="page-item">-->
-                            <!--                                    <a class="page-link" th:href="@{/?page=1}">-->
-                            <!--                                        <span aria-hidden="true">First</span>-->
-                            <!--                                    </a>-->
-                            <!--                                </li>-->
-                            <li>
-                                <a th:href="@{page={page}(page = ${pagination.prevBlock})}">
+                                <a th:href="@{?page={page}(
+                                    page = ${pagination.prevBlock}, filterField = ${filterField}
+                                    , searchField = ${searchField}, sortField=${sortField}
+                                    )}">
                                     <span class="arrow_carrot-left"></span>
                                 </a>
                             </li>
@@ -241,11 +256,17 @@
                                 <li
                                         th:with="start = ${pagination.startPage}, end = ${pagination.lastPage}"
                                         th:each="pageButton : ${#numbers.sequence(start, end)}">
-                                    <a th:href="@{page={page}(page = ${pageButton})}" th:text="${pageButton}"></a>
+                                    <a th:href="@{?page={page}(
+                                    page = ${pageButton}, filterField = ${filterField}
+                                    , searchField = ${searchField}, sortField=${sortField}
+                                    )}" th:text="${pageButton}"></a>
                                 </li>
                             </th:block>
                             <li>
-                                <a th:href="@{page={page} (page = ${pagination.nextBlock})}">
+                                <a th:href="@{?page={page} (
+                                page = ${pagination.nextBlock}, filterField = ${filterField}
+                                , searchField = ${searchField}, sortField=${sortField}
+                                )}">
                                     <span class="arrow_carrot-right"></span>
                                 </a>
                             </li>
@@ -345,6 +366,7 @@
 </div>
 <!-- Search End -->
 
+
 <!-- Js Plugins -->
 <script src="../../js/jquery-3.3.1.min.js"></script>
 <script src="../../js/bootstrap.min.js"></script>
@@ -355,7 +377,7 @@
 <script src="../../js/owl.carousel.min.js"></script>
 <script src="../../js/jquery.nicescroll.min.js"></script>
 <script src="../../js/main.js"></script>
-<script src="../../js/search.js"></script>
+<script src="../../js/sort.js"></script>
 </body>
 
 </html>

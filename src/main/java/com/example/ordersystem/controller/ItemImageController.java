@@ -21,7 +21,12 @@ public class ItemImageController {
     @Autowired
     private ItemImageService itemImageService;
 
-    //Map the endpoint to let Admins upload new images of a specific item by ID
+    /**
+     * Mapping of the endpoint to let Admins upload new images of a specific item by ID
+     * @param id - The ID of the item to upload image
+     * @param files - The HashMap which contains String as a key, and multipart files which represent the image(s) to upload
+     * @return A response to the client, whether the upload was successful or not
+     */
     @PostMapping("/item/{id}/image")
     public ResponseEntity<String> handleImagePost(@PathVariable String id, @RequestParam HashMap<String, MultipartFile> files){
         String message = "";
@@ -44,7 +49,10 @@ public class ItemImageController {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("File array is NULL!");
     }
 
-    //Map the endpoint to let Admins delete all images of a specific item from the database
+    /**
+     * Mapping of the endpoint to let Admins delete all images of a specific item from the database
+     * @param id - The ID of the item whose images will be deleted
+     */
     @DeleteMapping("/item/{id}/image")
     public void deleteItemImage(@PathVariable String id){
         List<ItemImage> itemImageList = itemImageService.getAllItemImages();

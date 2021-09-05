@@ -20,14 +20,20 @@ public class ErrorHandlerController implements ErrorController {
     @Autowired
     private UnifiedService unifiedService;
 
-    //Map all errors to different paths based on the HTTP status code
+    /**
+     * Mapping to handle all errors and redirect to different templates based on the HTTP status code
+     * @param request - The HTTP request which generates the error
+     * @return A String which is the error template
+     */
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
+        //Check and get the HTTP error code (if any) from the request
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
 
+            //Redirect different errors to their respective templates
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "redirect:/not-found";
             }
@@ -41,28 +47,44 @@ public class ErrorHandlerController implements ErrorController {
         return "error";
     }
 
-    //Map the template for 404 Not Found error
+    /**
+     * Mapping for the HTTP 404 Not Found error
+     * @param model - The ModelMap which contains user information to send to the template via Thymeleaf
+     * @return A String which is the processed error template
+     */
     @RequestMapping("/not-found")
     public String notFoundPage(ModelMap model){
         unifiedService.getCartInfo(model);
         return "not-found";
     }
 
-    //Map the template for 500 Internal Server error
+    /**
+     * Mapping for the HTTP 500 Internal Server error
+     * @param model - The ModelMap which contains user information to send to the template via Thymeleaf
+     * @return A String which is the processed error template
+     */
     @RequestMapping("/internal-server-error")
     public String InternalErrorPage(ModelMap model){
         unifiedService.getCartInfo(model);
         return "internal-server-error";
     }
 
-    //Map the template for 400 Bad Request error
+    /**
+     * Mapping for the HTTP 400 Bad Request error
+     * @param model - The ModelMap which contains user information to send to the template via Thymeleaf
+     * @return A String which is the processed error template
+     */
     @RequestMapping("/bad-request")
     public String badRequestPage(ModelMap model){
         unifiedService.getCartInfo(model);
         return "bad-request";
     }
 
-    //Map the template for 403 Access Denied error
+    /**
+     * Mapping for the HTTP 403 Access Denied error
+     * @param model - The ModelMap which contains user information to send to the template via Thymeleaf
+     * @return A String which is the processed error template
+     */
     @GetMapping("/access-denied")
     public String accessPage(ModelMap model){
         unifiedService.getCartInfo(model);

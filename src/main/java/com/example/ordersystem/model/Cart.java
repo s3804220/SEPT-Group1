@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
+/**
+ * This class is used for creating Cart objects that describe each items added to cart, on Cart page
+ */
+
 @Entity
 @Table(name = "cart")
 public class Cart {
