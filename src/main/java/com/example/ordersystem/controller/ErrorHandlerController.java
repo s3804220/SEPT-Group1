@@ -23,10 +23,11 @@ public class ErrorHandlerController implements ErrorController {
     /**
      * Mapping to handle all errors and redirect to different templates based on the HTTP status code
      * @param request - The HTTP request which generates the error
+     * @param model - The ModelMap which contains information to be passed to the frontend via Thymeleaf
      * @return A String which is the error template
      */
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request) {
+    public String handleError(HttpServletRequest request, ModelMap model) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         //Check and get the HTTP error code (if any) from the request
@@ -44,6 +45,7 @@ public class ErrorHandlerController implements ErrorController {
                 return "redirect:/bad-request";
             }
         }
+        unifiedService.getCartInfo(model);
         return "error";
     }
 
