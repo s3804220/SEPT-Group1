@@ -155,7 +155,11 @@ public class RegistrationController {
         return "redirect:/logout";
     }
 
-    // display account management system when path is accessed
+    /**
+     * Mapping to display account management page for Admins when path is accessed
+     * @param model - The ModelMap which contains account information to be sent to the frontend template via Thymeleaf
+     * @return The list of all accounts in the system
+     */
     @RequestMapping(value="account-management", method=RequestMethod.GET)
     public String showAccountManagementSystem(ModelMap model){
         List<Account> accountList = accountService.getAllAccounts();
@@ -164,36 +168,57 @@ public class RegistrationController {
         return "account_list";
     }
 
-    // admin make another user account an admin
+    /**
+     * Mapping for endpoint to let Admins make another user account an Admin
+     * @param id - The ID of the user account to be promoted to Admin
+     * @return Redirect to the account management page
+     */
     @RequestMapping(value="account-management/make-admin/{id}", method= RequestMethod.GET)
     public String makeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.ADMIN);
         return "redirect:/account-management";
     }
 
-    // admin revoke another admin's admin rights
+    /**
+     * Mapping for endpoint to let Admins revoke another Admin's admin rights
+     * @param id - The ID of the admin account to be revoked admin rights
+     * @return Redirect to the account management page
+     */
     @RequestMapping(value="account-management/revoke-admin/{id}", method= RequestMethod.GET)
     public String revokeAccountAdmin(@PathVariable Long id){
         accountService.setAccountRole(id, AccountRole.USER);
         return "redirect:/account-management";
     }
 
-    // user view their order history
+    /**
+     * Mapping to let users view their own order history
+     * @param model - The ModelMap which contains the user order information to send to frontend via Thymeleaf
+     * @return The user's order history page
+     */
     @RequestMapping(value="order-history", method = RequestMethod.GET)
     public String getOrderHistory(ModelMap model){
+        //Get the currently logged in user's account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
+        //Get that user's order list and send it to frontend
         model.addAttribute("orderList", orderService.getOrdersByAccountId(userId));
         unifiedService.getCartInfo(model);
         return "order_history";
     }
 
-    // user view their order's details from order history
+    /**
+     * Mapping to let users view their specific order details from the order history
+     * @param id - The ID of the order to view
+     * @param model - The ModelMap which contains the order detailed information to be sent to frontend via Thymeleaf
+     * @return The order details page
+     */
     @RequestMapping(value="order-history/order-details/{id}", method = RequestMethod.GET)
     public String viewOrderDetailsFromOrderHistory(@PathVariable Long id, ModelMap model){
+        //Get the currently logged in user's account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
+        //Get a list of all orders for that specific account
         List<Order> accOrders = orderService.getOrdersByAccountId(loggedInAcc.getId());
         for (Order order : accOrders){
             if (order.getId().equals(id)){
