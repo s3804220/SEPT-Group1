@@ -19,7 +19,7 @@ $(function() {
     }
 
 // Search
-    let searchValue = params.get('search-input');
+    let searchValue = params.get('searchField');
 
     if (searchValue) {
         searchField.value = searchValue;
