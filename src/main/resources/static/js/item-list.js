@@ -1,4 +1,3 @@
-//$(document).ready(loadInfo())
 deleteBtn = document.getElementsByClassName("delete-button")
 
 for (let i = 0; i < deleteBtn.length; i++) {

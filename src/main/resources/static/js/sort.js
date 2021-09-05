@@ -9,11 +9,7 @@ $(function() {
     let filterValue = params.get('filterField');
     if (filterValue == null) filterValue = "All";
     let validFilter = $("#filterField").data("categories");
-    console.log("@@@@@@@@@@@@validFilter: " + validFilter);
-    console.log("@@@@@@@@@@@@filterValue: " + filterValue);
 
-    console.log("filtervalue: " +filterValue);
-    console.log("valid: "+ validFilter);
     if (filterValue && validFilter.includes(filterValue)) {
         filterField.value = filterValue;
         $("#filterField").niceSelect('update');
@@ -24,13 +20,10 @@ $(function() {
 
 // Search
     let searchValue = params.get('search-input');
-    console.log("@@@@@@@@@@@@ 1st search value: " + searchField.value);
 
     if (searchValue) {
         searchField.value = searchValue;
     }
-    console.log("@@@@@@@@@@@@ 1st search value: " + searchField.value);
-    
 
 
 // Sorting

@@ -2,6 +2,7 @@ document.getElementById("save-button").addEventListener("click", checkInput)
 document.addEventListener('DOMContentLoaded',loadInfo)
 
 var replaceImg = false
+//Check whether to replace item images by checking what radio button is selected in the form
 $('input:radio[name="image-upload"]').on('click change', function(e) {
     if(e.currentTarget.value==="no"){
         document.getElementById('image-upload-btn').style.display = "block"
@@ -26,6 +27,7 @@ function checkInput(){
     let validated = true
 
     //Check all inputs and display the appropriate error message
+    //Check if item name is blank
     if(!itemname){
         nameMessage.style.display = "block"
         nameMessage.style.color = "red"
@@ -34,6 +36,7 @@ function checkInput(){
     }else {
         nameMessage.style.display = "none"
     }
+    //Check if item description is blank
     if(!description){
         descriptionMessage.style.display = "block"
         descriptionMessage.style.color = "red"
@@ -42,32 +45,40 @@ function checkInput(){
     }else {
         descriptionMessage.style.display = "none"
     }
+    //Check if price is not blank and is a valid number
     if(!price || isNaN(price)){
         priceMessage.style.display = "block"
         priceMessage.style.color = "red"
         priceMessage.innerHTML = 'Please enter a valid price!'
         validated = false
-    }else if (price<0){
+    }
+    //Check if price is negative
+    else if (price<=0){
         priceMessage.style.display = "block"
         priceMessage.style.color = "red"
-        priceMessage.innerHTML = 'Please do not enter negative prices!'
+        priceMessage.innerHTML = 'Please do not enter negative or 0 prices!'
         validated = false
     }else {
         priceMessage.style.display = "none"
     }
+    //Check if the user wants to replace the images
     if(!id || id && replaceImg){
+        //Check if the user has not selected any files
         if(fileinput.files.length===0){
             fileMessage.style.display = "block"
             fileMessage.style.color = "red"
             fileMessage.innerHTML = 'Please select at least 1 file!'
             validated = false
-        }else if(fileinput.files.length>5){
+        }
+        //Check if there are more than 5 files
+        else if(fileinput.files.length>5){
             fileMessage.style.display = "block"
             fileMessage.style.color = "red"
             fileMessage.innerHTML = 'Please select a maximum of 5 images!'
             validated = false
         } else {
             for (let i = 0; i < fileinput.files.length; ++i) {
+                //For each file in the selected files array, check if the extension is a valid image format
                 let filename = fileinput.files.item(i).name
                 let array = filename.split('.')
                 const validExtensions = ["jpg", "jpeg", "bmp", "gif", "png"]
@@ -84,6 +95,7 @@ function checkInput(){
                     validated = false
                     break
                 }else if(fileinput.files.item(i).size>5242880){
+                    //Check if the image file size is larger than 5MB
                     fileMessage.style.display = "block"
                     fileMessage.style.color = "red"
                     fileMessage.innerHTML = 'The max size per file is 5MB only!'
@@ -114,7 +126,7 @@ function saveItem() {
     let filenames = ''
 
     //Join all image file names into a string separated by |
-    //that string will be stored in the items database instead of the images themselves
+    //that string will be stored in the items database
     for (let i = 0; i < fileinput.files.length; ++i) {
         filenames += fileinput.files.item(i).name
         if(i!==fileinput.files.length-1){
@@ -133,7 +145,7 @@ function saveItem() {
             body: JSON.stringify({itemName: itemname,itemDescription: description,itemPrice: price,category: category,availability:availability,itemImage: filenames})
         }) //Get the newly added item's ID from the response
             .then(res => res.json())
-            // Call function to upload all image files to a directory corresponding with that item's ID on the server
+            // Call function to upload all image files
             .then(itemid => uploadImg(itemid))
             //Display the appropriate message to the admin in HTML
             .then(() => document.getElementById('item-form-div').innerHTML=`<span style="color: #1c7430">Item saved successfully!<br>You can view a list of all items in the database <a href="/item-list" class="item-link">here</a>.</span>`)
@@ -196,6 +208,7 @@ function loadInfo(){
         document.getElementById('upload-choice').style.display = "block"
         document.getElementById('image-upload-btn').style.display = "none"
 
+        //If the ID is a valid number
         if(!isNaN(Number(itemid))){
             let id = document.getElementById('item-input-id')
             let name = document.getElementById('item-name')
@@ -228,7 +241,7 @@ function loadInfo(){
                     }
                 })
         }else{
-            //If the item with that ID cannot be found, display a message to the admin
+            //If the ID is invalid, display a message to the admin
             document.getElementById('item-form-div').innerHTML=`<span style="color: #cc1825">An item with that ID doesn't exist!<br>Please recheck the <a href="/item-list" class="item-link">item list</a> or your database to find the item you want to edit.
                     <br>Or you can proceed to add a new item <a href="/item-form" class="item-link">here</a>.</span>`
         }
