@@ -23,7 +23,10 @@ public class UnifiedService {
     @Autowired
     private CartService cartService;
 
-    //Function to get the current cart information for the currently logged in user
+    /**
+     * Method to get the current cart information for the currently logged in user
+     * @param model - The ModelMap which contains the information to pass to the frontend through Thymeleaf
+     */
     public void getCartInfo(ModelMap model){
         float cartSum = 0;
         int cartQty = 0;

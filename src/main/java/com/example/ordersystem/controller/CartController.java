@@ -107,7 +107,7 @@ public class CartController {
     }
 
     /**
-     * Mapping to update the quantity of a specific item in the cart
+     * Mapping to update the quantity and subtotal price of a specific item in the cart
      * @param itemId - The ID of the item to update
      * @param amount - The quantity of the item to update
      * @return A String which is the processed shopping cart template
@@ -122,6 +122,7 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
+        //Call method to update the quantity according to the amount provided, and the subtotal price of that item
         int smallSum = cartService.updateAmount(amount, itemId, user);
 
         return "redirect:/shopping-cart";
