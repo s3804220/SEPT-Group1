@@ -16,6 +16,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * This class is used for creating Account objects that are registered by the user.
+ */
+
 @Getter
 @Setter
 @EqualsAndHashCode

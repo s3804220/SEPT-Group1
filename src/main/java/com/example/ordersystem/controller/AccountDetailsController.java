@@ -20,6 +20,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class is used for routing RESTful endpoints to admin functionalities which consists of
+ * view a specific account's details, order histories and order details
+ */
+
 @Controller
 @AllArgsConstructor
 public class AccountDetailsController {

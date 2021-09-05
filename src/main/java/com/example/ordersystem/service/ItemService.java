@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * This class is the service layer for performing CRUD operations on Items
+ */
 @Transactional
 @Service
 public class ItemService {
@@ -30,7 +33,7 @@ public class ItemService {
     @Autowired
     private CartRepository cartRepository;
 
-    //Save an item in the database and return its ID (for usages if needed)
+    //Function to save an item in the database and return its ID (for later usages when needed)
     public Long saveItem(Item item){
         if(item.getItemName().equals("")){
             throw new InvalidItemNameException(item.getItemName());
@@ -45,35 +48,36 @@ public class ItemService {
         return newItem.getId();
     }
 
-    //Get an item by ID if it exists in the database
+    //Function to get an item by ID if it exists in the database
     public Optional<Item> getItem(Long id){
         return itemRepository.findById(id);
     }
 
-    //Get a list of all items currently in the database
+    //Function to get a list of all items currently in the database
     public List<Item> getAllItems(){
         return itemRepository.findAll();
     }
 
-    //Get a list of all items sorted by ID
+    //Function to get a list of all items sorted by ID
     public List<Item> getAllItemsSortedId(){
         return itemRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    //Get string of an item's image file names
+    //Function to get the string of an item's image file names
     public String getItemImages(Long id){
         Item itemToGet = getItem(id).get();
         return itemToGet.getItemImage();
     }
 
-    //Delete an item by ID
+    //Function to delete a specific item by ID
     public void deleteItem(Long id){
         itemRepository.deleteById(id);
     }
 
+    //Function to change an item's availability status
     public void changeAvailability(Long id){
         Item item = getItem(id).get();
-        //Change the item's availability to the opposite of what it currently is
+        //Change the item's availability status to the opposite of what it currently is
         item.setAvailability(!item.isAvailability());
         if(!item.isAvailability()){
             //If the item becomes unavailable, delete it from all users' carts
@@ -84,6 +88,7 @@ public class ItemService {
             }
         }
     }
+
 
     // Get the number of items of a category (filtered)
     public int findNumOfSearchedItems(String filterField, String searchField) {
@@ -100,6 +105,7 @@ public class ItemService {
 
         return ((Number) em.createQuery(queryStr).getSingleResult()).intValue();
     }
+    
 
     // Get a list of filtered, sorted items for a page
     public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField, String searchField) {

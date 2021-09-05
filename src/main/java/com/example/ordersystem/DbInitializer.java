@@ -1,8 +1,6 @@
 package com.example.ordersystem;
 
 import com.example.ordersystem.model.*;
-import com.example.ordersystem.repository.AccountRepository;
-import com.example.ordersystem.repository.ItemRepository;
 import com.example.ordersystem.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * This class is used for populating the database with dummy accounts and sample items in the shop
+ * It will only run if the app.init-db property in the application.properties file is set to true
+ * Important: It should only be run once when running the application for the first time,
+ * which means the app.init-db property should be set to false the rest of the time.
+ * Otherwise, conflicts may occur in the database.
+ */
 @Component
 @ConditionalOnProperty(name = "app.init-db", havingValue="true")
 @AllArgsConstructor
@@ -34,18 +39,20 @@ public class DbInitializer implements CommandLineRunner {
     @Override
     public void run(String... args){
 
-//        //Initialize admin account
-//        Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
-//
-//        accountService.signUpAccount(admin);
-//        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
-//
-//        //Initialize user accounts
-//        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
-//        accountService.signUpAccount(user1);
-//        Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
-//        accountService.signUpAccount(user2);
-//        accountService.setAccountRole(user2.getId(), AccountRole.ADMIN);
+
+        //Initialize admin account
+        Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
+
+        accountService.signUpAccount(admin);
+        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
+
+        //Initialize user account
+        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
+        accountService.signUpAccount(user1);
+        //Initialize another account with a real email for testing
+        Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
+        accountService.signUpAccount(user2);
+        accountService.setAccountRole(user2.getId(), AccountRole.ADMIN);
 
         //Populate sample items in the shop
         Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("21.00"), "Cupcake",true);

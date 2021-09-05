@@ -5,6 +5,11 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * This class is the abstract Email class
+ * It is used to provide an abstract email outline with abstract methods to get the subject and content of the email
+ * It also has a method that returns an array with some image resources that are applicable to all emails
+ */
 public abstract class Email {
     public abstract String getSubject();
     public abstract String getOrderStatus();

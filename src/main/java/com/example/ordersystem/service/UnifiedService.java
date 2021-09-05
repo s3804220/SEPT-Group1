@@ -12,6 +12,9 @@ import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
+/**
+ * This class is the service class which mostly combines other services in its methods
+ */
 @Transactional
 @Service
 public class UnifiedService {
@@ -20,12 +23,13 @@ public class UnifiedService {
     @Autowired
     private CartService cartService;
 
+    //Function to get the current cart information for the currently logged in user
     public void getCartInfo(ModelMap model){
         float cartSum = 0;
         int cartQty = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            //If the user is already logged in, update their top-right cart info
+            //If the user is already logged in, update the cart icon at the top-right to show the correct information
             Account loggedInAcc = (Account)auth.getPrincipal();
             Long userId = loggedInAcc.getId();
 
@@ -37,6 +41,7 @@ public class UnifiedService {
                 cartSum += cart.getSmallSum();
             }
         }
+        //Send the information as a model to the template for display
         model.addAttribute("cartQty",cartQty);
         model.addAttribute("cartSum",cartSum);
     }

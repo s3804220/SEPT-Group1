@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
+/**
+ * This class is used for creating Item objects that will be displayed and purchasable in the shop
+ */
 @Entity
 @Table(name="items")
 public class Item {

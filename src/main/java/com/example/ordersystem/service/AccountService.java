@@ -19,6 +19,10 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class is the service layer for performing CRUD operations on accounts
+ */
+
 @Service
 @AllArgsConstructor
 public class AccountService implements UserDetailsService {
