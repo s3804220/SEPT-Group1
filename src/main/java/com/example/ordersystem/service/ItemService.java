@@ -5,6 +5,7 @@ import com.example.ordersystem.exception.item.InvalidItemNameException;
 import com.example.ordersystem.exception.item.InvalidItemPriceException;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Item;
+import com.example.ordersystem.model.Pagination;
 import com.example.ordersystem.repository.CartRepository;
 import com.example.ordersystem.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -85,15 +85,62 @@ public class ItemService {
         }
     }
 
-    public int findTotal() {
-        return ((Number) em.createQuery("select count(*) from Item")
-                .getSingleResult()).intValue();
+    // Get the number of items of a category (filtered)
+    public int findNumOfSearchedItems(String filterField, String searchField) {
+        String queryStr = "";
+
+        if(!filterField.equals("All")) {
+            queryStr = "select count(b) from Item b";
+
+        } else {
+            queryStr = "select count(*) from Item b";
+
+        }
+        queryStr += getQueryString(filterField, searchField);
+
+        return ((Number) em.createQuery(queryStr).getSingleResult()).intValue();
     }
 
-    public List<Item> findListPaging(int startIndex, int pageSize) {
-        return em.createQuery("select b from Item b", Item.class)
+    // Get a list of filtered, sorted items for a page
+    public List<Item> findListPaging(int startIndex, int pageSize, String filterField, String sortField, String searchField) {
+
+        String direction = "";
+
+        String queryStr = "select b from Item b" + getQueryString(filterField, searchField);
+        // Sort Field
+        if (sortField.equals("name")) sortField = "itemName";
+        if (sortField.equals("priceHTL")) {
+            sortField = "itemPrice";
+            direction = " desc";
+        } else if(sortField.equals("priceLTH")) {
+            sortField = "itemPrice";
+            direction = " asc";
+        }
+        queryStr += " order by b." + sortField + direction;
+
+        return em.createQuery(queryStr, Item.class)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
                 .getResultList();
+    }
+
+
+    public String getQueryString(String filterField, String searchField) {
+        String queryStr = "";
+
+//         Filter Field
+        if(!filterField.equals("All")) {
+            queryStr += " where b.category like '" + filterField + "'";
+            if(!searchField.equals(""))
+                queryStr +=" and ";
+        }
+
+        // Search Field
+        if(!searchField.equals("")) {
+            if(filterField.equals("All")) queryStr += " where";
+            queryStr += " lower(b.itemName) like lower('%" + searchField + "%')";
+        }
+
+        return queryStr;
     }
 }

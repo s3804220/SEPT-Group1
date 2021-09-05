@@ -2,6 +2,8 @@ package com.example.ordersystem.model;
 
 public class Pagination {
 
+    private String sortCondition;
+
     // Number of items in a page
     private int pageSize = 12;
     private int blockSize = 12;
@@ -59,7 +61,13 @@ public class Pagination {
     }
 
 
+    public String getSortCondition() {
+        return sortCondition;
+    }
 
+    public void setSortCondition(String sortCondition) {
+        this.sortCondition = sortCondition;
+    }
 
     public int getPageSize() {
         return pageSize;
