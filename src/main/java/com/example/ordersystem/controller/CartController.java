@@ -13,14 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * This class is used for routing cart items and CRUD from the list of cart items
  */
-
 
 @Controller
 public class CartController {
@@ -44,9 +41,14 @@ public class CartController {
         this.accountService = accountService;
     }
 
-// List items in shopping cart
+    /**
+     * Mapping to view all items currently in the shopping cart
+     * @param model - The ModelMap to process and send values to the frontend template via Thymeleaf
+     * @return A String which is the processed template
+     */
     @GetMapping("/shopping-cart")
     public String readDetail(ModelMap model) {
+        //Get the user account to update their shopping cart
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
@@ -65,17 +67,26 @@ public class CartController {
         return "shopping-cart";
     }
 
-// Add an item to cart
+    /**
+     * Mapping to add an item to the shopping cart
+     * @param itemId - The ID of the item to add
+     * @param amount - The amount of the item to add
+     * @return A String which is the processed shopping cart template
+     */
     @PostMapping("/shopping-cart/add")
     public String addItemToCart(@RequestParam("shopId") Long itemId,
                                 @RequestParam("amount") int amount) {
 
+        //Get the user account to update their shopping cart
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
         Item itemToAdd = itemService.getItem(itemId).get();
+
+        //Check if the item is available, if it is, add it to the cart
+        // if not, redirect back to the item details page with the appropriate message
         if(itemToAdd.isAvailability()){
             int addedAmount = cartService.addItem(itemId, amount, user);
             return "redirect:/shopping-cart";
@@ -84,17 +95,28 @@ public class CartController {
         }
     }
 
+    /**
+     * Mapping to delete an item from the shopping cart
+     * @param id - The ID of the item to delete
+     * @return A String which is the processed shopping cart template
+     */
     @GetMapping("/shopping-cart/delete/{deleteId}")
     public String delete(@PathVariable(name = "deleteId") Long id) {
         cartService.deleteCart(id);
         return "redirect:/shopping-cart";
     }
 
-// Update amount of an item in cart
+    /**
+     * Mapping to update the quantity of a specific item in the cart
+     * @param itemId - The ID of the item to update
+     * @param amount - The quantity of the item to update
+     * @return A String which is the processed shopping cart template
+     */
     @PostMapping("/shopping-cart/update")
     public String update(@RequestParam(name = "shopId") Long itemId,
                          @RequestParam(name = "amount") int amount) {
 
+        //Get the user account to update their shopping cart
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();

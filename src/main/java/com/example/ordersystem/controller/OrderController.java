@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.ordersystem.model.Account;
-import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Order;
 import com.example.ordersystem.service.AccountService;

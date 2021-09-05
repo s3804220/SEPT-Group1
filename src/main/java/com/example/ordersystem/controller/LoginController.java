@@ -17,9 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-    //Map the path for the login page and return the correct template
+    /**
+     * Mapping for the path to the login page
+     * @param request - The HTTP request which leads to the login page
+     * @param model - A ModelMap which contains information to send to the frontend template via Thymeleaf
+     * @return A String which is the login form template
+     */
     @GetMapping("/login")
     public String login(HttpServletRequest request, ModelMap model){
+        //Store the URL that the user visited before logging in
+        // to redirect them back to it after the login is successful
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("url_prior_login", referrer);
         float cartSum = 0;
@@ -34,7 +41,12 @@ public class LoginController {
         return "login";
     }
 
-    //Map the path for the logout request
+    /**
+     * Mapping for the path to handle the logout request
+     * @param request - The HTTP request to logout
+     * @param response - The HTTP response to log the user out of their session
+     * @return A String which is the login form template, showing that the user has been logged out
+     */
     @GetMapping(value="/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

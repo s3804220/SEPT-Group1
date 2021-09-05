@@ -15,6 +15,10 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 public class EmailConfig {
 
+    /**
+     * Create a new message source to be used with the email template engine
+     * @return A new message source
+     */
     @Bean
     public ResourceBundleMessageSource emailMessageSource() {
         final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -22,7 +26,10 @@ public class EmailConfig {
         return messageSource;
     }
 
-    //Use a template engine so that emails can be written with a predefined template
+    /**
+     * Create a template engine so that emails can be written with a predefined template
+     * @return A new template engine
+     */
     @Bean
     public TemplateEngine emailTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -33,7 +40,10 @@ public class EmailConfig {
         return templateEngine;
     }
 
-    //Create HTML template resolver to make it possible to load HTML templates
+    /**
+     * Create an HTML template resolver to make it possible to load HTML templates
+     * @return A new template resolver
+     */
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("templates/");
