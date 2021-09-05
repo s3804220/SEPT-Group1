@@ -61,7 +61,8 @@ public class AppConfig implements WebMvcConfigurer {
          dataSource.setUsername("postgres");
          dataSource.setPassword("super123");
 //        dataSource.setPassword("postgres");
-      
+
+
 //        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
 //        dataSource.setUsername("pg");
 //        dataSource.setPassword("1234");

@@ -12,6 +12,8 @@ $(function() {
     console.log("@@@@@@@@@@@@validFilter: " + validFilter);
     console.log("@@@@@@@@@@@@filterValue: " + filterValue);
 
+    console.log("filtervalue: " +filterValue);
+    console.log("valid: "+ validFilter);
     if (filterValue && validFilter.includes(filterValue)) {
         filterField.value = filterValue;
         $("#filterField").niceSelect('update');

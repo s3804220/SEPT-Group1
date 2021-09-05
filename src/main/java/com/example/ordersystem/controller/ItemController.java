@@ -84,7 +84,7 @@ public class ItemController {
 //                +itemService.findNumOfSearchedItems(filterField, searchField));
 //        System.out.println("@@@@@@ pagination.getTotalPages: "+pagination.getTotalPages());
 //        System.out.println("@@@@@@ searchField : " +searchField);
-
+        System.out.println("@@@@@CategoryList: "+categoryList);
 
         model.addAttribute("filterField", filterField);
         model.addAttribute("searchField", searchField);

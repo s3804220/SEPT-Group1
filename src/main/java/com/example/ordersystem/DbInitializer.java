@@ -34,18 +34,18 @@ public class DbInitializer implements CommandLineRunner {
     @Override
     public void run(String... args){
 
-        //Initialize admin account
-        Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
-
-        accountService.signUpAccount(admin);
-        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
-
-        //Initialize user accounts
-        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
-        accountService.signUpAccount(user1);
-        Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
-        accountService.signUpAccount(user2);
-        accountService.setAccountRole(user2.getId(), AccountRole.ADMIN);
+//        //Initialize admin account
+//        Account admin = new Account("John", "Doe", "123 Tech Street", "0708563876", "admin@gmail.com", "admin", AccountRole.ADMIN);
+//
+//        accountService.signUpAccount(admin);
+//        accountService.setAccountRole(admin.getId(), AccountRole.ADMIN);
+//
+//        //Initialize user accounts
+//        Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
+//        accountService.signUpAccount(user1);
+//        Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
+//        accountService.signUpAccount(user2);
+//        accountService.setAccountRole(user2.getId(), AccountRole.ADMIN);
 
         //Populate sample items in the shop
         Item item1 = new Item("Cream cupcake", "A delicious cupcake with vanilla cream to brighten your day", "product-1.jpg", new BigDecimal("21.00"), "Cupcake",true);
