@@ -40,11 +40,10 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__cart">
         <div class="offcanvas__cart__links">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <a href="/shopping-cart"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
             <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
@@ -110,11 +109,10 @@
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
                                 <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <a href="/shopping-cart"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
                                 <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
@@ -179,6 +177,11 @@
                             <th></th>
                         </tr>
                         </thead>
+                        <tr th:if="${param.empty}" th:unless="${not #lists.isEmpty(cartItems)}">
+                            <td style="color: red; margin-bottom: 10px; margin-top: 5px;">
+                                You cannot checkout an empty cart!
+                            </td>
+                        </tr>
                         <tbody th:if="${not #lists.isEmpty(cartItems)}">
 
 

@@ -2,8 +2,8 @@ package com.example.ordersystem.service;
 
 import com.example.ordersystem.model.Email;
 import com.example.ordersystem.model.EmailFactory;
+import com.example.ordersystem.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,11 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 
+/**
+ * This class is the service layer for the email system
+ * It provides a method that can be called to send an email for an order with a specific status
+ */
 @Transactional
 @Service
 public class EmailService{
@@ -23,30 +26,37 @@ public class EmailService{
     @Autowired
     private TemplateEngine emailTemplateEngine;
 
-    public void sendEmail(String receiver, String status){
+    public void sendEmail(String status, Order order){
         String sender = "sept.system1@gmail.com";
 
         try{
+            //Create and configure new empty MimeMessage to be sent
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
+            //Set the sender and receiver of the email
             helper.setFrom(sender);
-            helper.setTo(receiver);
+            helper.setTo(order.getAccount().getEmail());
 
+            //Create new thymeleaf context, which later can be filled with variables and sent to the email template
             Context thymeleafContext = new Context();
 
+            //Call email factory to provide a new email object based on the order status
             Email newEmail = EmailFactory.writeEmail(status);
 
             //Set the subject of the email to be sent
             helper.setSubject(newEmail.getSubject());
+            //Set the variables using thymeleaf, which will be passed to the email template
             thymeleafContext.setVariable("orderstatus",newEmail.getOrderStatus());
             thymeleafContext.setVariable("mailContent",newEmail.getEmailContent());
-            thymeleafContext.setVariable("orderNum",1);
-            thymeleafContext.setVariable("orderTotal",999);
+            thymeleafContext.setVariable("orderID",order.getId());
+            thymeleafContext.setVariable("orderTotal",order.getPrice());
 
+            //Process the variables and put them into the email template
             String mailTemplate = emailTemplateEngine.process("email-template.html",thymeleafContext);
             helper.setText(mailTemplate, true);
 
+            //Add image resources to display in the email template
             helper.addInline("logo", newEmail.getResources().get(0));
             helper.addInline("facebook", newEmail.getResources().get(1));
             helper.addInline("twitter", newEmail.getResources().get(2));
@@ -54,10 +64,12 @@ public class EmailService{
             helper.addInline("footer", newEmail.getResources().get(4));
             helper.addInline("status", newEmail.getResources().get(5));
 
+            //Finally, send the email
             mailSender.send(message);
 
         } catch (MessagingException e){
-            System.out.println("Cannot send email to "+receiver);
+            System.out.println("There was an error when sending the email!\n");
+            e.printStackTrace();
         }
 
     }

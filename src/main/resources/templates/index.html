@@ -40,11 +40,10 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__cart">
             <div class="offcanvas__cart__links">
-                <a href="#" class="search-switch"><img src="../../img/icon/search.png" alt=""></a>
                 <a href="#"><img src="../../img/icon/heart.png" alt=""></a>
             </div>
             <div class="offcanvas__cart__item">
-                <a href="#"><img src="../../img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                <a href="/shopping-cart"><img src="../../img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
                 <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
             </div>
         </div>
@@ -111,11 +110,10 @@
                             </div>
                             <div class="header__top__right">
                                 <div class="header__top__right__links">
-                                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
                                     <a href="#"><img src="../../img/icon/heart.png" alt=""></a>
                                 </div>
                                 <div class="header__top__right__cart">
-                                    <a href="#"><img src="../../img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                    <a href="/shopping-cart"><img src="../../img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
                                     <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                                 </div>
                             </div>
@@ -602,14 +600,6 @@
                     <div class="footer__newslatter">
                         <h6>Subscribe</h6>
                         <p>Get latest updates and offers.</p>
-                        <!--TEST EMAIL FUNCTION-->
-                        <a href="/sendmail/created">Send created</a><br>
-                        <a href="/sendmail/confirmed">Send confirmed</a><br>
-                        <a href="/sendmail/processed">Send processed</a><br>
-                        <a href="/sendmail/delivering">Send being delivered</a><br>
-                        <a href="/sendmail/delivered">Send delivered</a><br>
-                        <a href="/sendmail/cancelled">Send cancelled</a><br>
-                        <!--END TEST-->
                         <form action="#">
                             <input type="text" placeholder="Email">
                             <button type="submit"><i class="fa fa-send-o"></i></button>

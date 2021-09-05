@@ -19,12 +19,11 @@ import org.springframework.web.servlet.config.annotation.*;
 import java.util.Properties;
 
 /**
- * Created by CoT on 10/14/17.
+ * This class is used for configuring the application properties and database credentials.
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @Configuration
 @EnableTransactionManagement
-//@EnableWebMvc
 @EnableJpaRepositories("com.example.ordersystem.repository")
 @ComponentScan(basePackages = {"com.example.ordersystem"})
 @EntityScan("com.example.ordersystem.model")
@@ -33,12 +32,6 @@ public class AppConfig implements WebMvcConfigurer {
     public Item item() {
         return new Item();
     }
-
-    /*@Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("/WEB-INF/classes/static/");
-    }*/
 
     @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory(){
@@ -71,7 +64,6 @@ public class AppConfig implements WebMvcConfigurer {
 //        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
 //        dataSource.setUsername("pg");
 //        dataSource.setPassword("1234");
-
 
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(properties);

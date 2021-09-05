@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * This class is used for routing RESTful endpoints to perform CRUD on accounts and other account functionalities such as
+ * user view their order history and admin account management system
+ */
+
 @Controller
 @AllArgsConstructor
 public class RegistrationController {

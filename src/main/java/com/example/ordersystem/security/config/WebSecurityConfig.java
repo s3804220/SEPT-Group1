@@ -1,6 +1,5 @@
 package com.example.ordersystem.security.config;
 
-import com.example.ordersystem.model.AccountRole;
 import com.example.ordersystem.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+/**
+ * This class configures the security layer of the web application
+ * It sets the authority to view specific paths,
+ * and other security measures such as XSS prevention and password encoding
+ */
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
@@ -43,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/checkout/**").authenticated()
                 .antMatchers("/items/**","/item/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/order-history").authenticated()
+                .antMatchers("/order-history/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

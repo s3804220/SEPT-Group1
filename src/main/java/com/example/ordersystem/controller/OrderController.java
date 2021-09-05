@@ -66,6 +66,9 @@ public class OrderController {
         float cartSum = 0;
         int cartQty = 0;
         cartQty = cartList.size();
+        if (cartQty==0){
+            return "redirect:/shopping-cart?empty=true";
+        }
         for (Cart cart : cartList) {
             cartSum += cart.getSmallSum();
         }
@@ -76,14 +79,17 @@ public class OrderController {
     }
     
     @PostMapping("/checkout/add")
-    public String addItemToCart() {
+    public String placeNewOrder() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
         orderService.addOrder(user);
-
+        List<Cart> cartList = cartService.getAllCarts(user);
+        for (Cart cart : cartList){
+            cartService.deleteCart(cart.getId());
+        }
         return "redirect:/shopping-cart";
     }
     

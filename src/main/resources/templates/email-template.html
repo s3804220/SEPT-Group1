@@ -543,7 +543,7 @@
 
                                                 <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
                                                     <p style="font-size: 14px; line-height: 140%;">
-                                                        <strong th:text="${'#'+orderNum}"></strong></p>
+                                                        <strong th:text="${'#'+orderID}"></strong></p>
                                                 </div>
 
                                             </td>
@@ -736,7 +736,7 @@
                                                                     <w:anchorlock/>
                                                                     <center style="color:#FFFFFF;font-family:'Montserrat',sans-serif;">
                                                     <![endif]-->
-                                                    <a href="" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #f08632; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;"
+                                                    <a th:href="@{http://localhost:8080/order-history/order-details/{id}(id=${orderID})}" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #f08632; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;"
                                                        target="_blank">
                                                         <span style="display:block;padding:15px 20px;line-height:120%;">View Order</span>
                                                     </a>
