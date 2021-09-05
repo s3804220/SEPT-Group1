@@ -74,7 +74,7 @@ public class CartController {
      * @return A String which is the processed shopping cart template
      */
     @PostMapping("/shopping-cart/add")
-    public String addItemToCart(@RequestParam("shopId") Long itemId,
+    public String addItemToCart(@RequestParam("sid") Long itemId,
                                 @RequestParam("amount") int amount) {
 
         //Get the user account to update their shopping cart

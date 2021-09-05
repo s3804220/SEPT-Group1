@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,11 +101,14 @@ public class OrderService {
 
     public List<Order> getOrdersByAccountId(Long id) {
         List<Order> accountOrders = new ArrayList<>();
-        for (Order order : getAllOrders()) {
-            if (order.getAccount().getId().equals(id)) {
-                accountOrders.add(order);
+        Iterator<Order> orderIterator = getAllOrders().listIterator();
+        while (orderIterator.hasNext()){
+            Order nextOrder = orderIterator.next();
+            if(nextOrder.getAccount().getId().equals(id)){
+                accountOrders.add(nextOrder);
             }
         }
+
         return accountOrders;
     }
 }

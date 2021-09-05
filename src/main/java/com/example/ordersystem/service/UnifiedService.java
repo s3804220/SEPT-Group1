@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,10 +39,11 @@ public class UnifiedService {
 
             Account user = accountService.getAccountById(userId);
             List<Cart> cartList = cartService.getAllCarts(user);
+            Iterator<Cart> cartIterator = cartList.listIterator();
 
             cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
+            while (cartIterator.hasNext()){
+                cartSum += cartIterator.next().getSmallSum();
             }
         }
         //Send the information as a model to the template for display
