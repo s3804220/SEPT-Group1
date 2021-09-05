@@ -17,6 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * This class is used for routing cart items and CRUD from the list of cart items
+ */
+
+
 @Controller
 public class CartController {
 
@@ -60,6 +65,7 @@ public class CartController {
         return "shopping-cart";
     }
 
+// Add an item to cart
     @PostMapping("/shopping-cart/add")
     public String addItemToCart(@RequestParam("shopId") Long itemId,
                                 @RequestParam("amount") int amount) {

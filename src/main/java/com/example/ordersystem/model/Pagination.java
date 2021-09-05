@@ -1,5 +1,10 @@
 package com.example.ordersystem.model;
 
+/**
+ * This class is used for creating pagination buttons for the list of items on Shop page
+ */
+
+
 public class Pagination {
 
     private String sortCondition;
