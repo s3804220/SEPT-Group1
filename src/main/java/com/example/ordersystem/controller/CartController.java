@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,10 +56,11 @@ public class CartController {
 
         Account user = accountService.getAccountById(userId);
         List<Cart> cartList = cartService.getAllCarts(user);
+        Iterator<Cart> cartIterator = cartList.listIterator();
         float cartSum = 0;
         int cartQty = cartList.size();
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
+        while(cartIterator.hasNext()){
+            cartSum += cartIterator.next().getSmallSum();
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);

@@ -1,6 +1,7 @@
 package com.example.ordersystem.controller;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -53,23 +54,33 @@ public class OrderController {
     
     @GetMapping("/checkout")
     public String checkout(ModelMap model) throws Exception {
+	    //Get the Account of the currently logged in user
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
 
         Account user = accountService.getAccountById(userId);
+        //Get the list of all carts belonging to the current user
         List<Cart> cartList = cartService.getAllCarts(user);
+        //Create an iterator to iterate through the cart list
+        Iterator<Cart> cartIterator = cartList.listIterator();
+
+        //Send the cart list to the frontend template for Thymeleaf to process
         model.addAttribute("cartItems", cartList);
 
         float cartSum = 0;
         int cartQty = 0;
         cartQty = cartList.size();
         if (cartQty==0){
+            //If the cart is empty, prevent the user from checking out
             return "redirect:/shopping-cart?empty=true";
         }
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
+        while (cartIterator.hasNext()){
+            //Add the subtotal of the cart to the sum amount
+            cartSum += cartIterator.next().getSmallSum();
         }
+
+        //Send the cart sum and qty to the frontend template for Thymeleaf to process
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
 
@@ -78,15 +89,20 @@ public class OrderController {
     
     @PostMapping("/checkout/add")
     public String placeNewOrder() {
-
+	    //Get the currently logged in user Account
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account loggedInAcc = (Account)auth.getPrincipal();
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
+        //Create a new order for that user
         orderService.addOrder(user);
+        //Get the list of all carts belonging to that user
         List<Cart> cartList = cartService.getAllCarts(user);
-        for (Cart cart : cartList){
-            cartService.deleteCart(cart.getId());
+        //Create an iterator to iterate through the cart list
+        Iterator<Cart> cartIterator = cartList.listIterator();
+        while (cartIterator.hasNext()){
+            //Empty the cart list after the user checked out by deleting the carts
+            cartService.deleteCart(cartIterator.next().getId());
         }
         return "redirect:/shopping-cart";
     }

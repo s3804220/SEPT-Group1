@@ -170,20 +170,20 @@ public class ItemServiceTest {
 
     @Test
     public void findNumOfSearchedItemsTests() {
-        // Add more items
+        // Add more items before conducting test
         Item newItem2 = new Item("Pie", "Yummy pie", "food.png|image.jpg", new BigDecimal("7"), "Pie", true);
         Item newItem3 = new Item("Hot chocolate cake", "Sweet and dark", "choco.png", new BigDecimal("12"), "Cake", true);
         itemService.saveItem(newItem2);
         itemService.saveItem(newItem3);
 
 
-        // Conditions
+        // Set filter and search conditions to test
         String filterField = "All";
         String searchField = "hot";
+        //Use the filter and search method to get the number of items matching the conditions
         int numOfItems = itemService.findNumOfSearchedItems(filterField, searchField);
         List<Item> itemListForTesting = itemService.getAllItems();
         int numOfItemsInItemList = 0;
-
 
         for (Item item : itemListForTesting) {
             if (item.getItemName().equalsIgnoreCase(searchField)) numOfItemsInItemList++;
@@ -199,22 +199,24 @@ public class ItemServiceTest {
             }
         }
 
+        //Assert the number of items returned matches the expected number
         assertEquals(2, numOfItems);
     }
 
 
     @Test
     public void findListPagingTests() {
-        // Add more items
+        // Add more items before conducting test
         Item newItem2 = new Item("Pie", "Yummy pie", "food.png|image.jpg", new BigDecimal("7"), "Pie", true);
         Item newItem3 = new Item("Hot chocolate cake", "Sweet and dark", "choco.png", new BigDecimal("12"), "Cake", true);
         itemService.saveItem(newItem2);
         itemService.saveItem(newItem3);
 
-        // Conditions
+        // Set filter, sort and search conditions for testing
         String filterField = "All";
         String sortField = "priceHTL";
         String searchField = "hot";
+        //Get the item list based on the conditions above
         List<Item> itemList = itemService.findListPaging(0, 12, filterField, sortField, searchField);
         List<Item> fullItemListForTesting = itemService.getAllItems();
         List<Item> tempItemListForTesting = new ArrayList<>();
@@ -258,8 +260,7 @@ public class ItemServiceTest {
             itemListForTesting.add(tempItemListForTesting.get(loopSize));
             loopSize++;
         }
-
-
+        //Assert that the items retrieved have the correct information
         assertEquals(itemListForTesting.get(0).getId(), itemList.get(0).getId());
         assertEquals(itemListForTesting.get(0).getItemName(), itemList.get(0).getItemName());
         assertEquals(itemListForTesting.size(), itemList.size());

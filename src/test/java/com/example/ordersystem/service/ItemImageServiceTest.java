@@ -52,10 +52,14 @@ public class ItemImageServiceTest {
         Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"),"Hotdog",true);
         Long id = itemService.saveItem(newItem);
         try{
+            //Create a mock image file from a byte array
             byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\", File.separator)));
             MockMultipartFile file = new MockMultipartFile("file", "honey-cake.jpg", "multipart/form-data", byteArray);
+            //Save the image into database
             itemImageService.saveItemImage(id,file);
+            //Test that the image has been saved by checking the size of the image list
             assertEquals(1,itemImageRepository.findAll().size());
+            //Check that the ID of the item matches the expected value
             assertEquals(id, itemImageRepository.findAll().get(0).getItem().getId());
         }
         catch(IOException e){
@@ -69,11 +73,15 @@ public class ItemImageServiceTest {
         Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"),"Hotdog",true);
         Long id = itemService.saveItem(newItem);
         try{
+            //Create a mock image file from a byte array
             byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\", File.separator)));
             MockMultipartFile file = new MockMultipartFile("file", "honey-cake.jpg", "multipart/form-data", byteArray);
+            //Save the image into database
             itemImageService.saveItemImage(id,file);
+            //Get the ID of the image to get
             Long imageId = itemImageRepository.findAll().get(0).getId();
             ItemImage itemImage = itemImageService.getItemImageById(imageId);
+            //Check that the getID method returns the correct image
             assertEquals(id,itemImage.getItem().getId());
         }
         catch(IOException e){
@@ -87,13 +95,18 @@ public class ItemImageServiceTest {
         Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"),"Hotdog",true);
         Long id = itemService.saveItem(newItem);
         try{
+            //Create a mock image file from a byte array
             byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\", File.separator)));
             MockMultipartFile file = new MockMultipartFile("file", "honey-cake.jpg", "multipart/form-data", byteArray);
+            //Save the image into database
             itemImageService.saveItemImage(id,file);
+            //Create another mock image file and save it into database
             file = new MockMultipartFile("file", "honey-cake2.jpg", "multipart/form-data", byteArray);
             itemImageService.saveItemImage(id,file);
 
+            //Test that the image list can be correctly retrieved by checking the list size
             assertEquals(2,itemImageService.getAllItemImages().size());
+            //Check the ID of each item in the list to match the expected ID value
             assertEquals(id,itemImageService.getAllItemImages().get(0).getItem().getId());
             assertEquals(id,itemImageService.getAllItemImages().get(1).getItem().getId());
         }
@@ -108,17 +121,23 @@ public class ItemImageServiceTest {
         Item newItem = new Item("Hot dog","Very hot","dog.jpg",new BigDecimal("3.99"),"Hotdog",true);
         Long id = itemService.saveItem(newItem);
         try{
+            //Create a mock image file from a byte array
             byte[] byteArray = Files.readAllBytes(Paths.get("src\\test\\resources\\Honeycomb.jpg".replace("\\", File.separator)));
             MockMultipartFile file = new MockMultipartFile("file", "honey-cake.jpg", "multipart/form-data", byteArray);
+            //Save the image into database
             itemImageService.saveItemImage(id,file);
+            //Create another mock image file and save it into database
             file = new MockMultipartFile("file", "honey-cake2.jpg", "multipart/form-data", byteArray);
             itemImageService.saveItemImage(id,file);
 
+            //Check that both images has been saved by checking the image list size
             assertEquals(2,itemImageService.getAllItemImages().size());
 
+            //Delete one image from the database, then check the list size
             itemImageService.deleteItemImage(itemImageService.getAllItemImages().get(0));
             assertEquals(1,itemImageService.getAllItemImages().size());
 
+            //Delete another image from the database, then check the list size
             itemImageService.deleteItemImage(itemImageService.getAllItemImages().get(0));
             assertEquals(0,itemImageService.getAllItemImages().size());
         }
