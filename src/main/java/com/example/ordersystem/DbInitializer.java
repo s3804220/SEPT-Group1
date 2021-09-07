@@ -49,6 +49,7 @@ public class DbInitializer implements CommandLineRunner {
         //Initialize user account
         Account user1 = new Account("Jeffrey", "Babble", "456 Flower Lane", "0903682439", "user@gmail.com", "password", AccountRole.USER);
         accountService.signUpAccount(user1);
+
         //Initialize another account with a real email for testing
         Account user2 = new Account("Sarah", "Lenon", "789 Queen Road", "0908142756", "cakeorder.user@gmail.com", "123", AccountRole.ADMIN);
         accountService.signUpAccount(user2);

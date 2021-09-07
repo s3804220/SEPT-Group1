@@ -26,6 +26,11 @@ public class EmailService{
     @Autowired
     private TemplateEngine emailTemplateEngine;
 
+    /**
+     * Method to send an email with the order status to the user email who owns that order
+     * @param status - The order status to be sent
+     * @param order - The Order object for which the email will be generated
+     */
     public void sendEmail(String status, Order order){
         String sender = "sept.system1@gmail.com";
 

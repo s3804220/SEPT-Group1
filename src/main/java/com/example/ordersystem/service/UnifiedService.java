@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,7 +24,10 @@ public class UnifiedService {
     @Autowired
     private CartService cartService;
 
-    //Function to get the current cart information for the currently logged in user
+    /**
+     * Method to get the current cart information for the currently logged in user
+     * @param model - The ModelMap which contains the information to pass to the frontend through Thymeleaf
+     */
     public void getCartInfo(ModelMap model){
         float cartSum = 0;
         int cartQty = 0;
@@ -35,10 +39,11 @@ public class UnifiedService {
 
             Account user = accountService.getAccountById(userId);
             List<Cart> cartList = cartService.getAllCarts(user);
+            Iterator<Cart> cartIterator = cartList.listIterator();
 
             cartQty = cartList.size();
-            for (Cart cart : cartList) {
-                cartSum += cart.getSmallSum();
+            while (cartIterator.hasNext()){
+                cartSum += cartIterator.next().getSmallSum();
             }
         }
         //Send the information as a model to the template for display

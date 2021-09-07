@@ -57,13 +57,11 @@
         <ul>
             <li>USD <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li>EUR</li>
                     <li>USD</li>
                 </ul>
             </li>
             <li>ENG <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li>Spanish</li>
                     <li>ENG</li>
                 </ul>
             </li>
@@ -88,13 +86,11 @@
                             <ul>
                                 <li>USD <span class="arrow_carrot-down"></span>
                                     <ul>
-                                        <li>EUR</li>
                                         <li>USD</li>
                                     </ul>
                                 </li>
                                 <li>ENG <span class="arrow_carrot-down"></span>
                                     <ul>
-                                        <li>Spanish</li>
                                         <li>ENG</li>
                                     </ul>
                                 </li>
@@ -171,16 +167,28 @@
 </div>
 <!-- Breadcrumb End -->
 
-<!-- Wishlist Section Begin -->
+<!-- Item list Section Begin -->
 <section class="wishlist spad">
     <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-7">
+                <div class="shop__option__search">
+                    <form action="#">
+                        <input type="text" placeholder="Search" id="list-search-input">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br><br>
         <div class="row">
             <div class="col-lg-12">
                 <div class="wishlist__cart__table">
                     <table>
-                        <thead>
+                        <thead id="itemlist-tablehead">
                         <tr>
                             <th>Item</th>
+                            <th>Category</th>
                             <th>Unit Price</th>
                             <th>Status</th>
                             <th></th>
@@ -188,16 +196,17 @@
                         </tr>
                         </thead>
                         <tbody id="item-list-rows" th:each="item : ${itemList}">
-                        <tr>
+                        <tr class="item-list-row">
                             <td class="product__cart__item">
                                 <div class="product__cart__item__pic">
                                     <img th:src="@{/itemimage/{image_id}(image_id=${item.itemimages[0].id})}"
                                          alt="" style="width: 100px;height: 100px">
                                 </div>
                                 <div class="product__cart__item__text item-name-text-column">
-                                    <h6 th:text="${item.itemName}"></h6>
+                                    <a class="itemlist-links" th:href="@{/shop-details(id=${item.id})}"><h6 class="itemlist-itemname" th:text="${item.itemName}"></h6></a>
                                 </div>
                             </td>
+                            <td class="cart__price" th:text="${item.category}"></td>
                             <td class="cart__price" th:text="${'$ ' + item.itemPrice}"></td>
                             <td class="cart__stock stock-column" th:if="${item.availability}" style="color: #1e7e34">Available<br>
                                 <a th:href="@{/items/setavailability/{id}(id=${item.id})}">
@@ -207,11 +216,11 @@
                                 <a th:href="@{/items/setavailability/{id}(id=${item.id})}">
                                     <button class="primary-btn available-button">Make<br>available</button>
                                 </a></td>
-                            <td class="cart__btn"><a th:href="@{/item-form(id=${item.id})}">
+                            <td class="cart__btn" style="margin-left: 5px;"><a th:href="@{/item-form(id=${item.id})}">
                                 <button class="primary-btn">Edit</button>
                             </a></td>
                             <td class="cart__close"><i class="bi bi-x-circle-fill delete-button"
-                                                       style="color: #e60000; font-size: 2em; margin-left: -50px; cursor: pointer;"
+                                                       style="color: #e60000; font-size: 2em; margin-left: 5px; cursor: pointer;"
                                                        th:attr="data-itemid=${item.id}"></i></td>
                         </tr>
                         </tbody>
@@ -221,7 +230,7 @@
         </div>
     </div>
 </section>
-<!-- Wishlist Section End -->
+<!-- Item list Section End -->
 
 <!-- Footer Section Begin -->
 <footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
@@ -270,7 +279,7 @@
                 <div class="col-lg-7">
                     <p class="copyright__text text-white">
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        Copyright &copy;2021
                         All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
                         by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -313,6 +322,7 @@
 <script src="js/jquery.nicescroll.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/item-list.js"></script>
+<script src="js/list-search.js"></script>
 </body>
 
 </html>

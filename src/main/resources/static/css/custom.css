@@ -93,6 +93,14 @@
 .unavailable-button {
     background-color: #a20e0e;
 }
+a.itemlist-links {
+    text-decoration: underline;
+}
+a.itemlist-links:hover{
+    color: #f08632;
+    text-decoration: none;
+}
+
 /*Style number input field*/
 /* Chrome, Safari, Edge, Opera */
 .quantity-input-field::-webkit-outer-spin-button,

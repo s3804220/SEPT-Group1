@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,10 +56,11 @@ public class CartController {
 
         Account user = accountService.getAccountById(userId);
         List<Cart> cartList = cartService.getAllCarts(user);
+        Iterator<Cart> cartIterator = cartList.listIterator();
         float cartSum = 0;
         int cartQty = cartList.size();
-        for (Cart cart : cartList) {
-            cartSum += cart.getSmallSum();
+        while(cartIterator.hasNext()){
+            cartSum += cartIterator.next().getSmallSum();
         }
         model.addAttribute("cartSum",cartSum);
         model.addAttribute("cartQty",cartQty);
@@ -74,7 +76,7 @@ public class CartController {
      * @return A String which is the processed shopping cart template
      */
     @PostMapping("/shopping-cart/add")
-    public String addItemToCart(@RequestParam("shopId") Long itemId,
+    public String addItemToCart(@RequestParam("sid") Long itemId,
                                 @RequestParam("amount") int amount) {
 
         //Get the user account to update their shopping cart
@@ -107,7 +109,7 @@ public class CartController {
     }
 
     /**
-     * Mapping to update the quantity of a specific item in the cart
+     * Mapping to update the quantity and subtotal price of a specific item in the cart
      * @param itemId - The ID of the item to update
      * @param amount - The quantity of the item to update
      * @return A String which is the processed shopping cart template
@@ -122,6 +124,7 @@ public class CartController {
         Long userId = loggedInAcc.getId();
         Account user = accountService.getAccountById(userId);
 
+        //Call method to update the quantity according to the amount provided, and the subtotal price of that item
         int smallSum = cartService.updateAmount(amount, itemId, user);
 
         return "redirect:/shopping-cart";

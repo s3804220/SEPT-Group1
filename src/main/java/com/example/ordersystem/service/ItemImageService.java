@@ -23,7 +23,11 @@ public class ItemImageService {
     @Autowired
     private ItemRepository itemRepository;
 
-    //Function to save the item image as a new record in the table
+    /**
+     * Method to save the item image as a new record in the database table
+     * @param itemId - The ID of the item that is linked to the image
+     * @param file - The image file which will be saved
+     */
     public void saveItemImage(Long itemId, MultipartFile file) {
 
         try {
@@ -50,17 +54,27 @@ public class ItemImageService {
         }
     }
 
-    //Function to get an item image by ID
+    /**
+     * Method to get an item image by ID
+     * @param id - The ID of the item image to get
+     * @return The ItemImage object to get
+     */
     public ItemImage getItemImageById(Long id){
         return itemImageRepository.findById(id).get();
     }
 
-    //Function to get all item images available in the database
+    /**
+     * Method to get all item images available in the database
+     * @return A List of all item images found
+     */
     public List<ItemImage> getAllItemImages(){
         return itemImageRepository.findAll();
     }
 
-    //Function to delete a specific item image
+    /**
+     * Method to delete a specific item image
+     * @param itemImage - The ItemImage object to delete
+     */
     public void deleteItemImage(ItemImage itemImage){
         itemImageRepository.delete(itemImage);
     }

@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * This class is used for routing RESTful endpoints to perform CRUD on item images.
@@ -55,10 +52,16 @@ public class ItemImageController {
      */
     @DeleteMapping("/item/{id}/image")
     public void deleteItemImage(@PathVariable String id){
+        //Get a list of all item images
         List<ItemImage> itemImageList = itemImageService.getAllItemImages();
-        for (ItemImage itemImage: itemImageList){
-            if(Objects.equals(itemImage.getItem().getId(), Long.valueOf(id))){
-                itemImageService.deleteItemImage(itemImage);
+        //Create iterator to iterate through the image list
+        Iterator<ItemImage> imageIterator = itemImageList.listIterator();
+        while (imageIterator.hasNext()){
+            //Get the next item image
+            ItemImage nextImage = imageIterator.next();
+            //Delete it if its item ID matches the ID of the item to delete
+            if(Objects.equals(nextImage.getItem().getId(), Long.valueOf(id))){
+                itemImageService.deleteItemImage(nextImage);
             }
         }
     }

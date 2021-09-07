@@ -16,7 +16,6 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-//    int sumPrice(String userId);
     List<Cart> findByAccount(Account account);
     Cart findByAccountAndItem(Account account, Item item);
 

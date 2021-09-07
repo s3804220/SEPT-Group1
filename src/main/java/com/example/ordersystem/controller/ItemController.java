@@ -40,7 +40,7 @@ public class ItemController {
                           @RequestParam(defaultValue = "1") int page,
                           @RequestParam(name="sortField", defaultValue = "id") String sortField,
                           @RequestParam(name="filterField", defaultValue = "All") String filterField ,
-                          @RequestParam(name="search-input", defaultValue = "") String searchField
+                          @RequestParam(name="searchField", defaultValue = "") String searchField
     ) {
 
 
@@ -63,12 +63,15 @@ public class ItemController {
 
         // Get all items
         List<Item> fullItemList = itemService.getAllItems();
+        //Create iterator to iterate through item list
+        Iterator<Item> itemIterator = fullItemList.listIterator();
 
         // Get a list of categories of items
         List<String> categoryListwithDuplicates = new ArrayList<>();
         categoryListwithDuplicates.add("All");
-        for (Item item : fullItemList) {
-            categoryListwithDuplicates.add(item.getCategory());
+        //Use iterator to iterate through the item list and add all categories
+        while(itemIterator.hasNext()){
+            categoryListwithDuplicates.add(itemIterator.next().getCategory());
         }
         List<String> categoryList = new ArrayList<String>(new LinkedHashSet<>(categoryListwithDuplicates));
 
