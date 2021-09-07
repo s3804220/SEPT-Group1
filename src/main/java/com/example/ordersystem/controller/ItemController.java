@@ -40,7 +40,7 @@ public class ItemController {
                           @RequestParam(defaultValue = "1") int page,
                           @RequestParam(name="sortField", defaultValue = "id") String sortField,
                           @RequestParam(name="filterField", defaultValue = "All") String filterField ,
-                          @RequestParam(name="search-input", defaultValue = "") String searchField
+                          @RequestParam(name="searchField", defaultValue = "") String searchField
     ) {
 
 

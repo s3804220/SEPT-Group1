@@ -181,7 +181,7 @@
                                 <option th:each="category : ${categoryList}"
                                         th:text="${category}" th:value="${category}"></option>
                             </select>
-                            <input id="search-input" name="search-input" placeholder="Search" th:value="${searchField}"
+                            <input id="search-input" name="searchField" placeholder="Search" th:value="${searchField}"
                                    type="text">
 
                             <!-- Hidden input -->
@@ -198,7 +198,7 @@
 
                             <!-- Hidden input -->
                             <input name="filterField" th:value="${filterField}" type="hidden">
-                            <input name="search-input" th:value="${searchField}" type="hidden">
+                            <input name="searchField" th:value="${searchField}" type="hidden">
 
                             <select id="sortField" name="sortField">
                                 <option value="id">Default sorting</option>
