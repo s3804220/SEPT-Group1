@@ -52,6 +52,12 @@ public class OrderController {
         this.itemService = itemService;
     }
     
+    /**
+     * Mapping to display checkout form when path is accessed
+     * @param model - The ModelMap is used to parse objects from controller to HTML using Thymeleaf
+     * @return A String which is the HTML checkout form template
+     * @throws Exception
+     */
     @GetMapping("/checkout")
     public String checkout(ModelMap model) throws Exception {
 	    //Get the Account of the currently logged in user
@@ -87,6 +93,10 @@ public class OrderController {
         return "checkout";
     }
     
+    /**
+     * Mapping to add an order to database
+     * @return A String which redirects back to the shopping cart
+     */
     @PostMapping("/checkout/add")
     public String placeNewOrder() {
 	    //Get the currently logged in user Account
@@ -107,6 +117,11 @@ public class OrderController {
         return "redirect:/shopping-cart";
     }
     
+    /**
+     * Mapping to display full order list of all customers when path is accessed
+     * @param model - The ModelMap is used to parse objects from controller to HTML using Thymeleaf
+     * @return A String which is the HTML orderlist form template
+     */
     @RequestMapping(value="/orderlist", method=RequestMethod.GET)
     public String showOrderList(ModelMap model){
         List<Order> orderList = orderService.getAllOrders();
@@ -115,6 +130,12 @@ public class OrderController {
         return "orderlist";
     }
     
+    /**
+     * Mapping to display order details when path is accessed
+     * @param model - The ModelMap is used to parse objects from controller to HTML using Thymeleaf
+     * @param id - the ID of the order to be displayed
+     * @return - A string which is the HTML of the processed order-details template
+     */
     @RequestMapping(value="orderlist/order-details/{id}", method=RequestMethod.GET)
     public String showOrderDetail(ModelMap model, @PathVariable Long id){
         Order order = orderService.getOrderById(id).get();
@@ -137,30 +158,55 @@ public class OrderController {
         return "order-details";
     }
     	
+    /**
+     * Mapping to change an order status to "Confirmed"
+     * @param id - ID of the order to be processed
+     * @return a String which redirects back to the orderlist
+     */
     @RequestMapping(value="orderlist/confirm-order/{id}", method= RequestMethod.GET)
     public String confirmorder(@PathVariable Long id){
         orderService.confirmOrder(id);
         return "redirect:/orderlist";
     }
-
+    
+    /**
+     * Mapping to change an order status to "Cancelled"
+     * @param id - ID of the order to be processed
+     * @return a String which redirects back to the orderlist
+     */
     @RequestMapping(value="orderlist/cancel-order/{id}", method= RequestMethod.GET)
     public String unconfirmOrder(@PathVariable Long id){
         orderService.cancelOrder(id);
         return "redirect:/orderlist";
     }
     
+    /**
+     * Mapping to change an order status to "Processed"
+     * @param id - ID of the order to be processed
+     * @return a String which redirects back to the orderlist
+     */
     @RequestMapping(value="orderlist/process-order/{id}", method= RequestMethod.GET)
     public String processedOrder(@PathVariable Long id){
         orderService.processedOrder(id);
         return "redirect:/orderlist";
     }
     
+    /**
+     * Mapping to change an order status to "Being Delivered"
+     * @param id - ID of the order to be processed
+     * @return a String which redirects back to the orderlist
+     */
     @RequestMapping(value="orderlist/beingDelivered-order/{id}", method= RequestMethod.GET)
     public String beingDeliveredOrder(@PathVariable Long id){
         orderService.beingDeliveredOrder(id);
         return "redirect:/orderlist";
     }
     
+    /**
+     * Mapping to change an order status to "Delivered"
+     * @param id - ID of the order to be processed
+     * @return a String which redirects back to the orderlist
+     */
     @RequestMapping(value="orderlist/deliver-order/{id}", method= RequestMethod.GET)
     public String deliveredOrder(@PathVariable Long id){
         orderService.deliveredOrder(id);
