@@ -5,6 +5,7 @@ import com.example.ordersystem.model.Order;
 import com.example.ordersystem.service.AccountService;
 import com.example.ordersystem.service.ItemService;
 import com.example.ordersystem.service.OrderService;
+import com.example.ordersystem.service.UnifiedService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +28,7 @@ public class AccountDetailsController {
     private AccountService accountService;
     private OrderService orderService;
     private ItemService itemService;
+    private UnifiedService unifiedService;
 
     /**
      * Mapping for Admin to view a specific user's account details and order history
@@ -41,6 +43,7 @@ public class AccountDetailsController {
         List<Order> userOrdersList = orderService.getOrdersByAccountId(id);
         userOrdersList.sort(Comparator.comparing(Order::getId)); // sort order by id number (low to high id number)
         model.addAttribute("orderList", userOrdersList);
+        unifiedService.getCartInfo(model);
         return "account-details";
     }
 
@@ -70,6 +73,7 @@ public class AccountDetailsController {
         }
         model.addAttribute("itemInfo", itemInfo);
         model.addAttribute("totalQuantity", totalQuantity);
+        unifiedService.getCartInfo(model);
         return "admin_view_order_details";
     }
 }

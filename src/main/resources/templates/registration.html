@@ -10,6 +10,9 @@
 <body>
 
 <div class="container h-100">
+        <br>
+        <p>Already have an account? Login <a href="/login" class="item-link">here</a>.</p>
+        <hr>
                 <div class="row h-100 justify-content-center align-items-center">
                         <form method="POST" th:object="${account}" th:action="@{/registration}">
                                 <h2 class="form-signin-heading">Please register</h2>
@@ -43,6 +46,7 @@
                                 <button type="submit" class="btn btn-lg btn-primary btn-block">Sign Up</button>
                         </form>
                 </div>
+        <hr><p>Return to index page <a href="/" class="item-link">here</a>.</p>
         </div>
 </body>
 </html>

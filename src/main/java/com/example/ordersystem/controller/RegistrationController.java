@@ -165,6 +165,7 @@ public class RegistrationController {
         List<Account> accountList = accountService.getAllAccounts();
         accountList.sort(Comparator.comparing(Account::getId)); // sort account list by id number (low to high id number)
         model.addAttribute("accountList",accountList);
+        unifiedService.getCartInfo(model);
         return "account_list";
     }
 
@@ -233,9 +234,10 @@ public class RegistrationController {
                 }
                 model.addAttribute("itemInfo",itemInfo);
                 model.addAttribute("order", order);
+                unifiedService.getCartInfo(model);
                 return "order_history_view_order_details";
             }
         }
-        return "access-denied";
+        return "redirect:/access-denied";
     }
 }
