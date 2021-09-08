@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.example.ordersystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.ordersystem.model.Account;
 import com.example.ordersystem.model.Cart;
 import com.example.ordersystem.model.Order;
-import com.example.ordersystem.service.AccountService;
-import com.example.ordersystem.service.CartService;
-import com.example.ordersystem.service.OrderService;
-import com.example.ordersystem.service.ItemService;
 
 @Controller
 public class OrderController {
@@ -31,6 +28,7 @@ public class OrderController {
 	private AccountService accountService;
 	private CartService cartService;
 	private ItemService itemService;
+	private UnifiedService unifiedService;
 	
 	@Autowired
     public void setOrderService(OrderService orderService) {
@@ -50,6 +48,11 @@ public class OrderController {
     @Autowired
     public void setItemService(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @Autowired
+    public void setUnifiedService(UnifiedService unifiedService){
+	    this.unifiedService = unifiedService;
     }
     
     /**
@@ -127,6 +130,7 @@ public class OrderController {
         List<Order> orderList = orderService.getAllOrders();
         orderList.sort(Comparator.comparing(Order::getId)); // sort order list by id number (low to high id number)
         model.addAttribute("orderList",orderList);
+        unifiedService.getCartInfo(model);
         return "orderlist";
     }
     
@@ -155,6 +159,7 @@ public class OrderController {
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("order", order);
         model.addAttribute("account", accountOfOrder);
+        unifiedService.getCartInfo(model);
         return "order-details";
     }
     	

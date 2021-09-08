@@ -38,11 +38,15 @@ public class UnifiedService {
             Long userId = loggedInAcc.getId();
 
             Account user = accountService.getAccountById(userId);
+            //Get list of all carts belonging to the current user
             List<Cart> cartList = cartService.getAllCarts(user);
+            //Create an iterator to iterate through the cart
             Iterator<Cart> cartIterator = cartList.listIterator();
 
+            //Set the cart quantity equal to the number of unique items in the cart
             cartQty = cartList.size();
             while (cartIterator.hasNext()){
+                //Get the subtotal price of each item
                 cartSum += cartIterator.next().getSmallSum();
             }
         }

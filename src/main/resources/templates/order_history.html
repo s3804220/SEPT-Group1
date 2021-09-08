@@ -154,13 +154,13 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__text">
-                    <h2>Order History</h2>
+                    <h2>Your Order History</h2>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
                     <a href="./">Home</a>
-                    <span>Order History</span>
+                    <span>Your Order History</span>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
                     <td th:text="${order.getId()}"></td>
                     <td th:text="${order.getPrice()}"></td>
                     <td th:text="${order.getStatus()}"></td>
-                    <td><a th:href="@{/order-history/order-details/{id}(id=${order.getId()})}">View Details</a></td>
+                    <td><a class="details-table-link" th:href="@{/order-history/order-details/{id}(id=${order.getId()})}">View Details</a></td>
                 </tr>
             </tbody>
         </table>
