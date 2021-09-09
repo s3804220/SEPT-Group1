@@ -86,6 +86,11 @@ public class ItemController {
         // Get pagination for item list when Filter is used
         pagination = new Pagination(itemService.findNumOfSearchedItems(filterField, searchField)+1, page);
 
+        //If user try to get a page larger than the highest page, reset page to 1
+        if(page>pagination.getLastPage()){
+            pagination = new Pagination(itemService.findNumOfSearchedItems(filterField, searchField)+1, 1);
+        }
+
         //Add the fields and item list to the model so Thymeleaf can process it on the frontend template
         model.addAttribute("filterField", filterField);
         model.addAttribute("searchField", searchField);
