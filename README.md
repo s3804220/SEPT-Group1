@@ -1,6 +1,6 @@
 # COSC 2101
 # Food Ordering System
-
+[![Build Status](https://app.travis-ci.com/s3639869/SEPT-Group1.svg?branch=master)](https://app.travis-ci.com/s3639869/SEPT-Group1)
 ### Group 1
 > * Vo An Huy
 > * Doan Nguyen My Hanh
@@ -70,9 +70,9 @@ Account information and functionalities can be accessed through the drop-down se
 > * Password: 123
 
 *NOTE: The second ADMIN account is the only account with a real, working email. If you want to test the email notifications (when placing an order, or whenever the order status is changed), please use that account.
-You can also register a new account with your own email (a temporary mail, GMail, or any email you have access to), and the notifications for the orders will be sent to your own email.*
+If you do not want to use our email, you can register a new account with your own email (a temporary mail, GMail, or any email you have access to), and the notifications for the orders will be sent to your own email.*
 
-`Google credentials for the email - you can login to GMail and check the mailbox to see if emails are sent:`
+`Google credentials for our email - you can login to GMail and check the mailbox to see if emails are sent:`
 > * Email: cakeorder.user@gmail.com
 > * Password: G1@cOsc21O1&
 
