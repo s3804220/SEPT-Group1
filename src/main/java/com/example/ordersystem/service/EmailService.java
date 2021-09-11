@@ -50,7 +50,7 @@ public class EmailService{
             Email newEmail = EmailFactory.writeEmail(status);
 
             //Set the subject of the email to be sent
-            helper.setSubject(newEmail.getSubject());
+            helper.setSubject(newEmail.getSubject().replace("order","order #"+order.getId()));
             //Set the variables using thymeleaf, which will be passed to the email template
             thymeleafContext.setVariable("orderstatus",newEmail.getOrderStatus());
             thymeleafContext.setVariable("mailContent",newEmail.getEmailContent());

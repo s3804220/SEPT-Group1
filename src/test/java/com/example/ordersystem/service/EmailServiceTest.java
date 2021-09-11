@@ -31,6 +31,7 @@ public class EmailServiceTest {
         Account testAcc = new Account("John", "Doe", "123 Tech Street", "0708563876", "test.user@gmail.com", "123456", AccountRole.USER);
         //Create new order
         Order order = new Order();
+        order.setId(11L);
         order.setAccount(testAcc);
         try {
             greenMail.start();
@@ -45,8 +46,8 @@ public class EmailServiceTest {
             //Assert that two emails were sent
             assertEquals(2, messages.length);
             //Assert that the subjects match what is expected
-            assertEquals("Your order has been confirmed!", subject1);
-            assertEquals("Your order has been cancelled.", subject2);
+            assertEquals("Your order #11 has been confirmed!", subject1);
+            assertEquals("Your order #11 has been cancelled.", subject2);
             //Assert that the recipients of the emails are correct
             assertEquals("test.user@gmail.com", messages[0].getAllRecipients()[0].toString());
             assertEquals("test.user@gmail.com", messages[1].getAllRecipients()[0].toString());
