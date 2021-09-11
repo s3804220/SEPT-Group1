@@ -10,32 +10,43 @@
 <body>
 
 <div class="container h-100">
+        <br>
+        <p>Already have an account? Login <a href="/login" class="item-link">here</a>.</p>
+        <hr>
                 <div class="row h-100 justify-content-center align-items-center">
                         <form method="POST" th:object="${account}" th:action="@{/registration}">
                                 <h2 class="form-signin-heading">Please register</h2>
+                                <p th:if="${errorMessage}"  th:text="${errorMessage}" style="color: red">Error</p>
 
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="${account.firstName}" id="firstName" placeholder="First Name">
+                                        <label for="firstName">First Name:</label>
+                                        <input class="form-control" type="text" th:field="*{firstName}" id="firstName" placeholder="First Name" required>
                                 </div>
 <!--                                <br/><br/>-->
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="${account.lastName}" id="lastName" placeholder="Last Name">
+                                        <label for="lastName">Last Name:</label>
+                                        <input class="form-control" type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="${account.accAddress}" id="accAddress" placeholder="Address">
+                                        <label for="accAddress">Address:</label>
+                                        <input class="form-control" type="text" th:field="*{accAddress}" id="accAddress" placeholder="Address" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="${account.phone}" id="phone" placeholder="Phone Number">
+                                        <label for="phone">Phone Number:</label>
+                                        <input class="form-control" type="text" th:field="*{phone}" id="phone" placeholder="Phone Number" pattern="(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}" title="Please enter a valid Vietnamese phone number" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="*{email}" id="email" placeholder="Email">
+                                        <label for="email">Email:</label>
+                                        <input class="form-control" type="text" th:field="*{email}" id="email" placeholder="Email" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" title="Please enter a valid email" required>
                                 </div>
                                 <div class="form-group">
-                                        <input class="form-control" type="text" th:field="*{password}" id="password" placeholder="Password">
+                                        <label for="password">Password:</label>
+                                        <input class="form-control" type="text" th:field="*{password}" id="password" placeholder="Password" required>
                                 </div>
                                 <button type="submit" class="btn btn-lg btn-primary btn-block">Sign Up</button>
                         </form>
                 </div>
+        <hr><p>Return to index page <a href="/" class="item-link">here</a>.</p>
         </div>
 </body>
 </html>

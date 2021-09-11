@@ -1,6 +1,13 @@
 package com.example.ordersystem.model;
 
+/**
+ * This class is used for creating pagination buttons for the list of items on Shop page
+ */
+
+
 public class Pagination {
+
+    private String sortCondition;
 
     // Number of items in a page
     private int pageSize = 12;
@@ -59,7 +66,13 @@ public class Pagination {
     }
 
 
+    public String getSortCondition() {
+        return sortCondition;
+    }
 
+    public void setSortCondition(String sortCondition) {
+        this.sortCondition = sortCondition;
+    }
 
     public int getPageSize() {
         return pageSize;

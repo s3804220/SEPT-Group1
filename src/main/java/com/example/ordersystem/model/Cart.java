@@ -1,12 +1,12 @@
-
 package com.example.ordersystem.model;
 
-import com.sun.istack.NotNull;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Value;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+
+/**
+ * This class is used for creating Cart objects that describe each items added to cart, on Cart page
+ */
 
 @Entity
 @Table(name = "cart")
@@ -17,21 +17,21 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @ManyToOne
+    @JsonBackReference(value = "cart-item")
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
-
-    @ManyToOne
+    @JsonBackReference(value="account-cart")
     @JoinColumn(name = "account_id")
     private Account account;
 
     private int amount;
 
-
     @Transient
     public float getSmallSum() {
-        return  this.shop.getPrice().floatValue() * amount;
+        return  this.item.getItemPrice().floatValue() * amount;
     }
 
 
@@ -43,12 +43,12 @@ public class Cart {
         this.id = id;
     }
 
-    public Shop getShop() {
-        return shop;
+    public Item getItem() {
+        return item;
     }
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Account getAccount() {

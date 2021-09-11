@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * This class is the repository of Account which uses the JPARepository interface
+ * It provides basic CRUD methods and queries for the Account entity
+ */
+
 @Repository
 @Transactional(readOnly=true)
 public interface AccountRepository extends JpaRepository<Account, Long> {
