@@ -1,7 +1,7 @@
 # COSC 2101
 # Food Ordering System
 [![Build Status](https://app.travis-ci.com/s3639869/SEPT-Group1.svg?branch=master)](https://app.travis-ci.com/s3639869/SEPT-Group1)
-![Heroku](https://pyheroku-badge.herokuapp.com/?app=sept-group1)
+[![Heroku](https://pyheroku-badge.herokuapp.com/?app=sept-group1)](https://sept-group1.herokuapp.com/)
 
 ### Group 1
 > * Vo An Huy
