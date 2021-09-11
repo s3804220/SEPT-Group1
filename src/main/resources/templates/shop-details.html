@@ -16,16 +16,17 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/flaticon.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/barfiller.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/magnific-popup.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/elegant-icons.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/nice-select.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/slicknav.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="../../css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="../../css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../css/custom.css" type="text/css">
 </head>
 
 <body>
@@ -39,34 +40,31 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__cart">
         <div class="offcanvas__cart__links">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="cart__price">Cart: <span>$0.00</span></div>
+            <a href="/shopping-cart"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+            <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        <a href="./"><img src="img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
         <ul>
             <li>USD <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li>EUR</li>
                     <li>USD</li>
                 </ul>
             </li>
             <li>ENG <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li>Spanish</li>
                     <li>ENG</li>
                 </ul>
             </li>
-            <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
-<!--            <li><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>-->
+            <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="" sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -83,39 +81,35 @@
                             <ul>
                                 <li>USD <span class="arrow_carrot-down"></span>
                                     <ul>
-                                        <li>EUR</li>
                                         <li>USD</li>
                                     </ul>
                                 </li>
                                 <li>ENG <span class="arrow_carrot-down"></span>
                                     <ul>
-                                        <li>Spanish</li>
                                         <li>ENG</li>
                                     </ul>
                                 </li>
-<!--                                <li><a sec:authentication="principal.firstName"></a> <span-->
-<!--                                        class="arrow_carrot-down"></span>-->
-<!--                                    <ul style="width: 180px;">-->
-<!--                                        <li><a class="update" href="localhost:8080/user/update"-->
-<!--                                               style="color:white; display:block">Update Account</a></li>-->
-<!--                                        <li><a class="logout" href="localhost:8080/logout" style="color:white"-->
-<!--                                               onclick="window.open('localhost:8080/logout', '_blank')">Logout</a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </li>-->
+                                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/login">Log in</a> <span class="arrow_carrot-down"></span></li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}"><a sec:authentication="principal.firstName"></a> <span class="arrow_carrot-down"></span>
+                                    <ul style="width: 180px;">
+                                        <li><a class="update" href="/user/update" style="color:white; display:block">Update Account</a></li>
+                                        <li><a class="order-history" href="/order-history" style="color:white">Order History</a></li>
+                                        <li><a class="logout" href="/logout" style="color:white" target="_blank">Logout</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./"><img src="img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
                                 <a href="#"><img src="img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                                <div class="cart__price">Cart: <span>$0.00</span></div>
+                                <a href="/shopping-cart"><img src="img/icon/cart.png" alt=""> <span th:text="${cartQty}">0</span></a>
+                                <div class="cart__price">Cart: <span th:text="${'$'+cartSum}">$0.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -129,20 +123,12 @@
             <div class="col-lg-12">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./index.html">Home</a></li>
-                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./">Home</a></li>
+                        <li><a href="/about">About</a></li>
                         <li class="active"><a href="/shop">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="shoping-cart">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./wisslist.html">Wisslist</a></li>
-                                <li><a href="./Class.html">Class</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        <li><a href="/shopping-cart">Cart</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"><a href="/admin-panel">Admin Panel</a></li>
                     </ul>
                 </nav>
             </div>
@@ -162,9 +148,9 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="./index.html">Home</a>
-                    <a href="../templates/shop.html">Shop</a>
-                    <span>Sweet autumn leaves</span>
+                    <a href="./">Home</a>
+                    <a href="/shop">Shop</a>
+                    <span th:unless="${shopDetail==null}" th:text="${shopDetail.itemName}"></span>
                 </div>
             </div>
         </div>
@@ -176,43 +162,56 @@
 <!-- Shop Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
-        <form class="row" th:object="${shopDetail}" th:action="@{/shoping-cart/add}" method="post">
-            <!-- Connect to shoping-cart/insert -->
-            <!--'shopDetail' took from ShopController-->
+        <div th:if="${shopDetail==null}">No such item exists.</div>
+        <form class="row" th:object="${shopDetail}" th:action="@{/shopping-cart/add}" method="post" th:unless="${shopDetail==null}">
+            <!-- Connect to shopping-cart/insert -->
+            <!--'shopDetail' took from ItemController-->
             <div class="col-lg-6">
                 <div class="product__details__img">
                     <div class="product__details__big__img">
-                        <img class="big_img" th:src="@{${shopDetail.image}}" alt=""><!--"@{${'/img/shop/'+shopDetail.image}}"-->
+                        <img class="big_img" th:src="@{/itemimage/{image_id}(image_id=${shopDetail.itemimages[0].id})}" alt="">
 
+                    </div>
+                    <div th:with="imgArray=${shopDetail.itemimages}">
+                        <div th:if="${#arrays.length(imgArray)>1}">
+                            <div class="product__details__thumb" th:each="image : ${imgArray}">
+                                <div class="pt__item" th:classappend="${imageStat.index==0} ? active">
+                                    <img th:attr="data-imgbigurl=@{/itemimage/{image_id}(image_id=${image.id})}"
+                                         th:src="@{/itemimage/{image_id}(image_id=${image.id})}" alt="">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <div class="product__label">Cupcake</div>
-                    <h4 th:text="${shopDetail.name}"></h4>
-                    <h5 th:text="${shopDetail.price}"></h5>
-                    <p th:text="${shopDetail.description}"></p>
+                    <div class="product__label" th:text="${shopDetail.category}"></div>
+                    <h4 th:text="${shopDetail.itemName}"></h4>
+                    <h5 th:text="${'$'+shopDetail.itemPrice}"></h5>
+                    <p th:text="${shopDetail.itemDescription}"></p>
 
-                    <div class="product__details__option">
-
+                    <div class="product__details__option" th:if="${shopDetail.availability}">
 
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="number" id="amount" name="amount" value="2" min="1">
-
+                                <input type="number" id="amount" name="amount" value="1" min="1" class="quantity-input-field">
 
                             </div>
                         </div>
                         <input type="hidden" id="sid" name="sid" th:value="${shopDetail.id}">
                         <button type="submit" class="primary-btn" id="addCartBtn">Add to cart</button>
-
+                    </div>
+                    <div class="product__details__option" th:unless="${shopDetail.availability}">
+                        <p style="color: red;">This item is currently unavailable for order.<br>
+                        Please try again later!</p>
                     </div>
                 </div>
             </div>
 
         </form>
-        <div class="product__details__tab">
+
+        <div class="product__details__tab" th:unless="${shopDetail==null}">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
@@ -263,121 +262,8 @@
         </div>
     </div>
 </section>
+<br><br><br><br>
 <!-- Shop Details Section End -->
-
-<!-- Related Products Section Begin -->
-<section class="related-products spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="section-title">
-                    <h2>Related Products</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="related__products__slider owl-carousel">
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-1.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Dozen Cupcakes</a></h6>
-                            <div class="product__item__price">$32.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-2.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cookies and Cream</a></h6>
-                            <div class="product__item__price">$30.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-3.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Gluten Free Mini Dozen</a></h6>
-                            <div class="product__item__price">$31.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-4.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cookie Dough</a></h6>
-                            <div class="product__item__price">$25.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-5.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Vanilla Salted Caramel</a></h6>
-                            <div class="product__item__price">$05.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-6.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">German Chocolate</a></h6>
-                            <div class="product__item__price">$14.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Related Products Section End -->
 
 <!-- Footer Section Begin -->
 <footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
@@ -426,7 +312,7 @@
                 <div class="col-lg-7">
                     <p class="copyright__text text-white">
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        Copyright &copy;2021
                         All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
                         by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -463,19 +349,17 @@
 </script>
 
 <!-- Js Plugins -->
-<script th:src="@{js/jquery-3.3.1.min.js}"></script>
-<script th:src="@{js/bootstrap.min.js}"></script>
-<script th:src="@{js/jquery.nice-select.min.js}"></script>
-<script th:src="@{js/jquery.barfiller.js}"></script>
-<script th:src="@{js/jquery.magnific-popup.min.js}"></script>
-<script th:src="@{js/jquery.slicknav.js}"></script>
-<script th:src="@{js/owl.carousel.min.js}"></script>
-<script th:src="@{js/jquery.nicescroll.min.js}"></script>
-<script th:src="@{js/main.js}"></script>
-<script type="text/javascript">
-    contextPath = "[[@{/}]]";
-    var shopId = "[[${shopDetail.id}]]";
-</script>
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/jquery.nice-select.min.js"></script>
+<script src="../../js/jquery.barfiller.js"></script>
+<script src="../../js/jquery.magnific-popup.min.js"></script>
+<script src="../../js/jquery.slicknav.js"></script>
+<script src="../../js/owl.carousel.min.js"></script>
+<script src="../../js/jquery.nicescroll.min.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/cart.js"></script>
+
 </body>
 
 </html>

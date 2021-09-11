@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="javaMailProperties">
+            <util:properties>
+                <prop key="mail.debug">false</prop>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.port">3025</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.user">sept.system1@gmail.com</prop>
+                <prop key="mail.smtp.host">localhost</prop>
+                <prop key="mail.smtp.from">sept.system1@gmail.com</prop>
+            </util:properties>
+        </property>
+        <property name="username" value="test"/>
+        <property name="password" value="xxx"/>
+        <property name="defaultEncoding" value="utf8" />
+    </bean>
+
+    <bean class="com.example.ordersystem.service.EmailService">
+    </bean>
+
+    <bean class="org.thymeleaf.TemplateEngine">
+    </bean>
+
+</beans>
