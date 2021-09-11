@@ -99,3 +99,6 @@ The shop and cart can be visited by clicking "Shop" or "Cart" in the navbar, the
 
 ## Travis-CI Build
 * Our current build is passing.
+
+![travis0](https://user-images.githubusercontent.com/54358309/132946099-5a935544-36e9-453e-a0d3-de778fafdcd2.jpg)
+![travis](https://user-images.githubusercontent.com/54358309/132946102-2cb6fdfe-3718-400d-887f-1df995d29b5e.jpg)
